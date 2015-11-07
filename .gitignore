@@ -4,3 +4,4 @@
 intelxdk*
 *.xdke
 /xdk
+/plugins/**
