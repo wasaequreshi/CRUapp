@@ -1,0 +1,23 @@
+{
+    "title" : "CRU App",
+    "abbr" : "CRU",
+    "tooltip" : "CRU is cool",
+    "description" : "App for getting info on CRU" 
+    "repoName" : "CRUapp",
+    "articleUrl" : "https://github.com/MysteryCRU/CRUapp/blob/master/README.md",
+    "section" : "samples",
+    "group" : "",
+    "visible" : true,
+    "samples" : true,
+    "keywords" : [
+        "CRU",
+    ],
+    "highlights" : [
+        "CRU",
+    ],
+    "projectTypeName" : "com.intel.xdk.projecttype.jsapp",
+    "landscape" : false,
+    "appName" : "cruapp",
+    "appPreview" : true,
+    "mobile" : false
+}
