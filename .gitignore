@@ -1,0 +1,6 @@
+*.xdk
+/node_modules
+/platforms
+intelxdk*
+*.xdke
+/xdk
