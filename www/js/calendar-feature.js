@@ -2,10 +2,7 @@ function changeTextTest()
 {
     document.getElementById("hello").innerHTML = "Hi User";
 }
-window.onload = function()
-{    
-    addingEventToCalendar();
-}
+
 function addingEventToCalendar()
 {
   console.log("Adding to event");
@@ -18,5 +15,8 @@ function addingEventToCalendar()
   var error = function(message) { alert("Error: " + message); };
 
   // create
-  window.plugins.calendar.createEvent(title,location,notes,startDate,endDate,success,error);
+  window.plugins.calendar.createEvent(title, location, notes, startDate, endDate, success, error);
+      
+  console.log("Successfully added event");
 }
+ document.addEventListener("deviceready", addingEventToCalendar, false);
