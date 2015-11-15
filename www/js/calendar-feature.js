@@ -18,6 +18,9 @@ function addingEventToCalendar()
   window.plugins.calendar.createEvent(title, location, notes, startDate, endDate, success, error);
       
   console.log("Successfully added event");
+  //Test to see if plugin works by opening calendar
+  window.plugins.calendar.openCalendar();
+
 }
 function onLoad()
 {
