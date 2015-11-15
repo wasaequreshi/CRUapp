@@ -16,6 +16,10 @@ var snapper = new Snap({
     element: document.getElementById('content')
 });
 
+snapper.on('ignore', function(){
+  snapper.open('left');
+});
+
 //window.app = window.app || {};
 
 // This file contains your event handlers, the center of your application.
@@ -44,7 +48,7 @@ function myEventHandler() {
 // ...additional event handlers here...
 function menuEvent() {
     "use strict" ;
-    snapper.open('left');
     
+    snapper.open('left');
     /*$('#snap-drawer').css('display', 'block');*/
 }

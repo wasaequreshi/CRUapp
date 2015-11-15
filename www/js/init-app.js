@@ -30,6 +30,13 @@ app.consoleLog = function() {           // only emits console.log messages if ap
     }
 } ;
 
+var addEvent = function addEvent(element, eventName, func) {
+    if (element.addEventListener) {
+        return element.addEventListener(eventName, func, false);
+    } else if (element.attachEvent) {
+        return element.attachEvent("on" + eventName, func);
+    }
+};
 
 // App init point (runs on custom app.Ready event from init-dev.js).
 // Runs after underlying device native code and webview/browser is ready.
@@ -66,8 +73,11 @@ app.initEvents = function() {
     else                                                            // else, assume touch events available
         evt = "touchend" ;                                          // not optimum, but works
 
+    //evt = "touchstart";
+    
     el = document.getElementById("id_btnHello") ;
     el.addEventListener(evt, myEventHandler, false) ;
+    //addEvent(document.getElementById("open-left"), evt, menuEvent);
     el = document.getElementById("open-left") ;
     el.addEventListener(evt, menuEvent, false) ;
 
