@@ -1,13 +1,8 @@
-function changeTextTest()
-{
-    document.getElementById("hello").innerHTML = "Hi User";
-}
-
 function addingEventToCalendar()
 {
   console.log("Adding to event");
-  var startDate = new Date("November 10, 2015 13:00:00");
-  var endDate = new Date("November 10, 2015 14:30:00");
+  var startDate = new Date("November 15, 2015 21:00:00");
+  var endDate = new Date("November 15, 2015 21:30:00");
   var title = "My nice event";
   var location = "Home";
   var notes = "Some notes about this event.";
