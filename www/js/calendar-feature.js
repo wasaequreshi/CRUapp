@@ -19,4 +19,10 @@ function addingEventToCalendar()
       
   console.log("Successfully added event");
 }
- document.addEventListener("deviceready", addingEventToCalendar, false);
+function onLoad()
+{
+   document.addEventListener("deviceready", addingEventToCalendar, false);
+}
+$(window).load(function() {
+     document.getElementById("wasae").addEventListener("click", onLoad);
+});
