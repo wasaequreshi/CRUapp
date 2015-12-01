@@ -8,8 +8,32 @@
 // Note the reference that includes it in the index.html file.
 
 
+
+/*var push = PushNotification.init({ "android": {"senderID": "276638088511"},
+    "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
+
+push.on('registration', function(data) {
+    console.log("Storing registration ID");
+    window.localStorage.setItem("pushID", data.registrationId);
+});
+
+push.on('notification', function(data) {
+    // data.message,
+    // data.title,
+    // data.count,
+    // data.sound,
+    // data.image,
+    // data.additionalData
+});
+
+push.on('error', function(e) {
+    console.log(e.message);
+});
+*/
 /*jslint browser:true, devel:true, white:true, vars:true */
 /*global $:false, intel:false app:false, dev:false, cordova:false */
+
+var serverURL = "http://54.86.175.74:8888/";
 
 /* instantiate snapper object, and define pane to slide left or right */
 var snapper = new Snap({
@@ -52,3 +76,53 @@ function menuEvent() {
     snapper.open('left');
     /*$('#snap-drawer').css('display', 'block');*/
 }
+
+function addUserEvent() {
+    var push = PushNotification.init({ "android": {"senderID": "276638088511"},
+            "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
+
+            push.on('registration', function(data) {
+                console.log("Storing registration ID");
+                $("#userInfo").html("registered id: " + data.registrationId);
+                window.localStorage.setItem("pushID", data.registrationId);
+            });
+
+            push.on('notification', function(data) {
+                // data.message,
+                // data.title,
+                // data.count,
+                // data.sound,
+                // data.image,
+                // data.additionalData
+            });
+
+            push.on('error', function(e) {
+                console.log(e.message);
+                $("#userInfo").html("error: " + e.message);
+            });
+}
+/*    $.post(serverURL + "users",
+    {
+        name: "DonaldDuck"
+    },
+    function(data, status){
+        var jData = JSON.parse(data);
+        $("#userInfo").innerHTML = jData.id;
+        window.localStorage.setItem("userID", jData.id);
+        
+        if (window.localStorage.getItem("pushID") !== null) {
+        $.post(serverURL + "users/" + jData.id + "/push", 
+        {
+            token: window.localStorage.getItem("pushID"),  
+            type: device.platform
+        });
+    }
+    });
+    console.log("got here");
+    if (window.localStorage.getItem("pushID") !== null) {
+        $("#userInfo").html(window.localStorage.getItem("pushID"));
+    }
+    else {
+        $("#userInfo").html("Failed bro, anil messed up");
+    }
+}*/
