@@ -8,12 +8,12 @@ function addingEventToCalendar()
   var startDateFirstSplit = startDataObject.substring(0, startDataObject.indexOf("T")).split("-");
   var startDataSecondSplit = startDataObject.substring(startDataObject.indexOf("T") + 1, startDataObject.length - 1).split(":");   
     
-  var startDate = new Date(startDateFirstSplit[0], startDateFirstSplit[1], startDateFirstSplit[2], startDataSecondSplit[0], startDataSecondSplit[1], 0, 0);
+  var startDate = new Date(startDateFirstSplit[0], parseInt(startDateFirstSplit[1], 10) - 1, startDateFirstSplit[2], startDataSecondSplit[0], startDataSecondSplit[1], 0, 0);
     
   var endDataObject = finalvalue["endDate"];
   var endDateFirstSplit = endDataObject.substring(0, endDataObject.indexOf("T")).split("-");
   var endDataSecondSplit = endDataObject.substring(endDataObject.indexOf("T") + 1, endDataObject.length - 1).split(":");                               
-  var endDate = new Date(endDateFirstSplit[0], endDateFirstSplit[1], endDateFirstSplit[2], endDataSecondSplit[0], endDataSecondSplit[1], 0, 0);
+  var endDate = new Date(endDateFirstSplit[0], parseInt(endDateFirstSplit[1], 10) - 1, endDateFirstSplit[2], endDataSecondSplit[0], endDataSecondSplit[1], 0, 0);
     
   var title = finalvalue["name"];
   var notes = "None";
