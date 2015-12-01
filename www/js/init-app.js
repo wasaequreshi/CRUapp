@@ -49,6 +49,9 @@ app.initEvents = function() {
     var fName = "app.initEvents():" ;
     app.consoleLog(fName, "entry") ;
 
+    //initialize the push notifications
+    addUserEvent();
+    
     // NOTE: initialize your third-party libraries and event handlers
 
     // initThirdPartyLibraryNumberOne() ;
@@ -81,7 +84,7 @@ app.initEvents = function() {
     el = document.getElementById("open-left") ;
     el.addEventListener(evt, menuEvent, false) ;
     el = document.getElementById("userButton") ;
-    el.addEventListener(evt, addUserEvent, false) ;
+    el.addEventListener(evt, postNewUser, false) ;
     console.log("added the events");
 
     // NOTE: ...you can put other miscellaneous init stuff in this function...
