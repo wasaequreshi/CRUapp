@@ -80,6 +80,9 @@ app.initEvents = function() {
     //addEvent(document.getElementById("open-left"), evt, menuEvent);
     el = document.getElementById("open-left") ;
     el.addEventListener(evt, menuEvent, false) ;
+    el = document.getElementById("userButton") ;
+    el.addEventListener(evt, addUserEvent, false) ;
+    console.log("added the events");
 
     // NOTE: ...you can put other miscellaneous init stuff in this function...
     // NOTE: ...and add whatever else you want to do now that the app has started...
