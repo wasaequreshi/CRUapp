@@ -1,5 +1,5 @@
 var eventsData = "test";
-var url = "http://localhost:8080/ministries";
+var url = "http://54.86.175.74:8080/ministries";
 console.log("Start");
 
 $.ajax({
