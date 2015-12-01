@@ -33,7 +33,7 @@ push.on('error', function(e) {
 /*jslint browser:true, devel:true, white:true, vars:true */
 /*global $:false, intel:false app:false, dev:false, cordova:false */
 
-var serverURL = "http://54.86.175.74:8888/";
+var serverURL = "http://54.86.175.74:8080/";
 var tempUserID = "564ee19f6c2f1876527be562";
 
 /* instantiate snapper object, and define pane to slide left or right */
