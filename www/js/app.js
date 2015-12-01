@@ -107,9 +107,10 @@ function addUserEvent() {
 }
 
 function postNewUser() {
+    console.log("post user reg id from storage: " + window.localStorage.getItem("pushID"));
     $.post(serverURL + "users/" + tempUserID+ "/push", 
         {
-            token: data.registrationId,  
+            token: window.localStorage.getItem("pushID"),  
             type: device.platform
         });
 }
