@@ -34,6 +34,7 @@ push.on('error', function(e) {
 /*global $:false, intel:false app:false, dev:false, cordova:false */
 
 var serverURL = "http://54.86.175.74:8888/";
+var tempUserID = "564ee19f6c2f1876527be562";
 
 /* instantiate snapper object, and define pane to slide left or right */
 var snapper = new Snap({
@@ -78,29 +79,69 @@ function menuEvent() {
 }
 
 function addUserEvent() {
-    var push = PushNotification.init({ "android": {"senderID": "276638088511"},
-            "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
+    var push = PushNotification.init({ 
+        android: {senderID: "276638088511"},
+        ios: {alert: "true", badge: true, sound: 'false'}, 
+        windows: {} } );
 
-            push.on('registration', function(data) {
-                console.log("Storing registration ID");
-                $("#userInfo").html("registered id: " + data.registrationId);
-                window.localStorage.setItem("pushID", data.registrationId);
-            });
+    push.on('registration', function(data) {
+        console.log("Storing registration ID");
+        $("#userInfo").html("registered id: " + data.registrationId);
+        window.localStorage.setItem("pushID", data.registrationId);
+    });
 
-            push.on('notification', function(data) {
-                // data.message,
-                // data.title,
-                // data.count,
-                // data.sound,
-                // data.image,
-                // data.additionalData
-            });
+    push.on('notification', function(data) {
+        // data.message,
+        // data.title,
+        // data.count,
+        // data.sound,
+        // data.image,
+        // data.additionalData
+        console.log("officially push notified: " + data.message);
+    });
 
-            push.on('error', function(e) {
-                console.log(e.message);
-                $("#userInfo").html("error: " + e.message);
-            });
+    push.on('error', function(e) {
+        console.log(e.message);
+        $("#userInfo").html("error: " + e.message);
+    });
 }
+
+function postNewUser() {
+    $.post(serverURL + "users/" + tempUserID+ "/push", 
+        {
+            token: data.registrationId,  
+            type: device.platform
+        });
+}
+
+function setUpDrawer(){
+
+    var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/')+1);
+    
+    if (filename != "index.html") {
+        $(".snap-drawers").html('<div class="snap-drawer snap-drawer-left">\
+                <div>\
+                    <h4>CRU is Coo</h4>\
+                    <ul>\
+                        <li><a href="../events/events.html">Events</a></li>\
+                        <li><a href="../resources/resources.html">Resources</a></li>\
+                        <li><a href="../missions/missions.html">Missions</a></li>\
+                        <li><a href="../teams/teams.html">Teams</a></li>\
+                        <li><a href="../cg/cg.html">Community Groups</a></li>\
+                        <li><a href="../rides/rides.html">Rides</a></li>\
+                    </ul>\
+                </div>\
+            </div>');
+        
+        $("#toolbar").html('<a href="#" id="open-left" data-snap-ignore="true">&#9776;</a>\
+                <h1 class="align-center">CRU Baby</h1>\
+                <br>' + $("#toolbar").html());
+    }
+        
+
+}
+
 /*    $.post(serverURL + "users",
     {
         name: "DonaldDuck"
