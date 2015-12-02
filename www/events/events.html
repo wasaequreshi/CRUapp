@@ -1,89 +1,71 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
+	Read Only by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-    <head>
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-<!--        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        
-        <link rel="stylesheet" href="../css/app.css" />
-        <link rel="stylesheet" href="../css/snap.css" />
-        <link rel="stylesheet" href="../css/demo.css" />
-        
-        <script type="text/javascript" src="../js/snap.js"></script>
-    </head>
-    <body>
-        
-        <div class="snap-drawers">
-            <div class="snap-drawer snap-drawer-left">
-                <div>
-                    <h4>CRU is Coo</h4>
-                    <ul>
-                        <li><a href="events.html">Events</a></li>
-                        <li><a href="#">Resources</a></li>
-                        <li><a href="#">Missions</a></li>
-                        <li><a href="#">Teams</a></li>
-                        <li><a href="#">Community Groups</a></li>
-                        <li><a href="#">Rides</a></li>
-                    </ul>
+	<head>
+		<title>Read Only by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+        <!-- see http://webdesign.tutsplus.com/tutorials/htmlcss-tutorials/quick-tip-dont-forget-the-viewport-meta-tag -->
+        <!-- <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1"> -->
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=1, maximum-scale=2"> -->
+        <style>
+            /* following two viewport lines are equivalent to meta viewport statement above, and is needed for Windows */
+            /* see http://www.quirksmode.org/blog/archives/2014/05/html5_dev_conf.html and http://dev.w3.org/csswg/css-device-adapt/ */
+            @-ms-viewport { width: 100vw ; min-zoom: 100% ; zoom: 100% ; }          @viewport { width: 100vw ; min-zoom: 100% zoom: 100% ; }
+            @-ms-viewport { user-zoom: fixed ; min-zoom: 100% ; }                   @viewport { user-zoom: fixed ; min-zoom: 100% ; }
+            /*@-ms-viewport { user-zoom: zoom ; min-zoom: 100% ; max-zoom: 200% ; }   @viewport { user-zoom: zoom ; min-zoom: 100% ; max-zoom: 200% ; }*/
+        </style>
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../css/template/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- Header -->
+        <section id="header">
+				<nav id="nav">
+					<ul>
+                        <li><a href="../events/events.html" class="active"><i class="fa fa-calendar-o fa-fw"></i>&nbsp; Events</a></li>
+						<li><a href="#two"><i class="fa fa-rss fa-fw"></i>&nbsp; Resources</a></li>
+						<li><a href="../missions/missions.html"><i class="fa fa-sun-o fa-fw"></i>&nbsp; Summer Missions</a></li>
+						<li><a href="#four"><i class="fa fa-users fa-fw"></i>&nbsp; Teams</a></li>
+                        <li><a href="#one"><i class="fa fa-user-plus fa-fw"></i>&nbsp; Community Groups</a></li>
+                        <li><a href="#one"><i class="fa fa-car fa-fw"></i>&nbsp; Rides</a></li>
+                        <li><a href="settings/settings.html"><i class="fa fa-gears fa-fw"></i>&nbsp; Settings</a></li>
+					</ul>
+				</nav>
+			</section>
+        <!-- Wrapper -->
+        <div id="wrapper">
+            <!-- Main -->
+            <div id="main">
+                <div class="container">
+                    <ul id = "list_of_events" style="list-style: none; margin: 0; padding: 0;"></ul>
                 </div>
             </div>
         </div>
-        
-        <div id="content" class="snap-content">
-            <div id="toolbar">
-                <a href="#" id="open-left" data-snap-ignore="true">&#9776;</a>
-                <div>
-                      <h2>Events</h2>
-                      <ul id = "list_of_events"> 
-                      </ul>
-                </div>
-                
-<!--
-                <a href="../events/testEvent1.html">testEvent1</a>
-                <div id="list_of_events">
-                    
-                </div>
--->
-            </div>
-
-        </div>
-        <script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
-
-        <script type="text/javascript" src="../cordova.js"></script>
-        <script type="text/javascript" src="../js/index.js"></script>
-        <script type="text/javascript" src="../js/get-and-populate-events.js"></script>
-        <!-- include the Snap.js file in a script tag -->
-        <link rel="stylesheet" href="../css/events_list.css">
-        <script src="../js/app.js"></script>           <!-- for your event code, see README and file comments for details -->
-        <script src="../js/init-app.js"></script>      <!-- for your init code, see README and file comments for details -->
-        <script src="../../xdk/init-dev.js"></script>     <!-- normalizes device and document ready events, see file for details -->
     </body>
+    
+    <script src="../js/template/jquery.min.js"></script>
+    <script src="../js/template/jquery.scrollzer.min.js"></script>
+    <script src="../js/template/jquery.scrolly.min.js"></script>
+    <script src="../js/template/skel.min.js"></script>
+    <script src="../js/template/util.js"></script>
+    <!--[if lte IE 8]><script src="../js/template/ie/respond.min.js"></script><![endif]-->
+    <script src="../js/template/main.js"></script>
+    
+    <script type="text/javascript" src="../js/get-and-populate-events.js"></script>
+
+    <script src="../cordova.js"></script>          <!-- "Phantom" cordova.js required for projects that use plugins -->
+
+    <!--  <script src="../js/index.js"></script> -->
+    <script src="../js/app.js"></script>           <!-- for your event code, see README and file comments for details -->
+    <script src="../js/init-app.js"></script>      <!-- for your init code, see README and file comments for details -->
+    <script src="../js/init-dev.js"></script>     <!-- normalizes device and document ready events, see file for details -->
 </html>
