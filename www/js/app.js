@@ -80,7 +80,7 @@ function menuEvent() {
 
 function addUserEvent() {
     console.log("Local Storage Push ID: " + window.localStorage.getItem("pushID"));
-    if (window.localStorage.getItem("pushID") === null || window.localStorage.getItem("pushID") === "") {
+    //if (window.localStorage.getItem("pushID") === null || window.localStorage.getItem("pushID") === "") {
         var push = PushNotification.init({ 
             android: {senderID: "276638088511", forceShow:true},
             ios: {alert: "true", badge: true, sound: 'false'}, 
@@ -108,7 +108,7 @@ function addUserEvent() {
             console.log(e.message);
             $("#userInfo").html("error: " + e.message);
         });
-    }
+    //}
 }
 
 function postNewUser() {
