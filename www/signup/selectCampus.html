@@ -37,14 +37,41 @@
         <script type="text/javascript" src="../js/index.js"></script>
         <script type="text/javascript" src="../js/get-add-populate-campuses.js"></script>
         <link rel="stylesheet" href="../css/events_list.css">
-
+         </style>
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../css/template/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+        
     </head>
+    <style>
+            #titleBar .title {
+                display: none;
+            }
+            #titleBar .toggle {
+                display: none;
+            }
+        </style>
     <body>
-        <div>
+        <br>
+        <br>
+        <div class="container">
       <h2>Select Campus</h2>
       <ul id = "list_of_campuses"> 
       </ul>
         </div>
-        
+        <!-- Scripts -->
+			<script src="../js/template/jquery.min.js"></script>
+			<script src="../js/template/jquery.scrollzer.min.js"></script>
+			<script src="../js/template/jquery.scrolly.min.js"></script>
+			<script src="../js/template/skel.min.js"></script>
+			<script src="../js/template/util.js"></script>
+			<!--[if lte IE 8]><script src="js/template/ie/respond.min.js"></script><![endif]-->
+			<script src="../js/template/main.js"></script>
+
+    
+        <!--  <script src="js/index.js"></script> -->
+        <script src="../js/app.js"></script>           <!-- for your event code, see README and file comments for details -->
+        <script src="../js/init-app.js"></script>      <!-- for your init code, see README and file comments for details -->
+        <script src="js/init-dev.js"></script>     <!-- normalizes device and document ready events, see file for details -->
     </body>
 </html>
