@@ -90,6 +90,7 @@ function addUserEvent() {
             console.log("Storing registration ID");
             $("#userInfo").html("registered id: " + data.registrationId);
             window.localStorage.setItem("pushID", data.registrationId);
+            postNewUser();
         });
 
         push.on('notification', function(data) {
