@@ -79,32 +79,35 @@ function menuEvent() {
 }
 
 function addUserEvent() {
-    var push = PushNotification.init({ 
-        android: {senderID: "276638088511", forceShow:true},
-        ios: {alert: "true", badge: true, sound: 'false'}, 
-        windows: {} } );
-    
-    push.on('registration', function(data) {
-        console.log("Storing registration ID");
-        $("#userInfo").html("registered id: " + data.registrationId);
-        window.localStorage.setItem("pushID", data.registrationId);
-    });
+    console.log("Local Storage Push ID: " + window.localStorage.getItem("pushID"));
+    if (window.localStorage.getItem("pushID") === null || window.localStorage.getItem("pushID") === "") {
+        var push = PushNotification.init({ 
+            android: {senderID: "276638088511", forceShow:true},
+            ios: {alert: "true", badge: true, sound: 'false'}, 
+            windows: {} } );
 
-    push.on('notification', function(data) {
-        // data.message,
-        // data.title,
-        // data.count,
-        // data.sound,
-        // data.image,
-        // data.additionalData
-        console.log("officially push notified: " + data.message);
-        alert("recieved notification"+data.message);
-    });
+        push.on('registration', function(data) {
+            console.log("Storing registration ID");
+            $("#userInfo").html("registered id: " + data.registrationId);
+            window.localStorage.setItem("pushID", data.registrationId);
+        });
 
-    push.on('error', function(e) {
-        console.log(e.message);
-        $("#userInfo").html("error: " + e.message);
-    });
+        push.on('notification', function(data) {
+            // data.message,
+            // data.title,
+            // data.count,
+            // data.sound,
+            // data.image,
+            // data.additionalData
+            console.log("officially push notified: " + data.message);
+            alert("recieved notification"+data.message);
+        });
+
+        push.on('error', function(e) {
+            console.log(e.message);
+            $("#userInfo").html("error: " + e.message);
+        });
+    }
 }
 
 function postNewUser() {
