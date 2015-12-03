@@ -31,8 +31,8 @@
         <section id="header">
 				<nav id="nav">
 					<ul>
-                        <li><a href="../events/events.html" class="active"><i class="fa fa-calendar-o fa-fw"></i>&nbsp; Events</a></li>
-						<li><a href="#two"><i class="fa fa-rss fa-fw"></i>&nbsp; Resources</a></li>
+                       <li><a href="../events/events.html"><i class="fa fa-calendar-o fa-fw"></i>&nbsp; Events</a></li>
+						<li><a href="../Resources/resources.html" class="active"><i class="fa fa-rss fa-fw"></i>&nbsp; Resources</a></li>
 						<li><a href="../missions/missions.html"><i class="fa fa-sun-o fa-fw"></i>&nbsp; Summer Missions</a></li>
 						<li><a href="#four"><i class="fa fa-users fa-fw"></i>&nbsp; Teams</a></li>
                         <li><a href="#one"><i class="fa fa-user-plus fa-fw"></i>&nbsp; Community Groups</a></li>
@@ -46,37 +46,17 @@
             <!-- Main -->
             <div id="main">
                 <div class="container">
-                    <img id="image_of_event" src="" style="width:100%">
-                    <header class="major">
-                        <h2 id="name_of_event" ></h2>
-                    </header>
-                    
-                    <p id="description_of_event"></p>
-                    <input id="wasae" type="button" class="special" value="Add to Calendar" style="display: table; margin: 0 auto; width: 60%;"/>
-                    <center>
-                    <a id="facebook_of_event" href="" >
-                        <img src="../img/FB-Icon.png" width="42" height="42">
-                    </a>
-                    </center>
+                    <br>
+                    <br>
+                    <div id="vidDiv">
+                    <iframe id="active-vid"
+                        src="http://www.youtube.com/embed/2M-F0mz7yKg">
+                    </iframe>
+                </div>
                 </div>
             </div>
         </div>
     </body>
-    
-    <script>
-        function makePicPretty() {
-            var img = document.getElementById('image_of_event');
-            var comp = window.getComputedStyle(img);
-            var ratio = comp.width / comp.height;  
-            
-            var h = window.innerHeight / 3;
-            img.style.marginTop = 15 + 'px';
-            img.style.height = h + 'px';
-            img.style.width = h * ratio + 'px';
-        }
-        
-        makePicPretty();
-    </script>
     
     <script src="../js/template/jquery.min.js"></script>
     <script src="../js/template/jquery.scrollzer.min.js"></script>
@@ -86,9 +66,6 @@
     <!--[if lte IE 8]><script src="../js/template/ie/respond.min.js"></script><![endif]-->
     <script src="../js/template/main.js"></script>
     
-    <script type="text/javascript" src="../js/calendar-feature.js"></script>
-    <script type="text/javascript" src="../js/settingup_event_page.js"></script>
-
     <script src="../cordova.js"></script>          <!-- "Phantom" cordova.js required for projects that use plugins -->
 
     <!--  <script src="../js/index.js"></script> -->
@@ -96,4 +73,3 @@
     <script src="../js/init-app.js"></script>      <!-- for your init code, see README and file comments for details -->
     <script src="../js/init-dev.js"></script>     <!-- normalizes device and document ready events, see file for details -->
 </html>
-

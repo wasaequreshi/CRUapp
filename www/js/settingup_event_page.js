@@ -7,5 +7,6 @@ $(window).load(function() {
     var imageObject = finalvalue["image"];
     $("#image_of_event").attr("src", imageObject["url"]);
     $("#description_of_event").text(finalvalue["description"]);
+    $("#facebook_of_event").attr("href", finalvalue["url"]);
     document.getElementById("wasae").addEventListener("click", onLoad);
 });
