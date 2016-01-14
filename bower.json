@@ -1,8 +1,0 @@
-{
-    "name": "cru-app",
-    "dependencies": {
-        "moment": "2.9.0",
-        "ua-parser-js": "0.7.3",
-        "fastclick": "0.6.11"
-    }
-}
