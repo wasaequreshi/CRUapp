@@ -1,177 +1,73 @@
-/*
- * Please see the included README.md file for license terms and conditions.
- */
+// Ionic Starter App
 
+// angular.module is a global place for creating, registering and retrieving Angular modules
+// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// the 2nd parameter is an array of 'requires'
+// 'starter.controllers' is found in controllers.js
+angular.module('starter', ['ionic', 'starter.controllers'])
 
-// This file is a suggested starting place for your code.
-// It is completely optional and not required.
-// Note the reference that includes it in the index.html file.
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
 
+    }
+    if (window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+    }
+  });
+})
 
+.config(function($stateProvider, $urlRouterProvider) {
+  $stateProvider
 
-/*var push = PushNotification.init({ "android": {"senderID": "276638088511"},
-    "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
+    .state('app', {
+    url: '/app',
+    abstract: true,
+    templateUrl: 'templates/menu.html',
+    controller: 'AppCtrl'
+  })
 
-push.on('registration', function(data) {
-    console.log("Storing registration ID");
-    window.localStorage.setItem("pushID", data.registrationId);
+  .state('app.search', {
+    url: '/search',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/search.html'
+      }
+    }
+  })
+
+  .state('app.browse', {
+      url: '/browse',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/browse.html'
+        }
+      }
+    })
+    .state('app.playlists', {
+      url: '/playlists',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/playlists.html',
+          controller: 'PlaylistsCtrl'
+        }
+      }
+    })
+
+  .state('app.single', {
+    url: '/playlists/:playlistId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/playlist.html',
+        controller: 'PlaylistCtrl'
+      }
+    }
+  });
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/app/playlists');
 });
-
-push.on('notification', function(data) {
-    // data.message,
-    // data.title,
-    // data.count,
-    // data.sound,
-    // data.image,
-    // data.additionalData
-});
-
-push.on('error', function(e) {
-    console.log(e.message);
-});
-*/
-/*jslint browser:true, devel:true, white:true, vars:true */
-/*global $:false, intel:false app:false, dev:false, cordova:false */
-
-var serverURL = "http://54.86.175.74:8080/";
-var tempUserID = "564ee19f6c2f1876527be562";
-
-/* instantiate snapper object, and define pane to slide left or right */
-var snapper = new Snap({
-    element: document.getElementById('content')
-});
-
-snapper.on('ignore', function(){
-  snapper.open('left');
-});
-
-//window.app = window.app || {};
-
-// This file contains your event handlers, the center of your application.
-// NOTE: see app.initEvents() in init-app.js for event handler initialization code.
-
-function myEventHandler() {
-    "use strict" ;
-
-    var ua = navigator.userAgent ;
-    var str ;
-
-    if( window.Cordova && dev.isDeviceReady.c_cordova_ready__ ) {
-            str = "It worked! Cordova device ready detected at " + dev.isDeviceReady.c_cordova_ready__ + " milliseconds!" ;
-    }
-    else if( window.intel && intel.xdk && dev.isDeviceReady.d_xdk_ready______ ) {
-            str = "It worked! Intel XDK device ready detected at " + dev.isDeviceReady.d_xdk_ready______ + " milliseconds!" ;
-    }
-    else {
-        str = "Bad device ready, or none available because we're running in a browser." ;
-    }
-
-    alert(str) ;
-}
-
-
-// ...additional event handlers here...
-function menuEvent() {
-    "use strict" ;
-    
-    snapper.open('left');
-    /*$('#snap-drawer').css('display', 'block');*/
-}
-
-function addUserEvent() {
-    console.log("Local Storage Push ID: " + window.localStorage.getItem("pushID"));
-    //if (window.localStorage.getItem("pushID") === null || window.localStorage.getItem("pushID") === "") {
-        var push = PushNotification.init({ 
-            android: {senderID: "276638088511", forceShow:true},
-            ios: {alert: "true", badge: true, sound: 'false'}, 
-            windows: {} } );
-
-        push.on('registration', function(data) {
-            console.log("Storing registration ID");
-            $("#userInfo").html("registered id: " + data.registrationId);
-            window.localStorage.setItem("pushID", data.registrationId);
-            postNewUser();
-        });
-
-        push.on('notification', function(data) {
-            // data.message,
-            // data.title,
-            // data.count,
-            // data.sound,
-            // data.image,
-            // data.additionalData
-            console.log("officially push notified: " + data.message);
-            alert("recieved notification"+data.message);
-        });
-
-        push.on('error', function(e) {
-            console.log(e.message);
-            $("#userInfo").html("error: " + e.message);
-        });
-    //}
-}
-
-function postNewUser() {
-    console.log("post user reg id from storage: " + window.localStorage.getItem("pushID"));
-    $.post(serverURL + "users/" + tempUserID+ "/push", 
-        {
-            token: window.localStorage.getItem("pushID"),  
-            type: device.platform
-        },
-          function(data, status, xhr) {
-        console.log("post status: " + status);
-    });
-}
-
-/*function setUpDrawer(){
-
-    var url = window.location.pathname;
-    var filename = url.substring(url.lastIndexOf('/')+1);
-    
-    if (filename != "index.html") {
-        $(".snap-drawers").html('<div class="snap-drawer snap-drawer-left">\
-                <div>\
-                    <h4>CRU is Coo</h4>\
-                    <ul>\
-                        <li><a href="../events/events.html">Events</a></li>\
-                        <li><a href="../resources/resources.html">Resources</a></li>\
-                        <li><a href="../missions/missions.html">Missions</a></li>\
-                        <li><a href="../teams/teams.html">Teams</a></li>\
-                        <li><a href="../cg/cg.html">Community Groups</a></li>\
-                        <li><a href="../rides/rides.html">Rides</a></li>\
-                    </ul>\
-                </div>\
-            </div>');
-        
-        $("#toolbar").html('<a href="#" id="open-left" data-snap-ignore="true">&#9776;</a>\
-                <h1 class="align-center">CRU Baby</h1>\
-                <br>' + $("#toolbar").html());
-    }
-        
-
-}
-/*    $.post(serverURL + "users",
-    {
-        name: "DonaldDuck"
-    },
-    function(data, status){
-        var jData = JSON.parse(data);
-        $("#userInfo").innerHTML = jData.id;
-        window.localStorage.setItem("userID", jData.id);
-        
-        if (window.localStorage.getItem("pushID") !== null) {
-        $.post(serverURL + "users/" + jData.id + "/push", 
-        {
-            token: window.localStorage.getItem("pushID"),  
-            type: device.platform
-        });
-    }
-    });
-    console.log("got here");
-    if (window.localStorage.getItem("pushID") !== null) {
-        $("#userInfo").html(window.localStorage.getItem("pushID"));
-    }
-    else {
-        $("#userInfo").html("Failed bro, anil messed up");
-    }
-}*/
