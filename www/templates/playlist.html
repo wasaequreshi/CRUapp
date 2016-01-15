@@ -8,7 +8,7 @@
 
           <div class="item item-body">
             <img class="full-image" src="{{myEvent.image.url}}">
-            <p>{{myEvent.description}}</p>
+            <p>{{myEvent.url}}</p>
         </div>
         <form ng-action="">
             <button class="icon-left ion-android-calendar button button-block button-balanced" ng-click="{{myEvent.url}}">Add to Calendar</button>
@@ -16,9 +16,7 @@
         <form ng-action="">
             <button class="icon-left ion-android-car button button-block button-calm" ng-click="">Get a ride</button>
         </form>
-        <form ng-action="{{myEvent.url}}">
-            <button class="icon-left ion-social-facebook button button-block button-positive" ng-click="{{myEvent.url}}">Facebook</button>
-        </form>
+            <button class="icon-left ion-social-facebook button button-block button-positive" ng-click="showEventFacebook(myEvent.url)">Facebook</button>
       </div>
   </ion-content>
 </ion-view>
