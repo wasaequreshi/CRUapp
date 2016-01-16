@@ -1,0 +1,9 @@
+<ion-view view-title="Select Your Campus(es)">
+  <ion-content>
+    <ion-list>
+      <ion-checkbox ng-repeat="campus in campuses" ng-model="campus._id">
+        {{campus.name}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

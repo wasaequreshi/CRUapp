@@ -1,6 +1,6 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['starter.controllers.signup'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $sce) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -86,7 +86,16 @@ angular.module('starter.controllers', [])
        type: "GET",
        dataType: "json",
        success: function (value) {
-            $scope.myEvent = value;
+            var val = value;
+            var locale = "en-us";
+           
+            var eventDate = new Date(value.startDate);
+            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
+                + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                + eventDate.getDate() + ', ' + eventDate.getFullYear();
+           
+            
+            $scope.myEvent = val;
        }
     });
 });

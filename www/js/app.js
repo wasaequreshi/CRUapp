@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $sceProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
     .state('app', {
@@ -32,6 +32,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     controller: 'AppCtrl'
   })
 
+  .state('app.signup', {
+    url: '/signup',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/signup.html',
+        controller: 'SignupCtrl'
+      }
+    }
+  })
   .state('app.search', {
     url: '/search',
     views: {
