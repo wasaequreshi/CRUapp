@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova', 'ionic'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $sce, $cordovaCalendar) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $sce, $cordovaCalendar, $ionicPopup) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -61,6 +61,7 @@ angular.module('starter.controllers', ['ngCordova', 'ionic'])
                               splitEndTime[0], splitEndTime[1], 0, 0, 0)
         }).then(function (result) {
                 console.log("Event created successfully");
+                //If successfully added, then alert the user that it has been added
                 var alertPopup = $ionicPopup.alert({
                 title: 'Event Added',
                 template: eventName + ' has been added to your calendar :)'
