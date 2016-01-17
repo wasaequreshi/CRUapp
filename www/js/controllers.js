@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngCordova'])
+angular.module('starter.controllers', ['ngCordova', 'ionic'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $sce, $cordovaCalendar) {
 
@@ -60,7 +60,12 @@ angular.module('starter.controllers', ['ngCordova'])
             endDate: new Date(splitEndDate[0], Number(splitEndDate[1] - 1), splitEndDate[2], 
                               splitEndTime[0], splitEndTime[1], 0, 0, 0)
         }).then(function (result) {
-            console.log("Event created successfully");
+                console.log("Event created successfully");
+                var alertPopup = $ionicPopup.alert({
+                title: 'Event Added',
+                template: eventName + ' has been added to your calendar :)'
+            });
+
         }, function (err) {
             console.error("There was an error: " + err);
         });
