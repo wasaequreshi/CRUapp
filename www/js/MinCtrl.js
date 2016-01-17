@@ -6,16 +6,19 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, selectedCam
     //To get the campuses selected by the user on the previous page call: selectedCampuses.getCampuses()
     
     $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (data) {
-           for (var i = 0; i < data.length; ++i) {
-               data[i].checked = false;
-           }
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            for (var i = 0; i < data.length; ++i) {
+                data[i].checked = false;
+            }
            
-           $scope.choices = data;
-       }
+            $scope.choices = data;
+        },
+        error: function(xhr, text, err) {
+            $location.path('/app/error');
+        }
     });
     
     $scope.title = "Select Ministries";

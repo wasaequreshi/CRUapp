@@ -17,16 +17,19 @@ campuses.controller('CampusCtrl', function($scope, $location, selectedCampuses) 
     var url = 'http://54.86.175.74:8080/campuses';
     
     $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (data) {
-           for (var i = 0; i < data.length; ++i) {
-               data[i].checked = false;
-           }
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            for (var i = 0; i < data.length; ++i) {
+                data[i].checked = false;
+            }
            
-           $scope.choices = data;
-       }
+            $scope.choices = data;
+        },
+        error: function(xhr, text, err) {
+            $location.path('/app/error');
+        }
     });
     
     $scope.title = "Select Campuses";
