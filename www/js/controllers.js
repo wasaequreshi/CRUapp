@@ -68,7 +68,13 @@ angular.module('starter.controllers', ['ngCordova', 'ionic'])
             });
 
         }, function (err) {
-            console.error("There was an error: " + err);
+                console.error("There was an error: " + err);
+                //If unsuccessful added, then an alert with a error should pop up
+                //Not sure if we want to pu the 'err' in the message
+                var alertPopup = $ionicPopup.alert({
+                title: 'Error',
+                template: 'Could not add event to calendar: ' + err
+            });
         });
   };
     
