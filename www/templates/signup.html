@@ -1,9 +1,12 @@
-<ion-view view-title="Select Your Campus(es)">
+<ion-view view-title="{{title}}">
   <ion-content>
     <ion-list>
-      <ion-checkbox ng-repeat="campus in campuses" ng-model="campus._id">
-        {{campus.name}}
+      <ion-checkbox ng-repeat="choice in choices" ng-model="choice.checked" ng-checked="choice.checked">
+        {{choice.name}}
       </ion-item>
     </ion-list>
   </ion-content>
+  <button class="bar bar-footer bar-balanced" ng-click="goToNext()">
+    <div class="title">{{next}} <b class="icon-right ion-arrow-right-c"></b></div>
+  </button>
 </ion-view>

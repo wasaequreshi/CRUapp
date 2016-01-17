@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['starter.controllers.signup'])
+angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
