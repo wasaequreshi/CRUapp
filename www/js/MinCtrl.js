@@ -10,6 +10,7 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, selectedCam
         type: "GET",
         dataType: "json",
         success: function (data) {
+            //makes the objects "checkable"
             for (var i = 0; i < data.length; ++i) {
                 data[i].checked = false;
             }
@@ -17,6 +18,7 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, selectedCam
             $scope.choices = data;
         },
         error: function(xhr, text, err) {
+            //if there is an error (ie 404, 500, etc) redirect to the error page
             $location.path('/app/error');
         }
     });
@@ -25,7 +27,8 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, selectedCam
     $scope.next = "Start Using App!";
     
     $scope.goToNext = function() {
-        //TODO: write function that saves to phone storage
+        // add campuses and ministries to phone local storage
+        cordova.file.applicationStorageDirectory.setItem();
         $location.path('/app');
         $ionicHistory.nextViewOptions({
             disableAnimate: false,
