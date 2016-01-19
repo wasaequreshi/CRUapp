@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $sceProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
     .state('app', {
@@ -32,6 +32,26 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     controller: 'AppCtrl'
   })
 
+  .state('app.campuses', {
+    url: '/campuses',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/signup.html',
+        controller: 'CampusCtrl'
+      }
+    }
+  })
+  
+  .state('app.ministries', {
+    url: '/ministries',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/signup.html',
+        controller: 'MinCtrl'
+      }
+    }
+  })
+  
   .state('app.search', {
     url: '/search',
     views: {
@@ -49,7 +69,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
-//  /app/playlists
     .state('app.playlists', {
       url: '/playlists',
       views: {
@@ -68,8 +87,18 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         controller: 'PlaylistCtrl'
       }
     }
+  })
+      
+  .state('app.error', {
+      url: '/error',
+      views: {
+          'menuContent': {
+          templateUrl: 'templates/error.html'
+        }
+      }
   });
   
-  // if none of the above states are matched, use this as the fallback
+
+// if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/playlists');
 });

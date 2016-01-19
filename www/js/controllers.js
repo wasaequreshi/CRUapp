@@ -1,6 +1,6 @@
-angular.module('starter.controllers', ['ngCordova', 'ionic'])
+angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $sce, $cordovaCalendar, $ionicPopup) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -131,7 +131,16 @@ angular.module('starter.controllers', ['ngCordova', 'ionic'])
        type: "GET",
        dataType: "json",
        success: function (value) {
-            $scope.myEvent = value;
+            var val = value;
+            var locale = "en-us";
+           
+            var eventDate = new Date(value.startDate);
+            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
+                + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                + eventDate.getDate() + ', ' + eventDate.getFullYear();
+           
+            
+            $scope.myEvent = val;
        }
     });
 });
