@@ -1,7 +1,7 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['PushModule'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $sce) {
-
+.controller('MainCtrl', function($scope, $ionicModal, $timeout, $sce) {
+    console.log("App control");
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -28,10 +28,6 @@ angular.module('starter.controllers', [])
   $scope.login = function() {
     $scope.modal.show();
   };
-    
-  $scope.showEventFacebook = function(url) {
-      cordova.InAppBrowser.open(url, '_system', 'location=no');
-  };
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
@@ -42,6 +38,11 @@ angular.module('starter.controllers', [])
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
+  };
+
+  //facebook setup
+  $scope.showEventFacebook = function(url) {
+      cordova.InAppBrowser.open(url, '_system', 'location=no');
   };
 })
 
