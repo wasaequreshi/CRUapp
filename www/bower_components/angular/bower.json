@@ -1,0 +1,9 @@
+{
+  "name": "angular",
+  "version": "1.4.8",
+  "main": "./angular.js",
+  "ignore": [],
+  "dependencies": {
+    "ngCordova": "~0.1.24-alpha"
+  }
+}

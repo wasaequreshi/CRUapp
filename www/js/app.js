@@ -4,7 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers','ngCordova'])
+
+angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCordova'])
+
 
 .run(function($ionicPlatform) {
     console.log("App setup");
@@ -25,7 +27,7 @@ angular.module('starter', ['ionic', 'starter.controllers','ngCordova'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $sceProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
     .state('app', {
@@ -33,6 +35,36 @@ angular.module('starter', ['ionic', 'starter.controllers','ngCordova'])
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'MainCtrl'
+  })
+
+  .state('app.splash', {
+    url: '/splash',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/splash.html',
+        controller: 'AppCtrl'
+      }
+    }
+  })
+
+  .state('app.campuses', {
+    url: '/campuses',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/signup.html',
+        controller: 'CampusCtrl'
+      }
+    }
+  })
+
+  .state('app.ministries', {
+    url: '/ministries',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/signup.html',
+        controller: 'MinCtrl'
+      }
+    }
   })
 
   .state('app.search', {
@@ -52,15 +84,15 @@ angular.module('starter', ['ionic', 'starter.controllers','ngCordova'])
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
+  .state('app.playlists', {
+    url: '/playlists',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/playlists.html',
+        controller: 'PlaylistsCtrl'
       }
-    })
+    }
+  })
 
   .state('app.single', {
     url: '/playlists/:playlistId',
@@ -70,7 +102,17 @@ angular.module('starter', ['ionic', 'starter.controllers','ngCordova'])
         controller: 'PlaylistCtrl'
       }
     }
+  })
+
+  .state('app.error', {
+      url: '/error',
+      views: {
+          'menuContent': {
+          templateUrl: 'templates/error.html'
+        }
+      }
   });
-  // if none of the above states are matched, use this as the fallback
+
+// if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/playlists');
 });
