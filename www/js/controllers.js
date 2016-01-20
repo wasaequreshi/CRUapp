@@ -1,6 +1,6 @@
-angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min'])
+angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -33,6 +33,51 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
       cordova.InAppBrowser.open(url, '_system', 'location=no');
   };
 
+  //When a button is clicked, this method is invoked
+  //Takes in as a param the eventName, startDate, endDate, and location
+  $scope.addEventToCalendar = function(eventName, startDate, endDate, location)
+  {
+       //Database has startDate as 2015-10-15T19:00:00.000Z
+       //So I split at the "T" to seperate the date and time
+       splitStartDateAndTime = startDate.split("T");
+       //Splitting up the date into pieces
+       splitStartDate = splitStartDateAndTime[0].split("-");
+       //Splitting up the time into pieces
+       splitStartTime = splitStartDateAndTime[1].split(":")
+       
+       //Same as before but now I am doing it for the end date
+       splitEndDateAndTime = endDate.split("T");
+       splitEndDate = splitEndDateAndTime[0].split("-");
+       splitEndTime = splitEndDateAndTime[1].split(":")
+       
+       //Using ngcordova to create an event to their native calendar
+       $cordovaCalendar.createEvent({
+            title: eventName,
+            location: location["street"],
+            notes: 'This is a note',
+            startDate: new Date(splitStartDate[0], Number(splitStartDate[1]) - 1,   
+                                splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0, 0),
+            endDate: new Date(splitEndDate[0], Number(splitEndDate[1] - 1), splitEndDate[2], 
+                              splitEndTime[0], splitEndTime[1], 0, 0, 0)
+        }).then(function (result) {
+                console.log("Event created successfully");
+                //If successfully added, then alert the user that it has been added
+                var alertPopup = $ionicPopup.alert({
+                title: 'Event Added',
+                template: eventName + ' has been added to your calendar :)'
+            });
+
+        }, function (err) {
+                console.error("There was an error: " + err);
+                //If unsuccessful added, then an alert with a error should pop up
+                //Not sure if we want to pu the 'err' in the message
+                var alertPopup = $ionicPopup.alert({
+                title: 'Error',
+                template: 'Could not add event to calendar: ' + err
+            });
+        });
+  };
+    
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
