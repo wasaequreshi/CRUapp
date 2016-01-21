@@ -8,3 +8,4 @@ www/bower_components/moment/*
 www/bower_components/ua-parser-js/*
 www/bower_components/fastclick/*
 .DS_Store
+*.sublime-workspace
