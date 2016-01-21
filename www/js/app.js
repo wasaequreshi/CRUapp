@@ -34,7 +34,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
-    controller: 'MainCtrl'
+    controller: 'AppCtrl'
   })
 
   .state('app.splash', {
