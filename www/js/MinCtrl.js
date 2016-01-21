@@ -1,5 +1,6 @@
 var min = angular.module('starter.controllers.min', []);
 
+
 min.controller('MinCtrl', function($scope, $location, $ionicHistory, $ajax, $localStorage, selectedCampuses, constants) {
     var url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'ministries',
                                   'campuses', selectedCampuses.getCampuses());
@@ -24,9 +25,18 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, $ajax, $loc
     $scope.next = "Start Using App!";
     
     $scope.goToNext = function() {
+        var mins = [];
+
+        // adds ministries user checked to list
+        for (var i = 0; i < $scope.choices.length; ++i) {
+            if ($scope.choices[i].checked) {
+                mins.push($scope.choices[i]);
+            }
+        }
+        
         $localStorage.setObject(constants.CAMPUSES_CONFIG, {
             campuses : selectedCampuses.getCampuses(),
-            ministries: $scope.choices
+            ministries: mins
         });
         
         $location.path('/app');
