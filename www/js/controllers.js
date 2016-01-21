@@ -91,47 +91,57 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   };
 })
 
-.controller('PlaylistsCtrl', function($scope, $ajax, $localStorage, constants) {
-    var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
-    console.log(mins + "hmmmm");
-    var url;
-    if (mins === "" || mins === []) {
-        url = constants.BASE_SERVER_URL + 'events';
-        console.log("got here\n");
-    }
-    else {
-        url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
-                                  mins);
-    }
-    var events = [];
+.controller('PlaylistsCtrl', function($scope, $ajax, $localStorage, constants, $ionicHistory) {
     
-    $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (data) {
-            jQuery.each(data, function( key, value ) {
-                if (value.image) {
-                    events.push({ 
-                        id: value._id,
-                        title: value.name,
-                        desc: value.description,
-                        img_url: value.image.url,
-                        facebook: value.url
-                    });
-                } else {
-                    events.push({ 
-                        id: value._id,
-                        title: value.name,
-                        desc: value.description,
-                        facebook: value.url
-                    });
-                } 
-            });
-        }
-    });
+    //deletes cache so page loads again
+    $scope.$on("$ionicView.enter", function () {
         
-    $scope.playlists = events;
+    
+        /*$scope.$on("$ionicView.afterLeave", function () {
+            $ionicHistory.clearCache();
+        }); */
+
+        var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
+        console.log(mins + "hmmmm");
+        var url;
+        if (mins === "" || mins === []) {
+            url = constants.BASE_SERVER_URL + 'events';
+            console.log("got here\n");
+        }
+        else {
+            url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
+                                      mins);
+        }
+        var events = [];
+
+        $.ajax({
+           url: url,
+           type: "GET",
+           dataType: "json",
+           success: function (data) {
+                jQuery.each(data, function( key, value ) {
+                    if (value.image) {
+                        events.push({ 
+                            id: value._id,
+                            title: value.name,
+                            desc: value.description,
+                            img_url: value.image.url,
+                            facebook: value.url
+                        });
+                    } else {
+                        events.push({ 
+                            id: value._id,
+                            title: value.name,
+                            desc: value.description,
+                            facebook: value.url
+                        });
+                    } 
+                });
+            }
+        });
+
+        $scope.playlists = events;
+        });
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams, constants) {
