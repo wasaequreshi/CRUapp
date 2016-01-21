@@ -1,0 +1,19 @@
+<ion-view view-title="{{mySummerMission.name}}">
+  <ion-content>
+    <div class="list card">
+        <div class="item">
+            <h2>{{mySummerMission.name}}</h2>
+            <p>{{mySummerMission.startDate}}</p>
+          </div>
+
+          <div class="item item-body">
+            <img class="full-image" src="{{mySummerMission.image.url}}">
+            <p>{{mySummerMission.description}}</p>
+        </div>
+        <form ng-action="">
+            <button class="icon-left ion-android-calendar button button-block button-balanced" ng-click="{{mySummerMission.url}}">Add to Calendar</button>
+        </form>
+            <button class="icon-left ion-social-facebook button button-block button-positive" ng-click="showEventFacebook(mySummerMission.url)">Facebook</button>
+      </div>
+  </ion-content>
+</ion-view>

@@ -102,6 +102,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap'])
       }
     }
   })
+  
+  .state('app.missions', {
+      url: '/missions',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/missions.html',
+          controller: 'MissionsCtrl'
+        }
+      }
+    })
+  
+  .state('app.mission', {
+      url: '/missions/:missionId',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/mission.html',
+          controller: 'MissionCtrl'
+        }
+      }
+    })
 
   .state('app.error', {
       url: '/error',
