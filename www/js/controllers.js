@@ -91,8 +91,10 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-    var url = 'http://54.86.175.74:8080/events';
+.controller('PlaylistsCtrl', function($scope, $ajax, $localStorage, constants) {
+    var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
+    var url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
+                                  mins);
     var events = [];
     
     $.ajax({
@@ -125,7 +127,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-    var url = 'http://54.86.175.74:8080/events/' + $stateParams.playlistId;
+    var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.playlistId;
     
     $.ajax({
        url: url,
