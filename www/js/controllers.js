@@ -93,8 +93,16 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
 
 .controller('PlaylistsCtrl', function($scope, $ajax, $localStorage, constants) {
     var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
-    var url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
+    console.log(mins + "hmmmm");
+    var url;
+    if (mins === "" || mins === []) {
+        url = constants.BASE_SERVER_URL + 'events';
+        console.log("got here\n");
+    }
+    else {
+        url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
                                   mins);
+    }
     var events = [];
     
     $.ajax({
@@ -126,7 +134,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
     $scope.playlists = events;
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('PlaylistCtrl', function($scope, $stateParams, constants) {
     var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.playlistId;
     
     $.ajax({
