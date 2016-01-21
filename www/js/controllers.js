@@ -91,7 +91,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   };
 })
 
-.controller('PlaylistsCtrl', function($scope, $ajax, $localStorage, constants, $ionicHistory) {
+.controller('EventsCtrl', function($scope, $ajax, $localStorage, constants, $ionicHistory) {
     
     //deletes cache so page loads again
     $scope.$on("$ionicView.enter", function () {
@@ -140,12 +140,12 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
             }
         });
 
-        $scope.playlists = events;
+        $scope.events = events;
         });
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams, constants) {
-    var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.playlistId;
+.controller('EventCtrl', function($scope, $stateParams, constants) {
+    var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.eventId;
     
     $.ajax({
        url: url,
