@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic'])
+angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic','PushModule'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup) {
 
@@ -27,10 +27,6 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   // Open the login modal
   $scope.login = function() {
     $scope.modal.show();
-  };
-    
-  $scope.showEventFacebook = function(url) {
-      cordova.InAppBrowser.open(url, '_system', 'location=no');
   };
 
   //When a button is clicked, this method is invoked
@@ -87,6 +83,11 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
+  };
+
+  //facebook setup
+  $scope.showEventFacebook = function(url) {
+      cordova.InAppBrowser.open(url, '_system', 'location=no');
   };
 })
 
