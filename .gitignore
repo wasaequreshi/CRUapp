@@ -9,3 +9,5 @@ www/bower_components/ua-parser-js/*
 www/bower_components/fastclick/*
 .DS_Store
 *.sublime-workspace
+plugins/
+npm-debug.log

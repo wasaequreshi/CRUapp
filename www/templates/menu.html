@@ -8,30 +8,30 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+      
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">CRU App</h1>
+      <!--<h1 class="title">CRU App</h1>-->
+     <img style="width: 300px; max-width: 30%; margin: 0 auto; display: block;" src="img/cru-logo.jpg">
+      <div ng-controller="PushController"></div>
     </ion-header-bar>
-    <ion-content>
-      <ion-list>
+    <ion-content >
+      <ion-list style="position: relative; top: 80%">
+        <ion-item menu-close href="#/app/events">
+            <div class="icon-left ion-calendar">  Events</div>
+        </ion-item>
+        <ion-item menu-close href="#/app/missions">
+            <div class="icon-left ion-earth">  Summer Missions</div>
+        </ion-item>
         <ion-item menu-close href="#/app/splash">
-          Signup
+            <div class="icon-left ion-edit">  Signup</div>
         </ion-item>
-        <ion-item menu-close ng-click="login()">
-          Login
-        </ion-item>
-        <ion-item menu-close href="#/app/search">
-          Search
-        </ion-item>
-        <ion-item menu-close href="#/app/browse">
-          Browse
-        </ion-item>
-        <ion-item menu-close href="#/app/playlists">
-          Events
+        <ion-item menu-close href="#/app/settings">
+            <div class="icon-left ion-gear-a">  Settings</div>
         </ion-item>
       </ion-list>
     </ion-content>
