@@ -84,6 +84,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
         }
       }
     })
+
   .state('app.playlists', {
     url: '/playlists',
     views: {
