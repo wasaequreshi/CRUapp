@@ -1,0 +1,9 @@
+<ion-view view-title="Summer Missions">
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="mission in missions" href="#/app/missions/{{mission.id}}">
+        {{mission.title}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
