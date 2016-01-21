@@ -8,6 +8,7 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+      
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
@@ -15,6 +16,7 @@
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
       <h1 class="title">CRU App</h1>
+      <div ng-controller="PushController"></div>
     </ion-header-bar>
     <ion-content>
       <ion-list>
@@ -32,6 +34,9 @@
         </ion-item>
         <ion-item menu-close href="#/app/playlists">
           Events
+        </ion-item>
+        <ion-item menu-close href="#/app/missions">
+          Summer Missions
         </ion-item>
       </ion-list>
     </ion-content>

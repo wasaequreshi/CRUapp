@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic'])
+angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic','PushModule'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup) {
 
@@ -27,10 +27,6 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   // Open the login modal
   $scope.login = function() {
     $scope.modal.show();
-  };
-    
-  $scope.showEventFacebook = function(url) {
-      cordova.InAppBrowser.open(url, '_system', 'location=no');
   };
 
   //When a button is clicked, this method is invoked
@@ -88,6 +84,11 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
       $scope.closeLogin();
     }, 1000);
   };
+
+  //facebook setup
+  $scope.showEventFacebook = function(url) {
+      cordova.InAppBrowser.open(url, '_system', 'location=no');
+  };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -141,6 +142,61 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
            
             
             $scope.myEvent = val;
+       }
+    });
+})
+
+.controller('MissionsCtrl', function($scope) {
+    var url = 'http://54.86.175.74:8080/summermissions';
+    var missions = [];
+    
+    $.ajax({
+       url: url,
+       type: "GET",
+       dataType: "json",
+       success: function (data) {
+            jQuery.each(data, function( key, value ) {
+                if (value.image) {
+                    missions.push({ 
+                        id: value._id,
+                        title: value.name,
+                        desc: value.description,
+                        img_url: value.image.url,
+                        facebook: value.url
+                    });
+                } else {
+                    missions.push({ 
+                        id: value._id,
+                        title: value.name,
+                        desc: value.description,
+                        facebook: value.url
+                    });
+                } 
+            });
+        }
+    });
+        
+    $scope.missions = missions;
+})
+
+.controller('MissionCtrl', function($scope, $stateParams) {
+    var url = 'http://54.86.175.74:8080/summermissions/' + $stateParams.missionId;
+    
+    $.ajax({
+       url: url,
+       type: "GET",
+       dataType: "json",
+       success: function (value) {
+            var val = value;
+            var locale = "en-us";
+           
+            var eventDate = new Date(value.startDate);
+            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
+                + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                + eventDate.getDate() + ', ' + eventDate.getFullYear();
+           
+            
+            $scope.mySummerMission = val;
        }
     });
 });
