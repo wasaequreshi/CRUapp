@@ -1,9 +1,9 @@
 var min = angular.module('starter.controllers.min', []);
 
 min.controller('MinCtrl', function($scope, $location, $ionicHistory, $ajax, $localStorage, selectedCampuses, constants) {
-    var url = constants.BASE_SERVER_URL + 'ministries';
+    var url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'ministries',
+                                  'campuses', selectedCampuses.getCampuses());
     
-    //To get the campuses selected by the user on the previous page call: selectedCampuses.getCampuses()
     var success = function (data) {
         //makes the objects "checkable"
         for (var i = 0; i < data.length; ++i) {
@@ -24,7 +24,10 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, $ajax, $loc
     $scope.next = "Start Using App!";
     
     $scope.goToNext = function() {
-        // add campuses and ministries to phone local storage
+        $localStorage.setObject(constants.CAMPUSES_CONFIG, {
+            campuses : selectedCampuses.getCampuses(),
+            ministries: $scope.choices
+        });
         
         $location.path('/app');
         $ionicHistory.nextViewOptions({
