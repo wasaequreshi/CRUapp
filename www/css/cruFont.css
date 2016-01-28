@@ -1,0 +1,24 @@
+@font-face {
+    font-family: "cru";
+    src: url("../lib/ionic/fonts/FreigSanProMed.otf") format("opentype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "cru";
+    src: url("../lib/ionic/fonts/FreigSanProMedIt.otf") format("opentype");
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "cru";
+    src: url("../lib/ionic/fonts/FreigSanProBlk.otf") format("opentype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "cru";
+    src: url("../lib/ionic/fonts/FreigSanProBlkIt.otf") format("opentype");
+    font-weight: bold;
+}

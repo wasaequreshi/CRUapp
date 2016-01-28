@@ -30,6 +30,7 @@ campuses.controller('CampusCtrl', function($scope, $location, $ajax, selectedCam
            
             // pass to the view
             $scope.choices = data;
+            $scope.$apply();
     };
     
     $ajax.get(url, 'json', success, err);

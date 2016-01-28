@@ -91,7 +91,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   };
 })
 
-.controller('EventsCtrl', function($scope, $ajax, $localStorage, constants, $ionicHistory) {
+.controller('EventsCtrl', function($scope, $ajax, $localStorage, $location, constants, $ionicHistory) {
     
     //deletes cache so page loads again
     $scope.$on("$ionicView.enter", function () {
@@ -112,36 +112,36 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
             url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
                                       mins);
         }
+        
         var events = [];
-
         $.ajax({
            url: url,
            type: "GET",
            dataType: "json",
            success: function (data) {
                 jQuery.each(data, function( key, value ) {
-                    if (value.image) {
-                        events.push({ 
-                            id: value._id,
-                            title: value.name,
-                            desc: value.description,
-                            img_url: value.image.url,
-                            facebook: value.url
-                        });
-                    } else {
-                        events.push({ 
-                            id: value._id,
-                            title: value.name,
-                            desc: value.description,
-                            facebook: value.url
-                        });
-                    } 
+                    var val = value;
+                    var locale = "en-us";
+
+                    var eventDate = new Date(value.startDate);
+                    val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
+                        + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                        + eventDate.getDate() + ', ' + eventDate.getFullYear();
+
+                        if (!value.image) {
+                            val.image = { url: 'img/cru-logo.jpg' };
+                        }
+                        
+                    events.push(val);
                 });
             }
         });
 
         $scope.events = events;
-        });
+        $scope.goToEvent = function(id) {
+            $location.path('/app/events/' + id);  
+        };
+    });
 })
 
 .controller('EventCtrl', function($scope, $stateParams, constants) {
@@ -156,7 +156,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
             var locale = "en-us";
            
             var eventDate = new Date(value.startDate);
-            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
+            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
                 + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
                 + eventDate.getDate() + ', ' + eventDate.getFullYear();
            

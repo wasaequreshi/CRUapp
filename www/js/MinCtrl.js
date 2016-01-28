@@ -12,6 +12,7 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, $ajax, $loc
         }
 
         $scope.choices = data;
+        $scope.$apply();
     };
     
     var err = function(xhr, text, err) {
