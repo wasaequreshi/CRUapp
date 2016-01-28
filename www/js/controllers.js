@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic','PushModule'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -31,7 +31,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
 
   //When a button is clicked, this method is invoked
   //Takes in as a param the eventName, startDate, endDate, and location
-  $scope.addEventToCalendar = function(eventName, startDate, endDate, location)
+  $scope.addEventToCalendar = function(eventName, startDate, endDate, location, _id)
   {
        //Database has startDate as 2015-10-15T19:00:00.000Z
        //So I split at the "T" to seperate the date and time
@@ -39,24 +39,37 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
        //Splitting up the date into pieces
        splitStartDate = splitStartDateAndTime[0].split("-");
        //Splitting up the time into pieces
-       splitStartTime = splitStartDateAndTime[1].split(":")
+       splitStartTime = splitStartDateAndTime[1].split(":");
        
        //Same as before but now I am doing it for the end date
        splitEndDateAndTime = endDate.split("T");
        splitEndDate = splitEndDateAndTime[0].split("-");
-       splitEndTime = splitEndDateAndTime[1].split(":")
+       splitEndTime = splitEndDateAndTime[1].split(":");
        
+       finalStartDate = new Date(splitStartDate[0], Number(splitStartDate[1]) - 1,   
+                                splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0, 0);
+       finalEndDate = new Date(splitEndDate[0], Number(splitEndDate[1] - 1), splitEndDate[2], 
+                              splitEndTime[0], splitEndTime[1], 0, 0, 0);
        //Using ngcordova to create an event to their native calendar
        $cordovaCalendar.createEvent({
             title: eventName,
             location: location["street"],
             notes: 'This is a note',
-            startDate: new Date(splitStartDate[0], Number(splitStartDate[1]) - 1,   
-                                splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0, 0),
-            endDate: new Date(splitEndDate[0], Number(splitEndDate[1] - 1), splitEndDate[2], 
-                              splitEndTime[0], splitEndTime[1], 0, 0, 0)
+            startDate: finalStartDate,
+            endDate: finalEndDate
         }).then(function (result) {
                 console.log("Event created successfully");
+                
+                //Get the data from the local storage of list of all added events
+                list_of_added_events = $localStorage.getObject("list_of_added_events");
+                map_event = {};
+                
+                map_event[_id] = {"eventName": eventName, "location":location["street"], "startDate":startDate, "endDate":endDate};
+                list_of_added_events.add(map_event);
+                
+                //Added event information to local phone
+                $localStorage.setObject(list_of_added_events);
+      
                 //If successfully added, then alert the user that it has been added
                 var alertPopup = $ionicPopup.alert({
                 title: 'Event Added',
@@ -91,7 +104,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   };
 })
 
-.controller('EventsCtrl', function($scope, $ajax, $localStorage, constants, $ionicHistory) {
+.controller('EventsCtrl', function($scope, $ajax, $localStorage, constants, $ionicHistory, $cordovaCalendar) {
     
     //deletes cache so page loads again
     $scope.$on("$ionicView.enter", function () {
@@ -112,6 +125,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
             url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
                                       mins);
         }
+        
         var events = [];
 
         $.ajax({
@@ -139,10 +153,22 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
                 });
             }
         });
-
+        //Update calendar here with new events
+        list_of_added_events = $localStorage.getObject("list_of_added_events");
+//        for (var added_key in list_of_added_events)
+//        {
+//            for (var events_key in events)
+//            {
+//                if (added_key == events_key)
+//                {
+//                    if(list_of_added_events[added_key][""])
+//                }
+//            }
+//        }
         $scope.events = events;
         });
 })
+//utils.factory('$localStorage', ['$window', function($window) {
 
 .controller('EventCtrl', function($scope, $stateParams, constants) {
     var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.eventId;
