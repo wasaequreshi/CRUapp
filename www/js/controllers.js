@@ -109,8 +109,8 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
             console.log("got here\n");
         }
         else {
-            //url = req.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
-            //                          mins);
+            url = req.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
+                                      mins);
         }
         
         var events = [];
