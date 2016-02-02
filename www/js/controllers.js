@@ -64,7 +64,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
                 list_of_added_events = $localStorage.getObject("list_of_added_events");
                 map_event = {};
                 
-                map_event[_id] = {"eventName": eventName, "location":location["street"], "startDate":startDate, "endDate":endDate};
+                map_event[_id] = {"name": eventName, "location":location["street"], "startDate":startDate, "endDate":endDate};
                 list_of_added_events.add(map_event);
                 
                 //Added event information to local phone
@@ -104,7 +104,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   };
 })
 
-.controller('EventsCtrl', function($scope, $ajax, $localStorage, constants, $ionicHistory, $cordovaCalendar) {
+.controller('EventsCtrl', function($scope, $ajax, $localStorage, $location, constants, $ionicHistory) {
     
     //deletes cache so page loads again
     $scope.$on("$ionicView.enter", function () {
@@ -127,46 +127,43 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
         }
         
         var events = [];
-
         $.ajax({
            url: url,
            type: "GET",
            dataType: "json",
            success: function (data) {
                 jQuery.each(data, function( key, value ) {
-                    if (value.image) {
-                        events.push({ 
-                            id: value._id,
-                            title: value.name,
-                            desc: value.description,
-                            img_url: value.image.url,
-                            facebook: value.url
-                        });
-                    } else {
-                        events.push({ 
-                            id: value._id,
-                            title: value.name,
-                            desc: value.description,
-                            facebook: value.url
-                        });
-                    } 
+                    var val = value;
+                    var locale = "en-us";
+                    
+                    var eventDate = new Date(value.startDate);
+                    val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
+                        + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                        + eventDate.getDate() + ', ' + eventDate.getFullYear();
+
+                        if (!value.image) {
+                            val.image = { url: 'img/cru-logo.jpg' };
+                        }
+                    //check if event changed
+                    list_of_added_events = $localStorage.getObject("list_of_added_events");
+                    info_for_event = list_of_added_events[val._id];
+                    if (!(info_for_event['name'] == val.name && info_for_event['location'] ==
+                       val.location['street'] && info_for_event['startDate'] == val.startDate
+                        && info_for_event['endDate'] == val.endDate))
+                    {
+                        //The event was changed bro
+                        console.log("hi");
+                    }
+                    events.push(val);
                 });
             }
         });
-        //Update calendar here with new events
-        list_of_added_events = $localStorage.getObject("list_of_added_events");
-//        for (var added_key in list_of_added_events)
-//        {
-//            for (var events_key in events)
-//            {
-//                if (added_key == events_key)
-//                {
-//                    if(list_of_added_events[added_key][""])
-//                }
-//            }
-//        }
+                
         $scope.events = events;
-        });
+        $scope.goToEvent = function(id) {
+            $location.path('/app/events/' + id);  
+        };
+    });
 })
 //utils.factory('$localStorage', ['$window', function($window) {
 
@@ -182,7 +179,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
             var locale = "en-us";
            
             var eventDate = new Date(value.startDate);
-            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
+            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
                 + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
                 + eventDate.getDate() + ', ' + eventDate.getFullYear();
            
