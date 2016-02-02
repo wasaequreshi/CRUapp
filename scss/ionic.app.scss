@@ -15,9 +15,16 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
-$positive: #f9b625 !default;
+$positive: #f9b625 !default; // cru gold
+$dark: #666062 !default; // cru grey
+$energized: #3eb1c8 !default; // cru light blue
+$balanced: #dd7d1b !default; // cru orange
+$calm: #007398 !default; // cru dark blue
+
 $base-background-color: #f2f2f2 !default;
 $menu-bg: #666062 !default;
+
+$button-dark-border: #777073 !default;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
@@ -28,4 +35,3 @@ $font-family-light-sans-serif: "cru", '-apple-system', "Helvetica Neue", "Roboto
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
-

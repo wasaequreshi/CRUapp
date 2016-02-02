@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic','PushModule'])
+angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic', 'PushModule'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup) {
 
@@ -91,7 +91,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   };
 })
 
-.controller('EventsCtrl', function($scope, $ajax, $localStorage, $location, constants, $ionicHistory) {
+.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory) {
     
     //deletes cache so page loads again
     $scope.$on("$ionicView.enter", function () {
@@ -109,33 +109,34 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
             console.log("got here\n");
         }
         else {
-            url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
+            url = req.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
                                       mins);
         }
         
         var events = [];
-        $.ajax({
-           url: url,
-           type: "GET",
-           dataType: "json",
-           success: function (data) {
-                jQuery.each(data, function( key, value ) {
-                    var val = value;
-                    var locale = "en-us";
+        var success = function (data) {
+            jQuery.each(data.data, function( key, value ) {
+                var val = value;
+                var locale = "en-us";
 
-                    var eventDate = new Date(value.startDate);
-                    val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
-                        + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
-                        + eventDate.getDate() + ', ' + eventDate.getFullYear();
+                var eventDate = new Date(val.startDate);
+                val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
+                    + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                    + eventDate.getDate() + ', ' + eventDate.getFullYear();
 
-                        if (!value.image) {
-                            val.image = { url: 'img/cru-logo.jpg' };
-                        }
-                        
-                    events.push(val);
-                });
-            }
-        });
+                    if (!value.image) {
+                        val.image = { url: 'img/cru-logo.jpg' };
+                    }
+
+                events.push(val);
+            });
+        };
+        
+        var err = function(response) {
+            $location.path('/app/error');
+        };
+        
+        req.get(constants.BASE_SERVER_URL + 'events', success, err);
 
         $scope.events = events;
         $scope.goToEvent = function(id) {
@@ -144,79 +145,80 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
     });
 })
 
-.controller('EventCtrl', function($scope, $stateParams, constants) {
+.controller('EventCtrl', function($scope, $stateParams, req, constants) {
     var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.eventId;
+    var success = function (value) {
+        var val = value.data;
+        var locale = "en-us";
+
+        var eventDate = new Date(val.startDate);
+        val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
+            + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+            + eventDate.getDate() + ', ' + eventDate.getFullYear();
+
+
+        $scope.myEvent = val;
+    };
     
-    $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (value) {
+    var err = function(response) {
+        $location.path('/app/error');
+    };
+    
+    req.get(url, success, err);
+})
+
+.controller('MissionsCtrl', function($scope, $location, req, constants) {
+    var url = constants.BASE_SERVER_URL + 'summermissions';
+    var missions = [];
+    var success = function (data) {
+        jQuery.each(data.data, function( key, value ) {
             var val = value;
             var locale = "en-us";
-           
+
             var eventDate = new Date(value.startDate);
             val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
                 + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
                 + eventDate.getDate() + ', ' + eventDate.getFullYear();
-           
-            
-            $scope.myEvent = val;
-       }
-    });
-})
 
-.controller('MissionsCtrl', function($scope) {
-    var url = 'http://54.86.175.74:8080/summermissions';
-    var missions = [];
+                if (!value.image) {
+                    val.image = { url: 'img/cru-logo.jpg' };
+                }
+
+            missions.push(val);
+        });
+    };
     
-    $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (data) {
-            jQuery.each(data, function( key, value ) {
-                if (value.image) {
-                    missions.push({ 
-                        id: value._id,
-                        title: value.name,
-                        desc: value.description,
-                        img_url: value.image.url,
-                        facebook: value.url
-                    });
-                } else {
-                    missions.push({ 
-                        id: value._id,
-                        title: value.name,
-                        desc: value.description,
-                        facebook: value.url
-                    });
-                } 
-            });
-        }
-    });
-        
+    var err = function(response) {
+        $location.path('/app/error');
+    };
+    
+    req.get(url, success, err);
     $scope.missions = missions;
+    $scope.goToMission = function(id) {
+        $location.path('/app/missions/' + id);  
+    };
 })
 
-.controller('MissionCtrl', function($scope, $stateParams) {
-    var url = 'http://54.86.175.74:8080/summermissions/' + $stateParams.missionId;
+.controller('MissionCtrl', function($scope, $stateParams, req, constants) {
+    var url = constants.BASE_SERVER_URL + 'summermissions/' + $stateParams.missionId;
+    var success = function (value) {
+        var val = value.data;
+        var locale = "en-us";
+
+        // Make dates human readable
+        var eventDate = new Date(val.startDate);
+        var endDate = new Date(val.endDate);
+        val.startDate = eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+            + eventDate.getDate() + ', ' + eventDate.getFullYear();
+        val.endDate = endDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+            + endDate.getDate() + ', ' + endDate.getFullYear();
+
+        $scope.mySummerMission = val;
+    };
     
-    $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (value) {
-            var val = value;
-            var locale = "en-us";
-           
-            var eventDate = new Date(value.startDate);
-            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
-                + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
-                + eventDate.getDate() + ', ' + eventDate.getFullYear();
-           
-            
-            $scope.mySummerMission = val;
-       }
-    });
+    var err = function(response) {
+        $location.path('/app/error');
+    };
+    
+    req.get(url, success, err);
 });

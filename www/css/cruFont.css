@@ -13,12 +13,13 @@
 
 @font-face {
     font-family: "cru";
-    src: url("../lib/ionic/fonts/FreigSanProBlk.otf") format("opentype");
+    src: url("../lib/ionic/fonts/FreigSanProBold.otf") format("opentype");
     font-weight: bold;
 }
 
 @font-face {
     font-family: "cru";
-    src: url("../lib/ionic/fonts/FreigSanProBlkIt.otf") format("opentype");
+    src: url("../lib/ionic/fonts/FreigSanProBoldIt.otf") format("opentype");
     font-weight: bold;
+    font-style: italic;
 }

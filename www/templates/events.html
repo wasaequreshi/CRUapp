@@ -3,7 +3,7 @@
       <div class="list card" ng-repeat="event in events">
         <div ng-click="goToEvent(event._id)">
             <div class="item">
-                <h2>{{event.name}}</h2>
+                <h2><b>{{event.name}}</b></h2>
                 <p>{{event.startDate}}</p>
             </div>
 
@@ -11,13 +11,6 @@
                 <img class="full-image" src="{{event.image.url}}">
             </div>
         </div>
-<!--        <form ng-action="">
-            <button class="icon-left ion-android-calendar button button-block button-balanced" ng-click="addEventToCalendar(myEvent.name, myEvent.startDate, myEvent.endDate, myEvent.location)">Add to Calendar</button>
-        </form>
-        <form ng-action="">
-            <button class="icon-left ion-android-car button button-block button-calm" ng-click="">Get a ride</button>
-        </form>
-            <button class="icon-left ion-social-facebook button button-block button-positive" ng-click="showEventFacebook(myEvent.url)">Facebook</button>-->
       </div>
     </div>
   </ion-content>
