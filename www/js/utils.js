@@ -26,25 +26,20 @@ utils.factory('$localStorage', ['$window', function($window) {
 
 
 // utitity methods for calling basic ajax
-utils.factory('$ajax', ['$window', function($window) {
+utils.factory('req', ['$window', '$http', function($window, $http) {
     return {
-        get: function(url, data, success, err) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                dataType: data,
-                success: success,
-                error: err
-            });
+        get: function(url, success, err) {
+            // Simple GET request
+            $http({
+                method: 'GET',
+                url: url
+            }).then(success, err);
         },
-        post: function(url, data, success, err) {
-            $.ajax({
-                url: url,
-                type: "POST",
-                dataType: data,
-                success: success,
-                error: err
-            });
+        post: function(url, success, err) {
+            $http({
+                method: 'POST',
+                url: url
+            }).then(success, err);
         },
         /**
          * url - the url you want to add a query to
