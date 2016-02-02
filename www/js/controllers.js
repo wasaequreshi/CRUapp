@@ -119,7 +119,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
                 var val = value;
                 var locale = "en-us";
 
-                var eventDate = new Date(value.startDate);
+                var eventDate = new Date(val.startDate);
                 val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
                     + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
                     + eventDate.getDate() + ', ' + eventDate.getFullYear();
@@ -151,7 +151,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
         var val = value.data;
         var locale = "en-us";
 
-        var eventDate = new Date(value.startDate);
+        var eventDate = new Date(val.startDate);
         val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
             + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
             + eventDate.getDate() + ', ' + eventDate.getFullYear();
