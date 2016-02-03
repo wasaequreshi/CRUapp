@@ -3,7 +3,9 @@ var utils = angular.module('starter.controllers.utils', []);
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
     'BASE_SERVER_URL' : 'http://54.86.175.74:8080/',
-    'CAMPUSES_CONFIG' : 'campuses'
+    'CAMPUSES_CONFIG' : 'campuses',
+    'MY_RIDES_RIDER' : 'myRidesRider',
+    'MY_RIDES_DRIVER' : 'myRidesDriver'
 });
 
 // sets up easy access key value store for local storage on device
@@ -20,6 +22,9 @@ utils.factory('$localStorage', ['$window', function($window) {
         },
         getObject: function(key) {
             return JSON.parse($window.localStorage[key] || '{}');
+        },
+        removeObject: function(key) {
+            $window.localStorage.removeItem(key);
         }
     }
 }]);

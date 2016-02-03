@@ -1,6 +1,20 @@
-angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'ngCordova', 'ionic', 'PushModule'])
+var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides','ngCordova', 'ionic','PushModule']);
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup) {
+// allows for access of variable across controllers
+module.service('allEvents', function () {
+    var events = [];
+
+    return {
+        getEvents: function () {
+            return events;
+        },
+        setEvents: function(eventList) {
+            events = eventList;
+        }
+    };
+});
+
+module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -93,13 +107,8 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
 
 .controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory) {
     
-    //deletes cache so page loads again
+    //reloads page everytime
     $scope.$on("$ionicView.enter", function () {
-        
-    
-        /*$scope.$on("$ionicView.afterLeave", function () {
-            $ionicHistory.clearCache();
-        }); */
 
         var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
         console.log(mins + "hmmmm");
@@ -118,6 +127,9 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
             jQuery.each(data.data, function( key, value ) {
                 var val = value;
                 var locale = "en-us";
+
+                console.log("Events added: " + events);
+                allEvents.setEvents(events);
 
                 var eventDate = new Date(val.startDate);
                 val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
