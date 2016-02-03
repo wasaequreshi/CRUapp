@@ -1,0 +1,14 @@
+<ion-view view-title="Drivers for ...">
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="driver in drivers" >
+        <p>{{driver.name}}</p>
+        <p>     Time Leaving: {{driver.leavetime}}</p>
+        <p>     Pickup Location: {{driver.pickup}}</p>
+        <button class="button button-clear button-positive" ng-click="chooseDriver()">
+              Choose
+            </button>
+        </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
