@@ -91,7 +91,7 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
   };
 })
 
-.controller('EventsCtrl', function($scope, $ajax, $localStorage, constants, $ionicHistory) {
+.controller('EventsCtrl', ["$scope", "ServerUtil", "$localStorage", "constants", "$ionicHistory", "ServerUtil" function($scope, ServerUtil, $localStorage, constants, $ionicHistory, ServerUtil) {
     
     //deletes cache so page loads again
     $scope.$on("$ionicView.enter", function () {
@@ -144,38 +144,32 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
         });
 })
 
-.controller('EventCtrl', function($scope, $stateParams, constants) {
-    var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.eventId;
+.controller('EventCtrl', ["$scope", "$stateParams", "constants", "ServerUtil", function($scope, $stateParams, constants, ServerUtil) {
     
-    $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (value) {
-            var val = value;
-            var locale = "en-us";
-           
-            var eventDate = new Date(value.startDate);
-            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
-                + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
-                + eventDate.getDate() + ', ' + eventDate.getFullYear();
-           
-            
-            $scope.myEvent = val;
-       }
-    });
-})
+    var getEventSuccess = function (value) {
+        var val = value;
+        var locale = "en-us";
 
-.controller('MissionsCtrl', function($scope) {
-    var url = 'http://54.86.175.74:8080/summermissions';
-    var missions = [];
+        var eventDate = new Date(value.startDate);
+        val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
+            + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+            + eventDate.getDate() + ', ' + eventDate.getFullYear();
+
+
+        $scope.myEvent = val;
+    };
     
-    $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (data) {
-            jQuery.each(data, function( key, value ) {
+    var getEventError = function (value) {
+        console.log("getEventError");
+    };
+    
+    ServerUtil.get('/events/' + $stateParams.eventId, getEventSuccess, getEventError);
+}])
+
+.controller('MissionsCtrl', ['$scope', 'ServerUtil', function($scope, ServerUtil) {
+    var missions = [];
+    var getMissionsSuccess = function (data) {
+            for (key in value) {
                 if (value.image) {
                     missions.push({ 
                         id: value._id,
@@ -192,31 +186,33 @@ angular.module('starter.controllers', ['starter.controllers.camp', 'starter.cont
                         facebook: value.url
                     });
                 } 
-            });
-        }
-    });
-        
-    $scope.missions = missions;
-})
-
-.controller('MissionCtrl', function($scope, $stateParams) {
-    var url = 'http://54.86.175.74:8080/summermissions/' + $stateParams.missionId;
+            };
+    }
     
-    $.ajax({
-       url: url,
-       type: "GET",
-       dataType: "json",
-       success: function (value) {
-            var val = value;
-            var locale = "en-us";
-           
-            var eventDate = new Date(value.startDate);
-            val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
-                + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
-                + eventDate.getDate() + ', ' + eventDate.getFullYear();
-           
-            
-            $scope.mySummerMission = val;
-       }
-    });
-});
+    var getMissionsFail = function(data){
+        console.log("Missions get Failed");
+    }
+    
+    ServerUtil.get('/summermissions', getMissionsSuccess, getMissionsFail);
+    
+    $scope.missions = missions;
+}])
+
+.controller('MissionCtrl', ['$scope','$stateParams','ServerUtil', function($scope, $stateParams, ServerUtil) {
+    var getMissionSuccess = function (value) {
+        var val = value;
+        var locale = "en-us";
+        var eventDate = new Date(value.startDate);
+        
+        val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' -- '
+            + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+            + eventDate.getDate() + ', ' + eventDate.getFullYear();
+        $scope.mySummerMission = val;
+    };
+    var getMissionsFail = function(){
+        //TODO need to finish this Get Mission Fail to let the UI know 
+        console.log("get Mission failed");
+    }
+    
+    ServerUtil.get('/summermissions/' + $stateParams.missionId, getMissionSuccess, getMissionsFail);
+}]);

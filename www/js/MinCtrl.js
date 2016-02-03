@@ -1,8 +1,8 @@
 var min = angular.module('starter.controllers.min', []);
 
 
-min.controller('MinCtrl', function($scope, $location, $ionicHistory, $ajax, $localStorage, selectedCampuses, constants) {
-    var url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'ministries',
+min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'ServerUtil', '$localStorage','selectedCampuses', 'constants', function($scope, $location, $ionicHistory, ServerUtil, $localStorage, selectedCampuses, constants) {
+    var url = ServerUtil.buildQueryUrl('/ministries',
                                   'campuses', selectedCampuses.getCampuses());
     
     var success = function (data) {
@@ -19,7 +19,7 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, $ajax, $loc
         $location.path('/app/error');
     };
     
-    $ajax.get(url, 'json', success, err);
+    ServerUtil.get(url, success, err);
     
     $scope.title = "Select Ministries";
     $scope.next = "Start Using App!";

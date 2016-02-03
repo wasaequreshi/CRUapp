@@ -2,12 +2,12 @@ var utils = angular.module('starter.controllers.utils', []);
 
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
-    'BASE_SERVER_URL' : 'http://54.86.175.74:8080/',
+    'BASE_SERVER_URL' : 'http://54.86.175.74:8080',
     'CAMPUSES_CONFIG' : 'campuses'
 });
 
 // sets up easy access key value store for local storage on device
-utils.factory('$localStorage', ['$window', function($window) {
+utils.factory('$localStorage', ['$window', function($window, constants) {
     return {
         set: function(key, value) {
             $window.localStorage[key] = value;
@@ -26,32 +26,24 @@ utils.factory('$localStorage', ['$window', function($window) {
 
 
 // utitity methods for calling basic ajax
-utils.factory('$ajax', ['$window', function($window) {
+utils.factory('ServerUtil', 'constants',  ['$window', function($window) {
     return {
-        get: function(url, data, success, err) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                dataType: data,
-                success: success,
-                error: err
-            });
+        /**
+         * This is a simplefication of the get function that will allow a 
+         */
+        get: function(endUrl, success, err) {
+            $http.get(constants.BASE_SERVER_URL + endUrl).then(success, err);
         },
-        post: function(url, data, success, err) {
-            $.ajax({
-                url: url,
-                type: "POST",
-                dataType: data,
-                success: success,
-                error: err
-            });
+        post: function(endUrl, data, success, err) {
+            $http.post(constants.BASE_SERVER_URL + url, data).then(success, error);
         },
         /**
          * url - the url you want to add a query to
          * varName - the name of the variable to be passed to the query
          * values - the array of values to be passed in the query
          */
-        buildQueryUrl: function(url, varName, values) {
+        buildQueryUrl: function(endUrl, varName, values) {
+            
             varName += '[]=';
             
             if (values.length > 0) {
@@ -61,7 +53,7 @@ utils.factory('$ajax', ['$window', function($window) {
                 }
             }
             
-            return url;
+            return endUrl;
         }
     }
 }]);

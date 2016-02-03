@@ -15,8 +15,7 @@ campuses.service('selectedCampuses', function () {
 });
 
 // gets the campuses from server and passes information to view
-campuses.controller('CampusCtrl', function($scope, $location, $ajax, selectedCampuses, constants) {
-    var url = constants.BASE_SERVER_URL + 'campuses';
+campuses.controller('CampusCtrl', ['$scope', '$location', 'ServerUtil', 'selectedCampuses', function($scope, $location, ServerUtil, selectedCampuses) {
     
     var err = function(xhr, text, err) {
             $location.path('/app/error');
@@ -32,7 +31,7 @@ campuses.controller('CampusCtrl', function($scope, $location, $ajax, selectedCam
             $scope.choices = data;
     };
     
-    $ajax.get(url, 'json', success, err);
+    ServerUtil.get("/campuses", 'json', success, err);
     
     $scope.title = "Select Campuses";
     $scope.next = "Select Ministries";
@@ -52,4 +51,4 @@ campuses.controller('CampusCtrl', function($scope, $location, $ajax, selectedCam
         selectedCampuses.setCampuses(campuses);
         $location.path('/app/ministries');
     };
-});
+}]);
