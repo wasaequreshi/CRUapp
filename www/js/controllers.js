@@ -105,7 +105,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
   };
 })
 
-.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory) {
+.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory, allEvents) {
     
     //reloads page everytime
     $scope.$on("$ionicView.enter", function () {
@@ -128,9 +128,6 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
                 var val = value;
                 var locale = "en-us";
 
-                console.log("Events added: " + events);
-                allEvents.setEvents(events);
-
                 var eventDate = new Date(val.startDate);
                 val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
                     + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
@@ -151,6 +148,8 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         req.get(constants.BASE_SERVER_URL + 'events', success, err);
 
         $scope.events = events;
+        console.log("Events added: " + events);
+        allEvents.setEvents(events);
         $scope.goToEvent = function(id) {
             $location.path('/app/events/' + id);  
         };
