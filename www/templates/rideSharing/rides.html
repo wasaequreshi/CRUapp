@@ -2,15 +2,15 @@
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="ride in rides" >
-        <p>{{ride.title}}</p>
-          <button class="button button-clear button-positive" ng-click="goToGiveRide(ride.id)" ng-disabled="ride.dText">
+          <h2><b>{{ride.name}}</b></h2>
+          
+          <button class="button button-clear button-positive" ng-click="goToGiveRide(ride._id)" ng-disabled="ride.dText">
               Driver
-            </button>
-          <span>
-          <button class="button button-clear button-calm" ng-click="goToGetRide(ride.id)" ng-disabled="ride.rText">
+          </button>
+
+          <button class="button button-clear button-calm" ng-click="goToGetRide(ride._id)" ng-disabled="ride.rText">
               Rider
-            </button>
-              </span>
+          </button>
       </ion-item>
     </ion-list>
   </ion-content>

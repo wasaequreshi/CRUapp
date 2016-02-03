@@ -1,7 +1,7 @@
 var ride = angular.module('starter.controllers.rides', ['starter.controllers.utils']);
 
 
-ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $localStorage, allEvents, constants) {
+ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants) {
     //TO DO CHANGE URL
    /* url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
                                       mins);
@@ -14,7 +14,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
     
     //reload page everytime
     $scope.$on("$ionicView.enter", function () {
-    
+        //clear page history
         $ionicHistory.clearHistory();
         var myrides = [];
 
@@ -33,24 +33,22 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
         //$ajax.get(url, 'json', success, err);
 
         $scope.title = "Rides";
-        console.log("rides: " + allEvents.getEvents());
         myrides = allEvents.getEvents();
 
         //disable the buttons if already a driver/rider
-        var driverText = "";
-        var riderText = "";
+        var driverText;
+        var riderText;
         var index;
 
         //loop through the rides to see if currently driving or riding
-        console.log("Checking for drivers....");
         for (index = 0; index < myrides.length; ++index) {
             driverText = false;
             riderText = false;
 
-            if (checkArr(myrides[index].id, driving) != -1) {
+            if (checkArr(myrides[index]._id, driving) != -1) {
                 riderText = true;
             }
-            else if (checkArr(myrides[index].id, riding) != -1) {
+            else if (checkArr(myrides[index]._id, riding) != -1) {
                 driverText = true;
             }
 
@@ -60,7 +58,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
         }
 
         $scope.rides = myrides;
-        
     });
     
     
@@ -98,7 +95,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
     };
 })
 
-.controller('GetRideCtrl', function($scope, $location, $ionicHistory, $ajax, $localStorage, allEvents, constants, $stateParams) {
+.controller('GetRideCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     var tempID = $stateParams.rideId;
     
     $scope.getRide = function() {
@@ -112,7 +109,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
         else if ($.inArray(tempID, riding) === -1) {
             riding.push(tempID);
         }
-
+        
         console.log("Riding these events: " + riding);
         $localStorage.setObject(constants.MY_RIDES_RIDER, riding);
 
@@ -122,7 +119,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
     };
 })
 
-.controller('ChooseDriverCtrl', function($scope, $location, $ionicHistory, $ajax, $localStorage, allEvents, constants, $stateParams) {
+.controller('ChooseDriverCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     //id from the url
     var rideID = $stateParams.rideId;
     
@@ -158,7 +155,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
     };
 })
 
-.controller('GiveRideCtrl', function($scope, $ionicPopup, $timeout, $location, $ionicHistory, $ajax, $localStorage, allEvents, constants, $stateParams) {
+.controller('GiveRideCtrl', function($scope, $ionicPopup, $timeout, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     //id from the url
     var tempID = $stateParams.rideId;
     
@@ -197,7 +194,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
             else if ($.inArray(tempID, driving) === -1) {
                 driving.push(tempID);
             }
-
+            
             console.log("Driving these events: " + driving);
             $localStorage.setObject(constants.MY_RIDES_DRIVER, driving);
             
@@ -209,7 +206,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
     
 })
 
-.controller('DriverViewCtrl', function($scope, $location, $ionicHistory, $ajax, $localStorage, allEvents, constants, $stateParams) {
+.controller('DriverViewCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     //id from the url
     var rideID = $stateParams.rideId;
     
@@ -240,7 +237,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ajax, $
    
 })
 
-.controller('RideListCtrl', function($scope, $location, $ionicHistory, $ajax, $localStorage, allEvents, constants, $stateParams) {
+.controller('RideListCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     //id from the url
     var rideID = $stateParams.rideId;
     
