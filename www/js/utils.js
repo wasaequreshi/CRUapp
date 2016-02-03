@@ -2,8 +2,10 @@ var utils = angular.module('starter.controllers.utils', []);
 
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
-    'BASE_SERVER_URL' : 'http://54.86.175.74:8080',
-    'CAMPUSES_CONFIG' : 'campuses'
+    'BASE_SERVER_URL' : 'http://54.86.175.74:8080/',
+    'CAMPUSES_CONFIG' : 'campuses',
+    'MY_RIDES_RIDER' : 'myRidesRider',
+    'MY_RIDES_DRIVER' : 'myRidesDriver'
 });
 
 // sets up easy access key value store for local storage on device
@@ -20,29 +22,39 @@ utils.factory('$localStorage', ['$window', function($window, constants) {
         },
         getObject: function(key) {
             return JSON.parse($window.localStorage[key] || '{}');
+        },
+        removeObject: function(key) {
+            $window.localStorage.removeItem(key);
         }
     }
 }]);
 
 
 // utitity methods for calling basic ajax
-utils.factory('ServerUtil', 'constants',  ['$window', function($window) {
+/*<<<<<<< HEAD
+utils.factory('req', 'constants',  ['$window', function($window) {
+=======*/
+utils.factory('req', ['$window', '$http', function($window, $http) {
     return {
-        /**
-         * This is a simplefication of the get function that will allow a 
-         */
-        get: function(endUrl, success, err) {
-            $http.get(constants.BASE_SERVER_URL + endUrl).then(success, err);
+        get: function(url, success, err) {
+            // Simple GET request
+            $http({
+                method: 'GET',
+                url: url
+            }).then(success, err);
         },
-        post: function(endUrl, data, success, err) {
-            $http.post(constants.BASE_SERVER_URL + url, data).then(success, error);
+        post: function(url, success, err) {
+            $http({
+                method: 'POST',
+                url: url
+            }).then(success, err);
         },
         /**
          * url - the url you want to add a query to
          * varName - the name of the variable to be passed to the query
          * values - the array of values to be passed in the query
          */
-        buildQueryUrl: function(endUrl, varName, values) {
+        buildQueryUrl: function(url, varName, values) {
             
             varName += '[]=';
             
@@ -53,7 +65,7 @@ utils.factory('ServerUtil', 'constants',  ['$window', function($window) {
                 }
             }
             
-            return endUrl;
+            return url;
         }
     }
 }]);

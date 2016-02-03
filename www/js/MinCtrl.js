@@ -1,26 +1,24 @@
 var min = angular.module('starter.controllers.min', []);
 
-
-min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'ServerUtil', '$localStorage','selectedCampuses', 'constants', function($scope, $location, $ionicHistory, ServerUtil, $localStorage, selectedCampuses, constants) {
-    var url = ServerUtil.buildQueryUrl('/ministries',
-                                  'campuses', selectedCampuses.getCampuses());
+min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$localStorage','selectedCampuses', 'constants', function($scope, $location, $ionicHistory, req, $localStorage, selectedCampuses, constants) {
+    var url = req.buildQueryUrl(constants.BASE_SERVER_URL + 'ministries','campuses', selectedCampuses.getCampuses());
     
     var success = function (data) {
         //makes the objects "checkable"
-        for (var i = 0; i < data.length; ++i) {
-            data[i].checked = false;
+        for (var i = 0; i < data.data.length; ++i) {
+            data.data[i].checked = false;
         }
 
-        $scope.choices = data;
+        $scope.choices = data.data;
     };
     
     var err = function(xhr, text, err) {
         //if there is an error (ie 404, 500, etc) redirect to the error page
         $location.path('/app/error');
     };
-    
-    ServerUtil.get(url, success, err);
-    
+
+    req.get(url, success, err);
+
     $scope.title = "Select Ministries";
     $scope.next = "Start Using App!";
     
@@ -45,4 +43,4 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'ServerUtil',
             disableBack: true
         });
     };
-});
+}]);

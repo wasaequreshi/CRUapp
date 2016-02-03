@@ -1,0 +1,13 @@
+<ion-view view-title="Riders for ...">
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="rider in riders" >
+        <p>{{rider.name}}</p>
+        <p>     Phone: {{rider.phone}}</p>
+      </ion-item>
+    </ion-list>
+      <button class="button button-clear button-positive" ng-click="cancelRide()">
+              Cancel Ride
+            </button>
+  </ion-content>
+</ion-view>

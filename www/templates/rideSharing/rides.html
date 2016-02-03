@@ -1,0 +1,17 @@
+<ion-view view-title="Rides">
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="ride in rides" >
+        <p>{{ride.title}}</p>
+          <button class="button button-clear button-positive" ng-click="goToGiveRide(ride.id)" ng-disabled="ride.dText">
+              Driver
+            </button>
+          <span>
+          <button class="button button-clear button-calm" ng-click="goToGetRide(ride.id)" ng-disabled="ride.rText">
+              Rider
+            </button>
+              </span>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

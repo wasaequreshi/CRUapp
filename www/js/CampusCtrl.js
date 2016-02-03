@@ -14,25 +14,28 @@ campuses.service('selectedCampuses', function () {
     };
 });
 
-// gets the campuses from server and passes information to view
-campuses.controller('CampusCtrl', ['$scope', '$location', 'ServerUtil', 'selectedCampuses', function($scope, $location, ServerUtil, selectedCampuses) {
+
+campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampuses', 'constants', function($scope, $location, req, selectedCampuses, constants) {
+    var url = constants.BASE_SERVER_URL + 'campuses';
     
     var err = function(xhr, text, err) {
-            $location.path('/app/error');
+        $location.path('/app/error');
     };
     
     var success = function (data) {
             // make object "checkable" for the view
-            for (var i = 0; i < data.length; ++i) {
-                data[i].checked = false;
+            for (var i = 0; i < data.data.length; ++i) {
+                data.data[i].checked = false;
             }
            
             // pass to the view
-            $scope.choices = data;
+            $scope.choices = data.data;
     };
     
+/*<<<<<<< HEAD
     ServerUtil.get("/campuses", 'json', success, err);
-    
+=======*/
+    req.get(url, success, err);
     $scope.title = "Select Campuses";
     $scope.next = "Select Ministries";
 

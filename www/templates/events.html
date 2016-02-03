@@ -1,9 +1,17 @@
 <ion-view view-title="Events">
   <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="event in events" href="#/app/events/{{event.id}}">
-        {{event.title}}
-      </ion-item>
-    </ion-list>
+      <div class="list card" ng-repeat="event in events">
+        <div ng-click="goToEvent(event._id)">
+            <div class="item">
+                <h2><b>{{event.name}}</b></h2>
+                <p>{{event.startDate}}</p>
+            </div>
+
+            <div class="item item-body">
+                <img class="full-image" src="{{event.image.url}}">
+            </div>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
