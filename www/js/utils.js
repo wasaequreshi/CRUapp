@@ -3,7 +3,9 @@ var utils = angular.module('starter.controllers.utils', []);
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
     'BASE_SERVER_URL' : 'http://54.86.175.74:8080/',
-    'CAMPUSES_CONFIG' : 'campuses'
+    'CAMPUSES_CONFIG' : 'campuses',
+    'MY_RIDES_RIDER' : 'myRidesRider',
+    'MY_RIDES_DRIVER' : 'myRidesDriver'
 });
 
 // sets up easy access key value store for local storage on device
@@ -20,31 +22,29 @@ utils.factory('$localStorage', ['$window', function($window) {
         },
         getObject: function(key) {
             return JSON.parse($window.localStorage[key] || '{}');
+        },
+        removeObject: function(key) {
+            $window.localStorage.removeItem(key);
         }
     }
 }]);
 
 
 // utitity methods for calling basic ajax
-utils.factory('$ajax', ['$window', function($window) {
+utils.factory('req', ['$window', '$http', function($window, $http) {
     return {
-        get: function(url, data, success, err) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                dataType: data,
-                success: success,
-                error: err
-            });
+        get: function(url, success, err) {
+            // Simple GET request
+            $http({
+                method: 'GET',
+                url: url
+            }).then(success, err);
         },
-        post: function(url, data, success, err) {
-            $.ajax({
-                url: url,
-                type: "POST",
-                dataType: data,
-                success: success,
-                error: err
-            });
+        post: function(url, success, err) {
+            $http({
+                method: 'POST',
+                url: url
+            }).then(success, err);
         },
         /**
          * url - the url you want to add a query to

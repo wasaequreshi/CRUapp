@@ -105,6 +105,66 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     }
   })
   
+  .state('app.rides', {
+    url: '/rides',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/rideSharing/rides.html',
+        controller: 'RidesCtrl'
+      }
+    }
+  })
+  
+  .state('app.giveRide', {
+    url: '/rides/give/:rideId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/rideSharing/give.html',
+        controller: 'GiveRideCtrl'
+      }
+    }
+  })
+  
+  .state('app.getRide', {
+    url: '/rides/get/:rideId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/rideSharing/get.html',
+        controller: 'GetRideCtrl'
+      }
+    }
+  })
+  
+  .state('app.rideDriverList', {
+    url: '/rides/get/:rideId/drivers',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/rideSharing/driverList.html',
+        controller: 'ChooseDriverCtrl'
+      }
+    }
+  })
+  
+  .state('app.rideDriver', {
+    url: '/rides/get/:rideId/driver/:driverId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/rideSharing/driver.html',
+        controller: 'DriverViewCtrl'
+      }
+    }
+  })
+  
+  .state('app.giveList', {
+    url: '/rides/give/:rideId/riders',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/rideSharing/ridersList.html',
+        controller: 'RideListCtrl'
+      }
+    }
+  })
+  
   .state('app.missions', {
       url: '/missions',
       views: {

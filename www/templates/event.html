@@ -2,7 +2,7 @@
   <ion-content>
     <div class="list card">
         <div class="item">
-            <h2>{{myEvent.name}}</h2>
+            <h2><b>{{myEvent.name}}</b></h2>
             <p>{{myEvent.startDate}}</p>
           </div>
 
@@ -14,9 +14,9 @@
             <button class="icon-left ion-android-calendar button button-block button-balanced" ng-click="addEventToCalendar(myEvent.name, myEvent.startDate, myEvent.endDate, myEvent.location, myEvent._id)">Add to Calendar</button>
         </form>
         <form ng-action="">
-            <button class="icon-left ion-android-car button button-block button-calm" ng-click="">Get a ride</button>
+            <button class="icon-left ion-android-car button button-block button-energized" ng-click="">Get a ride</button>
         </form>
-            <button class="icon-left ion-social-facebook button button-block button-positive" ng-click="showEventFacebook(myEvent.url)">Facebook</button>
+            <button class="icon-left ion-social-facebook button button-block button-calm" ng-click="showEventFacebook(myEvent.url)">Facebook</button>
       </div>
   </ion-content>
 </ion-view>
