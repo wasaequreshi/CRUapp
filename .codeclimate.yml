@@ -1,2 +1,7 @@
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
 exclude_paths:
 - www/lib/**/*
