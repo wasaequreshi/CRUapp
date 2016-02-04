@@ -51,10 +51,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
             riderText = false;
 
             if (checkArr(myrides[index]._id, driving) != -1) {
-                riderText = false;
+                riderText = true;
             }
             else if (checkArr(myrides[index]._id, riding) != -1) {
-                driverText = false;
+                driverText = true;
             }
 
             //adding the button text for the event
@@ -77,7 +77,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         var driverID = "1";
         console.log("Here bro");
         console.log(tempID);
-        $localStorage.setObject("selectedRide", tempID);
+        $localStorage.setObject(constants.SELECTED_RIDE, tempID);
 
         if (isRider != -1) {
             $location.path('/app/rides/get/' + tempID + '/driver/' + driverID);
@@ -133,21 +133,32 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
     var mydrivers = [];
     
     var success = function (data) {
+        var datetime;
+        
         console.log("Hey rides!");
         rides = data["data"];
         console.log(rides);
-        selectedRide = $localStorage.getObject("selectedRide");
+        selectedRide = $localStorage.getObject(constants.SELECTED_RIDE);
         for (var i = 0; i < rides.length; i++)
         {
             ride = rides[i];
-            if (selectedRide == ride["event"])
+            if (selectedRide === ride["event"])
             {
+                var locale = "en-us";
+
+                var eventDate = new Date(ride["time"]);
+                datetime = eventDate.getHours() + ":" + eventDate.getMinutes() + " " 
+                    + eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
+                    + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                    + eventDate.getDate() + ', ' + eventDate.getFullYear();
+                
                 mydrivers.push({
+                //dangerous to do because the rides will always be changing
                 id: i + 1,
                 event_id: ride["event"], 
                 name: ride["driverName"],
                 phone: ride["driverNumber"],
-                leavetime: ride["time"],
+                leavetime: datetime,
                 pickup: ride["location"]
             });
             }
@@ -174,9 +185,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
     //id from the url
     var tempID = $stateParams.rideId;
     //checkRider(input.name, input.phonenumber, input.location, input.numberseats, input.timeleaving, input.triptype)
-    $scope.checkRider = function(name, phonenumber, location, seats, leaving, triptype) {
-        //check if rider is valid by name in DB
-        /* TODO: change this valid statement */
+    $scope.checkRider = function(name, phonenumber, location, seats, leaving, triptype) {      
         console.log(name);
         console.log(phonenumber);
         console.log(location);
@@ -187,6 +196,8 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         + "&name=" + name + "&__v=0";  
         req.post(url, null, null);
 
+        //check if rider is valid by name in DB
+        /* TODO: change this valid statement */
         var valid = true;
         if (!valid) {
             //popup for driver error
