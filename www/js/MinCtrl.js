@@ -8,8 +8,7 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$loca
         for (var i = 0; i < data.data.length; ++i) {
             data.data[i].checked = false;
         }
-
-        $scope.choices = data.data;
+        $scope.ministries = data.data;
     };
     
     var err = function(xhr, text, err) {
@@ -26,9 +25,9 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$loca
         var mins = [];
 
         // adds ministries user checked to list
-        for (var i = 0; i < $scope.choices.length; ++i) {
-            if ($scope.choices[i].checked) {
-                mins.push($scope.choices[i]);
+        for (var i = 0; i < $scope.ministries.length; ++i) {
+            if ($scope.ministries[i].checked) {
+                mins.push($scope.ministries[i]);
             }
         }
         
@@ -43,4 +42,15 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$loca
             disableBack: true
         });
     };
+    
+    $scope.currentHeader = "";
+    $scope.campuses = selectedCampuses.getCampusesObject();
+    
+    $scope.setupHeader = function(ministry){
+        
+        showHeader = $scope.currentHeader !== $scope.campuses[ministry.campuses[0]];
+        $scope.currentHeader = $scope.campuses[ministry.campuses[0]];
+        console.log("header" + $scope.currentHeader + " " + showHeader);
+        return showHeader;
+    }
 }]);

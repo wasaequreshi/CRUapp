@@ -3,6 +3,7 @@ var campuses = angular.module('starter.controllers.camp', ['starter.controllers.
 // allows for access of variable across controllers
 campuses.service('selectedCampuses', function () {
     var campuses = [];
+    var campusesObj = {};
 
     return {
         getCampuses: function () {
@@ -10,6 +11,13 @@ campuses.service('selectedCampuses', function () {
         },
         setCampuses: function(campusesList) {
             campuses = campusesList;
+            campusesObj = {};
+            for (var x = 0; x < campusesList.length; x++){
+                campusesObj[campusesList[x]._id] = campusesList[x];
+            }
+        },
+        getCampusesObject: function () {
+            return campusesObj; 
         }
     };
 });

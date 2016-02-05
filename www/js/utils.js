@@ -5,7 +5,8 @@ utils.constant('constants', {
     'BASE_SERVER_URL' : 'http://54.86.175.74:8080/',
     'CAMPUSES_CONFIG' : 'campuses',
     'MY_RIDES_RIDER' : 'myRidesRider',
-    'MY_RIDES_DRIVER' : 'myRidesDriver'
+    'MY_RIDES_DRIVER' : 'myRidesDriver',
+    'SELECTED_RIDE' : 'selectedRide'
 });
 
 // sets up easy access key value store for local storage on device

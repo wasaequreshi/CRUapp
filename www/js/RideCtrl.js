@@ -19,7 +19,9 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         var myrides = [];
 
         var success = function (data) {
-
+            console.log("Hey rides!");
+            rides = test["data"];
+                
         };
 
         var err = function(xhr, text, err) {
@@ -27,6 +29,9 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
             $location.path('/app/error');
         };
 
+        url = constants.BASE_SERVER_URL + "rides";
+        //req.get(url, success, err);
+        
         var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
         var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
 
@@ -70,8 +75,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         var isRider = checkArr(tempID, riding);
         /* TODO: get driver ID */
         var driverID = "1";
-        
-        //if is a rider for the event
+        console.log("Here bro");
+        console.log(tempID);
+        $localStorage.setObject(constants.SELECTED_RIDE, tempID);
+
         if (isRider != -1) {
             $location.path('/app/rides/get/' + tempID + '/driver/' + driverID);
         }
@@ -125,45 +132,73 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
     
     var mydrivers = [];
     
-    /* TODO: Fill in with real data */
-    mydrivers.push({
-        id: "1",
-        name: "Cody",
-        phone: "707-494-3342",
-        leavetime: "10/18 6:00PM",
-        pickup: "PAC"
-    });
-    mydrivers.push({
-        id: "2",
-        name: "Bob",
-        phone: "111-222-3333",
-        leavetime: "10/18 3:00PM",
-        pickup: "123 Grand Ave, SLO"
-    });
-    mydrivers.push({
-        id: "3",
-        name: "Connor",
-        phone: "911",
-        leavetime: "10/18 1:30PM",
-        pickup: "Library"
-    });
+    var success = function (data) {
+        var datetime;
+        
+        console.log("Hey rides!");
+        rides = data["data"];
+        console.log(rides);
+        selectedRide = $localStorage.getObject(constants.SELECTED_RIDE);
+        for (var i = 0; i < rides.length; i++)
+        {
+            ride = rides[i];
+            if (selectedRide === ride["event"])
+            {
+                var locale = "en-us";
+
+                var eventDate = new Date(ride["time"]);
+                datetime = eventDate.getHours() + ":" + eventDate.getMinutes() + " " 
+                    + eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
+                    + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                    + eventDate.getDate() + ', ' + eventDate.getFullYear();
+                
+                mydrivers.push({
+                //dangerous to do because the rides will always be changing
+                id: i + 1,
+                event_id: ride["event"], 
+                name: ride["driverName"],
+                phone: ride["driverNumber"],
+                leavetime: datetime,
+                pickup: ride["location"]
+            });
+            }
+        }
+        $scope.drivers = mydrivers;
+    };
+
+    var err = function(xhr, text, err) {
+        //if there is an error (ie 404, 500, etc) redirect to the error page
+        $location.path('/app/error');
+    };
+
+    url = constants.BASE_SERVER_URL + "rides";
+    req.get(url, success, err);
     
-    $scope.drivers = mydrivers;
     
     $scope.chooseDriver = function() {
         $location.path('/app/rides/get/' + rideID);
     };
 })
-
+//http://54.86.175.74:8080/passengers/add/?direction=to&gcm_id=test&phone=504&name=test&__v=0
+//http://54.86.175.74:8080/passengers/add/direction=Round%20Trip&gcm_id=dummy_id&phone=408&name=wasae&__v=0
 .controller('GiveRideCtrl', function($scope, $ionicPopup, $timeout, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     //id from the url
     var tempID = $stateParams.rideId;
-    
-    $scope.checkRider = function() {
+    //checkRider(input.name, input.phonenumber, input.location, input.numberseats, input.timeleaving, input.triptype)
+    $scope.checkRider = function(name, phonenumber, location, seats, leaving, triptype) {      
+        console.log(name);
+        console.log(phonenumber);
+        console.log(location);
+        console.log(seats);
+        console.log(leaving);
+        console.log(triptype);
+        url = constants.BASE_SERVER_URL + "passengers/add/" + "?direction=" + triptype + "&gcm_id=dummy_id&phone=" + phonenumber 
+        + "&name=" + name + "&__v=0";  
+        req.post(url, null, null);
+
         //check if rider is valid by name in DB
         /* TODO: change this valid statement */
         var valid = true;
-        
         if (!valid) {
             //popup for driver error
               var myPopup = $ionicPopup.show({
@@ -253,12 +288,12 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         id: "2",
         name: "Bob",
         phone: "111-222-3333"
-    });
-    myriders.push({
-        id: "3",
-        name: "Connor Hi",
-        phone: "911...?"
-    });
+     });
+     myriders.push({
+         id: "3",
+         name: "Connor Hi",
+         phone: "911...?"
+     });
     
     $scope.riders = myriders;
     

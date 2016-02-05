@@ -4,7 +4,7 @@
       <ion-item ng-repeat="driver in drivers" >
         <p>{{driver.name}}</p>
         <p>     Time Leaving: {{driver.leavetime}}</p>
-        <p>     Pickup Location: {{driver.pickup}}</p>
+        <p>     Pickup Location: {{driver.pickup.country}}</p>
         <button class="button button-clear button-positive" ng-click="chooseDriver()">
               Choose
             </button>
