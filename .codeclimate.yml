@@ -8,3 +8,5 @@ engines:
       - javascript
 exclude_paths:
 - www/lib/**/*
+- www/bower_components/**/*
+- test2/**/*
