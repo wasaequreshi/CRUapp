@@ -1,17 +1,18 @@
 <ion-view view-title="{{mySummerMission.name}}">
-  <ion-content>
-    <div class="list card">
+  <ion-content padding="true">
+      <div class="list card">
         <div class="item">
             <h2>{{mySummerMission.name}}</h2>
             <p>Start: {{mySummerMission.startDate}}</p>
             <p>End: {{mySummerMission.endDate}}</p>
-          </div>
+        </div>
 
-          <div class="item item-body">
+        <div class="item item-body">
             <img class="full-image" src="{{mySummerMission.image.url}}">
             <p>{{mySummerMission.description}}</p>
         </div>
-        <form ng-action="">
+      </div>
+      <form ng-action="">
             <button class="icon-left ion-android-calendar button button-block button-balanced" ng-click="{{mySummerMission.url}}">Add to Calendar</button>
         </form>
             <button class="icon-left ion-ios-information button button-block button-calm" ng-click="showEventFacebook(mySummerMission.url)">Learn More</button>
