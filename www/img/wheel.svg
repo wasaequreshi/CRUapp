@@ -27,7 +27,7 @@
           A 365 365 0 0 1 860 500
           "/>
 
-        <circle id="wheel" cx="500" cy="530" r="85"/>
+        <circle cx="500" cy="530" r="85"/>
       </g>
     </mask>
   </defs>
