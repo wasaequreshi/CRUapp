@@ -1,0 +1,12 @@
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+exclude_paths:
+- www/lib/**/*
+- www/bower_components/**/*
+- test2/**/*

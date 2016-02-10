@@ -61,7 +61,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     url: '/ministries',
     views: {
       'menuContent': {
-        templateUrl: 'templates/signup.html',
+        templateUrl: 'templates/ministries.html',
         controller: 'MinCtrl'
       }
     }

@@ -10,7 +10,7 @@ utils.constant('constants', {
 });
 
 // sets up easy access key value store for local storage on device
-utils.factory('$localStorage', ['$window', function($window) {
+utils.factory('$localStorage', ['$window', function($window, constants) {
     return {
         set: function(key, value) {
             $window.localStorage[key] = value;
@@ -32,6 +32,9 @@ utils.factory('$localStorage', ['$window', function($window) {
 
 
 // utitity methods for calling basic ajax
+/*<<<<<<< HEAD
+utils.factory('req', 'constants',  ['$window', function($window) {
+=======*/
 utils.factory('req', ['$window', '$http', function($window, $http) {
     return {
         get: function(url, success, err) {
@@ -53,6 +56,7 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
          * values - the array of values to be passed in the query
          */
         buildQueryUrl: function(url, varName, values) {
+            
             varName += '[]=';
             
             if (values.length > 0) {
