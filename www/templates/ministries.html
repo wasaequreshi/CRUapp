@@ -1,0 +1,15 @@
+<ion-view view-title="{{title}}">
+  <ion-content>
+    <ion-list>
+        <div ng-repeat-start="ministry in ministries | orderBy : 'campuses[0]'" ng-show={{::setupHeader(ministry)}}>
+            {{campuses[ministry.campuses[0]].name}}
+        </div>
+        <ion-checkbox ng-model="ministry.checked" ng-checked="ministry.checked" ng-repeat-end >
+            {{ministry.name}}
+        </ion-checkbox>
+    </ion-list>
+  </ion-content>
+  <ion-footer-bar align-title="center"class="bar bar-dark"ng-click="goToNext()">
+      <h1 class="title">{{next}} <b class="icon-right ion-arrow-right-c"></b></h1>
+  </ion-footer-bar>
+</ion-view>
