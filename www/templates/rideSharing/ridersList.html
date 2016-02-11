@@ -1,13 +1,18 @@
 <ion-view view-title="Riders for ...">
-  <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="rider in riders" >
-        <p>{{rider.name}}</p>
-        <p>     Phone: {{rider.phone}}</p>
-      </ion-item>
-    </ion-list>
-      <button class="button button-clear button-positive" ng-click="cancelRide()">
-              Cancel Ride
-            </button>
+  <ion-content padding="true">
+      <div class="list card" ng-repeat="rider in riders">
+          <div class="item item-icon-left">
+              <i class="icon ion-person dark"></i>
+              {{rider.name}}
+          </div>
+
+          <div class="item item-icon-left">
+              <i class="icon ion-ios-telephone dark"></i>
+              {{rider.phone}}
+          </div>
+      </div>
+      <button class="button button-balanced button-block" ng-click="cancelRide()">
+          Cancel Ride
+      </button>
   </ion-content>
 </ion-view>
