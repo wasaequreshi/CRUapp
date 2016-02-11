@@ -2,7 +2,7 @@ var utils = angular.module('starter.controllers.utils', []);
 
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
-    'BASE_SERVER_URL' : 'http://54.86.175.74:8080/',
+    'BASE_SERVER_URL' : 'http://52.91.48.59:8080/',
     'CAMPUSES_CONFIG' : 'campuses',
     'MY_RIDES_RIDER' : 'myRidesRider',
     'MY_RIDES_DRIVER' : 'myRidesDriver',
