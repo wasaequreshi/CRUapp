@@ -24,7 +24,7 @@ campuses.service('selectedCampuses', function () {
 
 
 campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampuses', 'constants', function($scope, $location, req, selectedCampuses, constants) {
-    var url = constants.BASE_SERVER_URL + 'campuses';
+    var url = constants.BASE_SERVER_URL + 'campus/list';
     
     var err = function(xhr, text, err) {
         $location.path('/app/error');
