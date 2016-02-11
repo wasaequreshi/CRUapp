@@ -155,6 +155,12 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
                 val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
                     + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
                     + eventDate.getDate() + ', ' + eventDate.getFullYear();
+                
+                // i <3 code duplication
+                eventDate = new Date(val.endDate);
+                val.endDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
+                    + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                    + eventDate.getDate() + ', ' + eventDate.getFullYear();
 
                     if (!value.image) {
                         val.image = { url: 'img/cru-logo.jpg' };

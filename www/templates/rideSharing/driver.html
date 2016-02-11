@@ -1,11 +1,31 @@
-<ion-view view-title="Driver">
-  <ion-content>
-      <p>{{driver.name}}</p>
-      <p>{{driver.phone}}</p>
-      <p>{{driver.leavetime}}</p>
-      <p>{{driver.pickup}}</p>
-      <button class="button button-clear button-positive" ng-click="cancelRide()">
-              Cancel Ride
-            </button>
+<ion-view view-title="My Driver">
+  <ion-content padding="true">      
+      <div class="list card">
+          <div class="item item-icon-left">
+            <i class="icon ion-person dark"></i>
+            {{driver.name}}
+          </div>
+
+          <div class="item item-icon-left">
+            <i class="icon ion-ios-telephone dark"></i>
+            {{driver.phone}}
+          </div>
+
+          <div class="item item-icon-left">
+            <i class="icon ion-ios-time dark"></i>
+            {{driver.time}}
+          </div>
+
+          <div class="item item-icon-left">
+            <i class="icon ion-android-calendar dark"></i>
+            {{driver.date}}
+          </div>
+          
+          <div class="item item-icon-left">
+            <i class="icon ion-ios-location dark"></i>
+            {{driver.pickup}}
+          </div>
+      </div>
+      <button class="button button-balanced button-block" ng-click="cancelRide()">Cancel My Ride</button>
   </ion-content>
 </ion-view>
