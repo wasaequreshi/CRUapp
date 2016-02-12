@@ -1,14 +1,25 @@
 <ion-view view-title="Drivers for ...">
   <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="driver in drivers" >
-        <p>{{driver.name}}</p>
-        <p>     Time Leaving: {{driver.leavetime}}</p>
-        <p>     Pickup Location: {{driver.pickup.country}}</p>
-        <button class="button button-clear button-positive" ng-click="chooseDriver()">
-              Choose
-            </button>
-        </ion-item>
-    </ion-list>
+      <div class="list card" ng-repeat="driver in drivers" ng-click="chooseDriver()">
+          <div class="item item-icon-left">
+              <i class="icon ion-person dark"></i>
+              {{driver.name}}
+          </div>
+
+          <div class="item item-icon-left">
+              <i class="icon ion-ios-time dark"></i>
+              {{driver.time}}
+          </div>
+          
+          <div class="item item-icon-left">
+            <i class="icon ion-android-calendar dark"></i>
+            {{driver.date}}
+          </div>
+
+          <div class="item item-icon-left">
+              <i class="icon ion-ios-location dark"></i>
+              {{driver.pickup.country}}
+          </div>
+        </div>
   </ion-content>
 </ion-view>

@@ -3337,10 +3337,10 @@ body,
   padding: 0;
   color: #000;
   word-wrap: break-word;
-  font-size: 14px;
+  font-size: 18px;
   font-family: -apple-system;
   font-family: "cru", "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
-  line-height: 20px;
+  line-height: 25px;
   text-rendering: optimizeLegibility;
   -webkit-backface-visibility: hidden;
   -webkit-user-drag: none;
@@ -3576,7 +3576,7 @@ ion-infinite-scroll {
  * --------------------------------------------------
  */
 p {
-  margin: 0 0 10px; }
+  margin: 0 0 12.5px; }
 
 small {
   font-size: 85%; }
@@ -3607,8 +3607,8 @@ h1, h2, h3, h4, h5, h6,
 h1, .h1,
 h2, .h2,
 h3, .h3 {
-  margin-top: 20px;
-  margin-bottom: 10px; }
+  margin-top: 25px;
+  margin-bottom: 12.5px; }
   h1:first-child, .h1:first-child,
   h2:first-child, .h2:first-child,
   h3:first-child, .h3:first-child {
@@ -3634,44 +3634,44 @@ h3, .h3 {
   h3 + .h3, .h3 + h1, .h3 + .h1,
   .h3 + h2, .h3 + .h2,
   .h3 + h3, .h3 + .h3 {
-    margin-top: 10px; }
+    margin-top: 12.5px; }
 
 h4, .h4,
 h5, .h5,
 h6, .h6 {
-  margin-top: 10px;
-  margin-bottom: 10px; }
+  margin-top: 12.5px;
+  margin-bottom: 12.5px; }
 
 h1, .h1 {
-  font-size: 36px; }
+  font-size: 46px; }
 
 h2, .h2 {
-  font-size: 30px; }
+  font-size: 38px; }
 
 h3, .h3 {
-  font-size: 24px; }
+  font-size: 31px; }
 
 h4, .h4 {
-  font-size: 18px; }
+  font-size: 23px; }
 
 h5, .h5 {
-  font-size: 14px; }
+  font-size: 18px; }
 
 h6, .h6 {
-  font-size: 12px; }
+  font-size: 16px; }
 
 h1 small, .h1 small {
-  font-size: 24px; }
+  font-size: 31px; }
 
 h2 small, .h2 small {
-  font-size: 18px; }
+  font-size: 23px; }
 
 h3 small, .h3 small,
 h4 small, .h4 small {
-  font-size: 14px; }
+  font-size: 18px; }
 
 dl {
-  margin-bottom: 20px; }
+  margin-bottom: 25px; }
 
 dt,
 dd {
@@ -3681,12 +3681,12 @@ dt {
   font-weight: bold; }
 
 blockquote {
-  margin: 0 0 20px;
-  padding: 10px 20px;
+  margin: 0 0 25px;
+  padding: 12.5px 25px;
   border-left: 5px solid gray; }
   blockquote p {
     font-weight: 300;
-    font-size: 17.5px;
+    font-size: 22.5px;
     line-height: 1.25; }
   blockquote p:last-child {
     margin-bottom: 0; }
@@ -3704,7 +3704,7 @@ blockquote:after {
 
 address {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   font-style: normal;
   line-height: 1.42857; }
 
@@ -4013,7 +4013,7 @@ a.subdued {
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 17px;
+    font-size: 21px;
     font-weight: 500;
     line-height: 44px; }
     .bar .title.title-left {
@@ -4028,7 +4028,7 @@ a.subdued {
     min-width: initial;
     min-height: 31px;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 17px;
     line-height: 32px; }
     .bar .button.button-icon:before,
     .bar .button .icon:before, .bar .button.icon:before, .bar .button.icon-left:before, .bar .button.icon-right:before, .bar button.button-icon:before,
@@ -4038,7 +4038,7 @@ a.subdued {
       font-size: 20px;
       line-height: 32px; }
     .bar .button.button-icon, .bar button.button-icon {
-      font-size: 17px; }
+      font-size: 21px; }
       .bar .button.button-icon .icon:before, .bar .button.button-icon:before, .bar .button.button-icon.icon-left:before, .bar .button.button-icon.icon-right:before, .bar button.button-icon .icon:before, .bar button.button-icon:before, .bar button.button-icon.icon-left:before, .bar button.button-icon.icon-right:before {
         vertical-align: top;
         font-size: 32px;
@@ -4047,7 +4047,7 @@ a.subdued {
       padding-right: 2px;
       padding-left: 2px;
       font-weight: 300;
-      font-size: 17px; }
+      font-size: 21px; }
       .bar .button.button-clear .icon:before, .bar .button.button-clear.icon:before, .bar .button.button-clear.icon-left:before, .bar .button.button-clear.icon-right:before, .bar button.button-clear .icon:before, .bar button.button-clear.icon:before, .bar button.button-clear.icon-left:before, .bar button.button-clear.icon-right:before {
         font-size: 32px;
         line-height: 32px; }
@@ -4112,7 +4112,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #444;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-light .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -4131,7 +4131,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #444;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-stable .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -4150,7 +4150,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #fff;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-positive .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -4169,7 +4169,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #fff;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-calm .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -4188,7 +4188,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #fff;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-assertive .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -4207,7 +4207,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #fff;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-balanced .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -4226,7 +4226,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #fff;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-energized .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -4245,7 +4245,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #fff;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-royal .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -4264,7 +4264,7 @@ a.subdued {
     background: none;
     box-shadow: none;
     color: #fff;
-    font-size: 17px; }
+    font-size: 21px; }
   .bar-dark .button.button-icon {
     border-color: transparent;
     background: none; }
@@ -5069,7 +5069,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 18px;
   font-family: "cru", "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
   opacity: 0.7; }
   .tab-item:hover {
@@ -5085,8 +5085,8 @@ ion-tabs.tabs-color-active-dark .tab-item {
 .tabs-icon-top.tabs .tab-item,
 .tabs-icon-bottom > .tabs .tab-item,
 .tabs-icon-bottom.tabs .tab-item {
-  font-size: 10px;
-  line-height: 14px; }
+  font-size: 14px;
+  line-height: 18px; }
 
 .tab-item .icon {
   display: block;
@@ -5098,7 +5098,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
 .tabs-icon-left > .tabs .tab-item,
 .tabs-icon-right.tabs .tab-item,
 .tabs-icon-right > .tabs .tab-item {
-  font-size: 10px; }
+  font-size: 14px; }
   .tabs-icon-left.tabs .tab-item .icon, .tabs-icon-left.tabs .tab-item .tab-title,
   .tabs-icon-left > .tabs .tab-item .icon,
   .tabs-icon-left > .tabs .tab-item .tab-title,
@@ -5141,8 +5141,8 @@ ion-tabs.tabs-color-active-dark .tab-item {
   right: calc(50% - 26px);
   padding: 1px 6px;
   height: auto;
-  font-size: 12px;
-  line-height: 16px; }
+  font-size: 16px;
+  line-height: 20px; }
 
 /* Navigational tab */
 /* Active state for tab */
@@ -5638,7 +5638,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
     color: #fff;
     text-align: center;
     text-overflow: ellipsis;
-    font-size: 15px; }
+    font-size: 19px; }
     .loading-container .loading h1, .loading-container .loading h2, .loading-container .loading h3, .loading-container .loading h4, .loading-container .loading h5, .loading-container .loading h6 {
       color: #fff; }
 
@@ -5657,7 +5657,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
   padding: 16px;
   border-width: 1px;
   border-style: solid;
-  font-size: 16px; }
+  font-size: 18px; }
   .item h2 {
     margin: 0 0 2px 0;
     font-size: 16px;
@@ -6107,17 +6107,17 @@ a.item-content {
   position: absolute;
   top: 0;
   height: 100%;
-  font-size: 32px; }
+  font-size: 36px; }
   .item-icon-left .icon:before,
   .item-icon-right .icon:before {
     display: block;
-    width: 32px;
+    width: 36px;
     text-align: center; }
 
 .item .fill-icon {
-  min-width: 30px;
-  min-height: 30px;
-  font-size: 28px; }
+  min-width: 34px;
+  min-height: 34px;
+  font-size: 32px; }
 
 .item-icon-left {
   padding-left: 54px; }
@@ -6149,7 +6149,7 @@ a.item-content {
 .item-icon-left .icon-accessory,
 .item-icon-right .icon-accessory {
   color: #ccc;
-  font-size: 16px; }
+  font-size: 20px; }
 
 .item-icon-left .icon-accessory {
   left: 3px; }
@@ -6181,21 +6181,21 @@ a.item-content {
   position: absolute;
   top: 8px;
   left: 11px;
-  min-width: 34px;
-  min-height: 34px;
-  font-size: 18px;
+  min-width: 38px;
+  min-height: 38px;
+  font-size: 22px;
   line-height: 32px; }
   .item-button-left > .button .icon:before,
   .item-button-left .item-content > .button .icon:before {
     position: relative;
     left: auto;
     width: auto;
-    line-height: 31px; }
+    line-height: 35px; }
   .item-button-left > .button > .button,
   .item-button-left .item-content > .button > .button {
     margin: 0px 2px;
-    min-height: 34px;
-    font-size: 18px;
+    min-height: 38px;
+    font-size: 22px;
     line-height: 32px; }
 
 .item-button-right,
@@ -6221,9 +6221,9 @@ button.item.item-button-right {
   position: absolute;
   top: 8px;
   right: 16px;
-  min-width: 34px;
-  min-height: 34px;
-  font-size: 18px;
+  min-width: 38px;
+  min-height: 38px;
+  font-size: 22px;
   line-height: 32px; }
   .item-button-right > .button .icon:before,
   .item-button-right .item-content > .button .icon:before,
@@ -6232,15 +6232,15 @@ button.item.item-button-right {
     position: relative;
     left: auto;
     width: auto;
-    line-height: 31px; }
+    line-height: 35px; }
   .item-button-right > .button > .button,
   .item-button-right .item-content > .button > .button,
   .item-button-right > .buttons > .button,
   .item-button-right .item-content > .buttons > .button {
     margin: 0px 2px;
-    min-width: 34px;
-    min-height: 34px;
-    font-size: 18px;
+    min-width: 38px;
+    min-height: 38px;
+    font-size: 22px;
     line-height: 32px; }
 
 .item-avatar,
@@ -6668,7 +6668,7 @@ button.item.item-button-right {
   text-align: center;
   white-space: nowrap;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   line-height: 16px; }
   .badge:empty {
     display: none; }
@@ -7475,7 +7475,7 @@ legend {
   width: 100%;
   border: 1px solid #ddd;
   color: #666062;
-  font-size: 21px;
+  font-size: 27px;
   line-height: 2.85714; }
   legend small {
     color: #f8f8f8;
@@ -7487,7 +7487,7 @@ button,
 select,
 textarea {
   font-weight: normal;
-  font-size: 14px;
+  font-size: 18px;
   line-height: 1.42857; }
 
 input,
@@ -7639,7 +7639,7 @@ textarea {
 
 .item-stacked-label input {
   overflow: hidden;
-  height: 46px; }
+  height: 55px; }
 
 .item-select.item-stacked-label select {
   position: relative;
@@ -7684,11 +7684,11 @@ input[type="color"] {
   display: block;
   padding-top: 2px;
   padding-left: 0;
-  height: 34px;
+  height: 43px;
   color: #111;
   vertical-align: middle;
-  font-size: 14px;
-  line-height: 16px; }
+  font-size: 18px;
+  line-height: 20px; }
 
 .platform-ios input[type="datetime-local"],
 .platform-ios input[type="date"],
@@ -7751,7 +7751,7 @@ input[type="checkbox"] {
   width: auto; }
 
 input[type="file"] {
-  line-height: 34px; }
+  line-height: 39px; }
 
 .previous-input-focus,
 .cloned-text-input + input,
@@ -8437,7 +8437,7 @@ input:checked + .checkbox-icon:after {
     text-indent: .01px;
     text-overflow: '';
     white-space: nowrap;
-    font-size: 14px;
+    font-size: 18px;
     cursor: pointer;
     direction: rtl; }
   .item-select select::-ms-expand {
@@ -8525,7 +8525,7 @@ progress {
   display: inline-block;
   margin: 0;
   padding: 0 12px;
-  min-width: 52px;
+  min-width: 56px;
   min-height: 47px;
   border-width: 1px;
   border-style: solid;
@@ -8533,7 +8533,7 @@ progress {
   vertical-align: top;
   text-align: center;
   text-overflow: ellipsis;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 42px;
   cursor: pointer; }
   .button:hover {
@@ -8799,7 +8799,7 @@ progress {
   padding: 2px 4px 1px;
   min-width: 28px;
   min-height: 30px;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 26px; }
   .button-small .icon:before, .button-small.icon:before, .button-small.icon-left:before, .button-small.icon-right:before {
     font-size: 16px;
@@ -8808,9 +8808,9 @@ progress {
 
 .button-large {
   padding: 0 16px;
-  min-width: 68px;
+  min-width: 72px;
   min-height: 59px;
-  font-size: 20px;
+  font-size: 24px;
   line-height: 53px; }
   .button-large .icon:before, .button-large.icon:before, .button-large.icon-left:before, .button-large.icon-right:before {
     padding-bottom: 2px;

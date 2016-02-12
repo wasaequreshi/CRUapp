@@ -61,7 +61,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     url: '/ministries',
     views: {
       'menuContent': {
-        templateUrl: 'templates/signup.html',
+        templateUrl: 'templates/ministries.html',
         controller: 'MinCtrl'
       }
     }
@@ -105,6 +105,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     }
   })
   
+  // main rides list by event
   .state('app.rides', {
     url: '/rides',
     views: {
@@ -115,8 +116,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     }
   })
   
+  // main drives list by event
+  .state('app.drive', {
+    url: '/drive',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/rideSharing/drives.html',
+        controller: 'RidesCtrl'
+      }
+    }
+  })
+  
+  // form for driver
   .state('app.giveRide', {
-    url: '/rides/give/:rideId',
+    url: '/drive/:rideId',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/give.html',
@@ -125,8 +138,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     }
   })
   
+  // form for the rider
   .state('app.getRide', {
-    url: '/rides/get/:rideId',
+    url: '/rides/:rideId',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/get.html',
@@ -135,8 +149,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     }
   })
   
+  // drivers that are available for the event (before form for rider)
   .state('app.rideDriverList', {
-    url: '/rides/get/:rideId/drivers',
+    url: '/rides/:rideId/drivers',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/driverList.html',
@@ -145,8 +160,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     }
   })
   
+  // Signed up for ride as rider, shows driver info
   .state('app.rideDriver', {
-    url: '/rides/get/:rideId/driver/:driverId',
+    url: '/rides/:rideId/driver/:driverId',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/driver.html',
@@ -155,8 +171,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
     }
   })
   
+  // signed up to drive, list of riders
   .state('app.giveList', {
-    url: '/rides/give/:rideId/riders',
+    url: '/drive/:rideId/riders',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/ridersList.html',

@@ -3,6 +3,7 @@ var campuses = angular.module('starter.controllers.camp', ['starter.controllers.
 // allows for access of variable across controllers
 campuses.service('selectedCampuses', function () {
     var campuses = [];
+    var campusesObj = {};
 
     return {
         getCampuses: function () {
@@ -10,13 +11,20 @@ campuses.service('selectedCampuses', function () {
         },
         setCampuses: function(campusesList) {
             campuses = campusesList;
+            campusesObj = {};
+            for (var x = 0; x < campusesList.length; x++){
+                campusesObj[campusesList[x]._id] = campusesList[x];
+            }
+        },
+        getCampusesObject: function () {
+            return campusesObj; 
         }
     };
 });
 
-// gets the campuses from server and passes information to view
-campuses.controller('CampusCtrl', function($scope, $location, req, selectedCampuses, constants) {
-    var url = constants.BASE_SERVER_URL + 'campuses';
+
+campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampuses', 'constants', function($scope, $location, req, selectedCampuses, constants) {
+    var url = constants.BASE_SERVER_URL + 'campus/list';
     
     var err = function(xhr, text, err) {
         $location.path('/app/error');
@@ -32,8 +40,10 @@ campuses.controller('CampusCtrl', function($scope, $location, req, selectedCampu
             $scope.choices = data.data;
     };
     
+/*<<<<<<< HEAD
+    ServerUtil.get("/campuses", 'json', success, err);
+=======*/
     req.get(url, success, err);
-    
     $scope.title = "Select Campuses";
     $scope.next = "Select Ministries";
 
@@ -52,4 +62,4 @@ campuses.controller('CampusCtrl', function($scope, $location, req, selectedCampu
         selectedCampuses.setCampuses(campuses);
         $location.path('/app/ministries');
     };
-});
+}]);

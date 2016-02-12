@@ -15,23 +15,41 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
-$positive: #f9b625 !default; // cru gold
-$dark: #666062 !default; // cru grey
-$energized: #3eb1c8 !default; // cru light blue
-$balanced: #dd7d1b !default; // cru orange
-$calm: #007398 !default; // cru dark blue
-
-$base-background-color: #f2f2f2 !default;
-$menu-bg: #666062 !default;
-
-$button-dark-border: #777073 !default;
-
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
-$font-family-sans-serif: "cru", '-apple-system', "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !default;
+$font-family-sans-serif: 		"cru", '-apple-system', "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !default;
+$font-family-light-sans-serif: 	"cru", '-apple-system', "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !default;
 
-$font-family-light-sans-serif: "cru", '-apple-system', "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !default;
+$font-size-base: 				18px !default;
+$font-size-large: 				22px !default;
+$font-size-small: 				15px !default;
+$button-font-size: 				20px !default;
+$button-large-font-size: 		24px !default;
+$button-small-font-size: 		16px !default;
+$button-bar-button-font-size: 	17px !default;
+$bar-title-font-size: 			21px !default;
+$tabs-text-font-size: 			18px !default;
+$tabs-text-font-size-side-icon: 14px !default;
+$tabs-badge-font-size: 			16px !default;
+$item-font-size: 				18px !default;
+$item-button-font-size: 		22px !default;
+$item-icon-font-size: 			36px !default;
+$item-icon-fill-font-size: 		32px !default;
+$item-icon-accessory-font-size: 20px !default;
+$loading-font-size: 			19px !default;
+$badge-font-size: 				18px !default;
+
+$positive: 						#f9b625 !default; 	// cru gold
+$dark: 							#666062 !default; 	// cru grey
+$energized: 					#3eb1c8 !default; 	// cru light blue
+$balanced: 						#dd7d1b !default; 	// cru orange
+$calm: 							#007398 !default; 	// cru dark blue
+
+$base-background-color: 		#f2f2f2 !default;
+$menu-bg: 						$dark !default;
+
+$button-dark-border: 			#777073 !default;	// this color just looks good
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";

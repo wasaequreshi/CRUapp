@@ -2,7 +2,7 @@ var utils = angular.module('starter.controllers.utils', []);
 
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
-    'BASE_SERVER_URL' : 'http://54.86.175.74:8080/',
+    'BASE_SERVER_URL' : 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/',
     'CAMPUSES_CONFIG' : 'campuses',
     'MY_RIDES_RIDER' : 'myRidesRider',
     'MY_RIDES_DRIVER' : 'myRidesDriver',
@@ -10,7 +10,7 @@ utils.constant('constants', {
 });
 
 // sets up easy access key value store for local storage on device
-utils.factory('$localStorage', ['$window', function($window) {
+utils.factory('$localStorage', ['$window', function($window, constants) {
     return {
         set: function(key, value) {
             $window.localStorage[key] = value;
@@ -32,6 +32,9 @@ utils.factory('$localStorage', ['$window', function($window) {
 
 
 // utitity methods for calling basic ajax
+/*<<<<<<< HEAD
+utils.factory('req', 'constants',  ['$window', function($window) {
+=======*/
 utils.factory('req', ['$window', '$http', function($window, $http) {
     return {
         get: function(url, success, err) {
@@ -41,11 +44,8 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
                 url: url
             }).then(success, err);
         },
-        post: function(url, success, err) {
-            $http({
-                method: 'POST',
-                url: url
-            }).then(success, err);
+        post: function(url, data, success, err) {
+            $http.post(url, data).then(success, err);
         },
         /**
          * url - the url you want to add a query to
@@ -53,6 +53,7 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
          * values - the array of values to be passed in the query
          */
         buildQueryUrl: function(url, varName, values) {
+            
             varName += '[]=';
             
             if (values.length > 0) {

@@ -143,14 +143,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
         console.log(mins + "hmmmm");
         var url;
-        if (mins === "" || mins === []) {
-            url = constants.BASE_SERVER_URL + 'events';
-            console.log("got here\n");
-        }
-        else {
-            url = req.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
-                                      mins);
-        }
+
         
         var events = [];
         var success = function (data) {
@@ -160,6 +153,12 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 
                 var eventDate = new Date(val.startDate);
                 val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
+                    + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                    + eventDate.getDate() + ', ' + eventDate.getFullYear();
+                
+                // i <3 code duplication
+                eventDate = new Date(val.endDate);
+                val.endDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
                     + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
                     + eventDate.getDate() + ', ' + eventDate.getFullYear();
 
@@ -177,8 +176,27 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
             $location.path('/app/error');
         };
         
-        req.get(constants.BASE_SERVER_URL + 'events', success, err);
-
+        console.log("MINISITRIES" + JSON.stringify(mins));
+        
+        if (mins === "" || mins === []) {
+            url = constants.BASE_SERVER_URL + 'event/list';
+            req.get(url , success, err);
+            console.log("getting the event list\n");
+        }
+        else {
+            
+            url = constants.BASE_SERVER_URL + 'event/find?Content-Type: application/x-www-form-urlencoded';
+            minsIds = [];
+            for (var i = 0; i < mins.length; i++){
+                minsIds.push(mins[i]._id);
+            }
+            console.log("MINISITRYIDS" + JSON.stringify(minsIds));
+            
+            var queryParams = {
+                "parentMinistries":{"$in" : minsIds}
+            };
+            req.post(url, queryParams, success, err);
+        }
         $scope.events = events;
         console.log("Events added: " + events);
         allEvents.setEvents(events);
@@ -252,7 +270,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 })
 
 .controller('EventCtrl', function($scope, $stateParams, req, constants) {
-    var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.eventId;
+    var url = constants.BASE_SERVER_URL + 'event/' + $stateParams.eventId;
     var success = function (value) {
         var val = value.data;
         var locale = "en-us";
@@ -274,7 +292,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 })
 
 .controller('MissionsCtrl', function($scope, $location, req, constants) {
-    var url = constants.BASE_SERVER_URL + 'summermissions';
+    var url = constants.BASE_SERVER_URL + 'summermission/list';
     var missions = [];
     var success = function (data) {
         jQuery.each(data.data, function( key, value ) {
@@ -306,7 +324,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 })
 
 .controller('MissionCtrl', function($scope, $stateParams, req, constants) {
-    var url = constants.BASE_SERVER_URL + 'summermissions/' + $stateParams.missionId;
+    var url = constants.BASE_SERVER_URL + 'summermission/' + $stateParams.missionId;
     var success = function (value) {
         var val = value.data;
         var locale = "en-us";

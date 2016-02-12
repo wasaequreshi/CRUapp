@@ -1,7 +1,7 @@
 var ride = angular.module('starter.controllers.rides', ['starter.controllers.utils']);
 
 
-ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants) {
+ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPopup, req, $localStorage, allEvents, constants) {
     //TO DO CHANGE URL
    /* url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
                                       mins);
@@ -14,8 +14,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
     
     //reload page everytime
     $scope.$on("$ionicView.enter", function () {
-        //clear page history
-        $ionicHistory.clearHistory();
         var myrides = [];
 
         var success = function (data) {
@@ -29,7 +27,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
             $location.path('/app/error');
         };
 
-        url = constants.BASE_SERVER_URL + "rides";
+        url = constants.BASE_SERVER_URL + "ride";
         //req.get(url, success, err);
         
         var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
@@ -41,63 +39,86 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         myrides = allEvents.getEvents();
 
         //disable the buttons if already a driver/rider
-        var driverText;
-        var riderText;
+        var isDriving;
+        var isRiding;
         var index;
 
         //loop through the rides to see if currently driving or riding
         for (index = 0; index < myrides.length; ++index) {
-            driverText = false;
-            riderText = false;
+            isDriving = false;
+            isRiding = false;
 
             if (checkArr(myrides[index]._id, driving) != -1) {
-                riderText = true;
+                isDriving = true;
             }
             else if (checkArr(myrides[index]._id, riding) != -1) {
-                driverText = true;
+                isRiding = true;
             }
 
             //adding the button text for the event
-            myrides[index].dText = driverText;
-            myrides[index].rText = riderText;
+            myrides[index].driving = isDriving;
+            myrides[index].riding = isRiding;
+            
+            //console.log(isDriving);
+            console.log(isRiding);
         }
 
         $scope.rides = myrides;
     });
     
-    
-    
-    $scope.goToGetRide = function(tempID) {
-        
-        
-        /* TODO: get from the server if this person is already a driver */
-        var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
-        var isRider = checkArr(tempID, riding);
-        /* TODO: get driver ID */
-        var driverID = "1";
-        console.log("Here bro");
-        console.log(tempID);
-        $localStorage.setObject(constants.SELECTED_RIDE, tempID);
+    $scope.goToRideData = function(tempID, isDriving) {
 
-        if (isRider != -1) {
-            $location.path('/app/rides/get/' + tempID + '/driver/' + driverID);
-        }
-        else {
-            $location.path('/app/rides/get/' + tempID + '/drivers');
+        if (!isDriving) {
+            /* TODO: get from the server if this person is already a driver */
+            var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
+            var isRider = checkArr(tempID, riding);
+            /* TODO: get driver ID */
+            var driverID = "1";
+            console.log("Here bro");
+            console.log(tempID);
+            $localStorage.setObject(constants.SELECTED_RIDE, tempID);
+
+            if (isRider != -1) {
+                $location.path('/app/rides/' + tempID + '/driver/' + driverID);
+            }
+            else {
+                $location.path('/app/rides/' + tempID + '/drivers');
+            }
+        } else {
+            var myPopup = $ionicPopup.show({
+                template: '<p>Sorry, but you cannot get a ride to an event if you are already signed up as a driver.</p>',
+                title: '<b>You Cannot Ride and Drive</b>',
+                scope: $scope,
+                buttons: [
+                  { text: 'Ok', type: 'button-balanced' },
+                ]
+            });
         }
     };
-    
-    $scope.goToGiveRide = function(tempID) {
-        
-        var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
-        var isDriver = checkArr(tempID, driving);
-        
-        //if a driver for this event
-        if (isDriver != -1) {
-            $location.path('/app/rides/give/' + tempID + '/riders');
-        }
-        else {
-            $location.path('/app/rides/give/' + tempID);
+
+    $scope.goToDriveData = function(tempID, isRiding) {
+
+        // if the user is already a rider, don't allow them to sign up to drive
+        if (!isRiding) {
+            var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
+            var isDriver = checkArr(tempID, driving);
+
+            //if a driver for this event
+            if (isDriver != -1) {
+                $location.path('/app/drive/' + tempID + '/riders');
+            }
+            else {
+                $location.path('/app/drive/' + tempID);
+            }
+        } else {
+            var myPopup = $ionicPopup.show({
+                template: '<p>Sorry, but you cannot drive to an event if you are already signed up to be a rider</p>',
+                title: '<b>You Cannot Drive and Ride</b>',
+                scope: $scope,
+                buttons: [
+                  { text: 'Ok', type: 'button-balanced' },
+                ]
+            });
         }
     };
 })
@@ -123,6 +144,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         /* TODO: Add rider to database */
 
         $location.path('/app/rides');
+        $ionicHistory.nextViewOptions({
+            disableAnimate: false,
+            disableBack: true
+        });
     };
 })
 
@@ -133,7 +158,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
     var mydrivers = [];
     
     var success = function (data) {
-        var datetime;
+        var date;
         
         console.log("Hey rides!");
         rides = data["data"];
@@ -147,20 +172,24 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
                 var locale = "en-us";
 
                 var eventDate = new Date(ride["time"]);
-                datetime = eventDate.getHours() + ":" + eventDate.getMinutes() + " " 
-                    + eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
-                    + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+                
+                // check whether the date is am or pm
+                var ampm = eventDate.getHours() >= 12 ? ' pm' : ' am';
+                // format the time to be 12 hours. The || means if the time is 0 bc 24hr format, make it 12
+                var time = (eventDate.getHours() % 12 || 12) + ":" + eventDate.getMinutes() + ampm;
+                date = eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
                     + eventDate.getDate() + ', ' + eventDate.getFullYear();
                 
                 mydrivers.push({
-                //dangerous to do because the rides will always be changing
-                id: i + 1,
-                event_id: ride["event"], 
-                name: ride["driverName"],
-                phone: ride["driverNumber"],
-                leavetime: datetime,
-                pickup: ride["location"]
-            });
+                    //dangerous to do because the rides will always be changing
+                    id: i + 1,
+                    event_id: ride["event"], 
+                    name: ride["driverName"],
+                    phone: ride["driverNumber"],
+                    time: time,
+                    date: date,
+                    pickup: ride["location"]
+                });
             }
         }
         $scope.drivers = mydrivers;
@@ -171,12 +200,12 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         $location.path('/app/error');
     };
 
-    url = constants.BASE_SERVER_URL + "rides";
+    url = constants.BASE_SERVER_URL + "ride/list";
     req.get(url, success, err);
     
     
     $scope.chooseDriver = function() {
-        $location.path('/app/rides/get/' + rideID);
+        $location.path('/app/rides/' + rideID);
     };
 })
 //http://54.86.175.74:8080/passengers/add/?direction=to&gcm_id=test&phone=504&name=test&__v=0
@@ -235,7 +264,11 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
             
             /* TODO: Add driver to database */
             
-            $location.path('/app/rides');
+            $location.path('/app/drive');
+            $ionicHistory.nextViewOptions({
+                disableAnimate: false,
+                disableBack: true
+            });
         }
     };
     
@@ -250,7 +283,8 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         id: "1",
         name: "Cody",
         phone: "707-494-3342",
-        leavetime: "10/18 6:00PM",
+        time: "6:00 pm",
+        date: "February 23, 2016",
         pickup: "PAC"
     };
 
@@ -268,6 +302,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         /* TODO: (push) notify riders that the driver canceled */
         
         $location.path('/app/rides');
+        $ionicHistory.nextViewOptions({
+            disableAnimate: false,
+            disableBack: true
+        });
     };
    
 })
@@ -308,7 +346,11 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, req, $lo
         /* TODO: delete driver from database */
         /* TODO: (push) notify riders that the driver canceled */
         
-        $location.path('/app/rides');
+        $location.path('/app/drive');
+        $ionicHistory.nextViewOptions({
+            disableAnimate: false,
+            disableBack: true
+        });
     };
    
 });
