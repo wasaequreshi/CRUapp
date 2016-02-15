@@ -23,7 +23,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
       StatusBar.styleDefault();
     }
     
-    
   });
 })
 

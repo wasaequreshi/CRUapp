@@ -17,9 +17,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var myrides = [];
 
         var success = function (data) {
-            console.log("Hey rides!");
-            rides = test["data"];
-                
+ 
         };
 
         var err = function(xhr, text, err) {
@@ -74,8 +72,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             var isRider = checkArr(tempID, riding);
             /* TODO: get driver ID */
             var driverID = "1";
-            console.log("Here bro");
-            console.log(tempID);
+
             $localStorage.setObject(constants.SELECTED_RIDE, tempID);
 
             if (isRider != -1) {
@@ -123,6 +120,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     };
 })
 
+//form for signing up to be a rider
 .controller('GetRideCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     var tempID = $stateParams.rideId;
     
@@ -130,7 +128,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
 
         if (typeof riding.length === "undefined" || riding.length === 0) {
-            console.log("Not driving yet");
             riding = [];
             riding.push(tempID);
         }
@@ -138,7 +135,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             riding.push(tempID);
         }
         
-        console.log("Riding these events: " + riding);
         $localStorage.setObject(constants.MY_RIDES_RIDER, riding);
 
         /* TODO: Add rider to database */
@@ -151,27 +147,67 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     };
 })
 
-.controller('ChooseDriverCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
+//list of drivers to choose from 
+.controller('ChooseDriverCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams, $ionicModal) {
     //id from the url
     var rideID = $stateParams.rideId;
     
     var mydrivers = [];
     
+    $ionicModal.fromTemplateUrl('templates/rideSharing/filterModal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.modal = modal
+    })  
+
+    $scope.openModal = function() {
+        $scope.modal.show()
+    }
+
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
+    
+    $scope.filterRides = function(date) {
+        
+        var success = function(data) {
+            var rides = data.data;
+            
+            /*TODO change mydrivers based on data given back*/
+            
+            $scope.drivers = mydrivers;
+        };
+        
+        var err = function(xhr, text, err) {
+            //if there is an error (ie 404, 500, etc) redirect to the error page
+            $location.path('/app/error');
+        };
+        
+        /*TODO: filter rides*/
+        url = constants.BASE_SERVER_URL + "rides";
+        //req.get(url, success, err);
+        
+        console.log(date);
+    };
+    
     var success = function (data) {
         var date;
         
-        console.log("Hey rides!");
-        rides = data["data"];
-        console.log(rides);
+        rides = data.data;
         selectedRide = $localStorage.getObject(constants.SELECTED_RIDE);
         for (var i = 0; i < rides.length; i++)
         {
             ride = rides[i];
-            if (selectedRide === ride["event"])
+            if (selectedRide === ride.event)
             {
                 var locale = "en-us";
 
-                var eventDate = new Date(ride["time"]);
+                var eventDate = new Date(ride.time);
                 
                 // check whether the date is am or pm
                 var ampm = eventDate.getHours() >= 12 ? ' pm' : ' am';
@@ -182,13 +218,13 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                 
                 mydrivers.push({
                     //dangerous to do because the rides will always be changing
-                    id: i + 1,
-                    event_id: ride["event"], 
-                    name: ride["driverName"],
-                    phone: ride["driverNumber"],
+                    id: ride._id,
+                    event_id: ride.event, 
+                    name: ride.driverName,
+                    phone: ride.driverNumber,
                     time: time,
                     date: date,
-                    pickup: ride["location"]
+                    pickup: ride.location
                 });
             }
         }
