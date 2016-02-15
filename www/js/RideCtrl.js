@@ -25,7 +25,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             $location.path('/app/error');
         };
 
-        url = constants.BASE_SERVER_URL + "rides";
+        url = constants.BASE_SERVER_URL + "ride";
         //req.get(url, success, err);
         
         var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
@@ -236,7 +236,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         $location.path('/app/error');
     };
 
-    url = constants.BASE_SERVER_URL + "rides";
+    url = constants.BASE_SERVER_URL + "ride/list";
     req.get(url, success, err);
     
     
