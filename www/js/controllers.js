@@ -1,4 +1,4 @@
-var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides','ngCordova', 'ionic','PushModule']);
+var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles','ngCordova', 'ionic','PushModule']);
 
 // allows for access of variable across controllers
 module.service('allEvents', function () {
@@ -65,8 +65,9 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
                                splitEndTime[0], splitEndTime[1], 0, 0, 0);
        console.log("Location: " + location);
        
-      helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id,               startDate, endDate);
+      helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id, startDate, endDate);
   };
+    
   helper_function_adding_calendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
     originEndDate)
   {
@@ -120,6 +121,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
           });
       });
   };  
+
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
@@ -145,8 +147,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
         console.log(mins + "hmmmm");
         var url;
-
-        
+ 
         var events = [];
         var success = function (data) {
             jQuery.each(data.data, function( key, value ) {
@@ -206,6 +207,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
             $location.path('/app/events/' + id);  
         };
     });
+    
     helper_function_updating_calendar = function(val)
     {
         console.log("In helper_function_updating_calendar!")
@@ -225,6 +227,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
             }
         }
     };
+    
     update_event = function(info_for_event, val)
     {
         $cordovaCalendar.deleteEvent({
