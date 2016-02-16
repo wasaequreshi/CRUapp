@@ -63,7 +63,9 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
                                  splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0, 0);
        finalEndDate = new Date(splitEndDate[0], Number(splitEndDate[1] - 1), splitEndDate[2], 
                                splitEndTime[0], splitEndTime[1], 0, 0, 0);
-       helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id, startDate, endDate);
+       console.log("Location: " + location);
+       
+      helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id,               startDate, endDate);
   };
   helper_function_adding_calendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
     originEndDate)
@@ -135,7 +137,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
   };
 })
 
-.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory, allEvents) {
+.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory, allEvents, $cordovaCalendar) {
     
     //reloads page everytime
     $scope.$on("$ionicView.enter", function () {
@@ -236,7 +238,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         }, function (err) {
           // error
         });
-        helper_function_adding_calendar(val);
+        helper_function_update_calendar(val);
     };
 
   helper_function_update_calendar = function(val)
