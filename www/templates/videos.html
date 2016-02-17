@@ -1,0 +1,15 @@
+<ion-view view-title="Videos">
+  <ion-content>
+      <div class="list card" ng-repeat="video in videos">
+        <div ng-click="view_selected_video(video)">
+            <div class="item">
+                <h2><b>{{video.snippet.title}}</b></h2>
+            </div>
+            <div class="item item-body">
+                <img class="full-image" src="{{video.snippet.thumbnails.default.url}}">
+            </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
