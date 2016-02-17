@@ -201,6 +201,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
         }
       }
     })
+  
+  .state('app.articles', {
+      url: '/articles',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/articles.html',
+              controller: 'articles_controller'
+              
+          }
+      
+  }
+  })
 
   .state('app.error', {
       url: '/error',
@@ -208,6 +220,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
           'menuContent': {
           templateUrl: 'templates/error.html'
         }
+      }
+  })
+  
+  .state('app.videos', {
+      url: '/videos',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/videos.html',
+              controller: 'videos_controller'
+          }
       }
   });
 

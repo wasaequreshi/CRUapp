@@ -1,0 +1,11 @@
+<ion-view view-title="Articles">
+  <ion-content>
+     <div class="list card" ng-repeat="article in articles">
+        <div ng-click="view_selected_article(article)">
+            <div class="item">
+                <h2><b>{{article.title}}</b></h2>
+            </div>
+        </div>
+      </div>
+  </ion-content>
+</ion-view>
