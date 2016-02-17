@@ -36,8 +36,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
         var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
 
-        //$ajax.get(url, 'json', success, err);
-
         $scope.title = "Rides";
         myrides = allEvents.getEvents();
 
@@ -61,9 +59,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             //adding the button text for the event
             myrides[index].driving = isDriving;
             myrides[index].riding = isRiding;
-            
-            //console.log(isDriving);
-            console.log(isRiding);
         }
 
         $scope.rides = myrides;
@@ -150,11 +145,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 
         /* TODO: Add rider to database */
 
-        $location.path('/app/rides');
-        $ionicHistory.nextViewOptions({
-            disableAnimate: false,
-            disableBack: true
-        });
+        $ionicHistory.goBack(constants.RIDER_SIGNUP_BACK_TO_START);
     };
 })
 
@@ -335,7 +326,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 
                 $localStorage.setObject(constants.MY_RIDES_DRIVER, driving);
                 
-                $location.path('/app/drive');
+                $ionicHistory.goBack(constants.DRIVER_SIGNUP_BACK_TO_START);
             }
 
             var fail = function(data) {
@@ -344,11 +335,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             }        
             
             req.post(url, data, success, fail);
-            
-            $ionicHistory.nextViewOptions({
-                disableAnimate: false,
-                disableBack: true
-            });
         }
     };
     
@@ -404,11 +390,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         /* TODO: delete driver from database */
         /* TODO: (push) notify riders that the driver canceled */
         
-        $location.path('/app/rides');
-        $ionicHistory.nextViewOptions({
-            disableAnimate: false,
-            disableBack: true
-        });
+        $ionicHistory.goBack(constants.DRIVER_VIEW_RIDERS_BACK_TO_START);
     };
    
 })
@@ -482,11 +464,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         /* TODO: delete driver from database */
         /* TODO: (push) notify riders that the driver canceled */
         
-        $location.path('/app/drive');
-        $ionicHistory.nextViewOptions({
-            disableAnimate: false,
-            disableBack: true
-        });
+        $ionicHistory.goBack(constants.DRIVER_VIEW_RIDERS_BACK_TO_START);
     };
    
 });

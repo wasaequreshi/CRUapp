@@ -200,6 +200,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
         }
       }
     })
+  
+  .state('app.articles', {
+      url: '/articles',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/articles.html',
+              controller: 'articles_controller'
+              
+          }
+      
+  }
+  })
 
   .state('app.error', {
       url: '/error',
