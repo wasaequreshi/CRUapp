@@ -14,7 +14,7 @@ module.service('allEvents', function () {
     };
 });
 
-module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, $rootScope) {
+module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -26,8 +26,6 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
   // Form data for the login modal
   $scope.loginData = {};
     
-  $rootScope.isFilter = true;
-
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
