@@ -219,6 +219,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
           templateUrl: 'templates/error.html'
         }
       }
+  })
+  
+  .state('app.videos', {
+      url: '/videos',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/videos.html',
+              controller: 'videos_controller'
+          }
+      }
   });
 
 // if none of the above states are matched, use this as the fallback
