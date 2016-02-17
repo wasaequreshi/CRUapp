@@ -269,18 +269,30 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     
 })
 
-.controller('EventCtrl', function($scope, $stateParams, req, constants) {
+.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, req, convenience, constants) {
     var url = constants.BASE_SERVER_URL + 'event/' + $stateParams.eventId;
+    
+    var val;
+
     var success = function (value) {
-        var val = value.data;
+        val = value.data;
         var locale = "en-us";
 
+        // make the dates human readable
         var eventDate = new Date(val.startDate);
         val.startDate = eventDate.toLocaleDateString(locale, { weekday: 'long' }) + ' - '
             + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
             + eventDate.getDate() + ', ' + eventDate.getFullYear();
+        
+        var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
+        var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
+        
+        // check to see if the user is riding or driving to the event
+        var isDriving = convenience.contains(val._id, driving);
+        var isRiding = convenience.contains(val._id, riding);
 
-
+        $scope.isDriving = isDriving;
+        $scope.isRiding = isRiding;
         $scope.myEvent = val;
     };
     
@@ -289,6 +301,35 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     };
     
     req.get(url, success, err);
+    
+    $scope.$on("$ionicView.beforeEnter", function() {
+        if (val) {
+            var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
+            var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
+            
+            $scope.isDriving = convenience.contains(val._id, driving);
+            $scope.isRiding = convenience.contains(val._id, riding);
+        }
+    });
+    
+    // button functions
+    $scope.goToGetRide = function(id) {
+        $location.path('/app/rides/' + id + '/drivers');  
+    };
+    
+    $scope.viewDriverInfo = function(id) {
+        // Hard coded. Needs to be linked to server
+        var driverID = 1;
+        $location.path('/app/rides/' + id + '/driver/' + driverID);  
+    };
+    
+    $scope.signUpToDrive = function(id) {
+        $location.path('/app/drive/' + id);  
+    };
+    
+    $scope.viewRidersInfo = function(id) {
+        $location.path('/app/drive/' + id + '/riders');  
+    };
 })
 
 .controller('MissionsCtrl', function($scope, $location, req, constants) {
@@ -304,9 +345,9 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
                 + eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
                 + eventDate.getDate() + ', ' + eventDate.getFullYear();
 
-                if (!value.image) {
-                    val.image = { url: 'img/cru-logo.jpg' };
-                }
+            if (!value.image) {
+                val.image = { url: 'img/cru-logo.jpg' };
+            }
 
             missions.push(val);
         });

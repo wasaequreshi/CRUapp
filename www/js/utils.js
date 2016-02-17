@@ -6,7 +6,11 @@ utils.constant('constants', {
     'CAMPUSES_CONFIG' : 'campuses',
     'MY_RIDES_RIDER' : 'myRidesRider',
     'MY_RIDES_DRIVER' : 'myRidesDriver',
-    'SELECTED_RIDE' : 'selectedRide'
+    'SELECTED_RIDE' : 'selectedRide',
+    'RIDER_SIGNUP_BACK_TO_START': -2,
+    'RIDER_VIEW_DRIVER_BACK_TO_START': -1,
+    'DRIVER_SIGNUP_BACK_TO_START': -1,
+    'DRIVER_VIEW_RIDERS_BACK_TO_START': -1
 });
 
 // sets up easy access key value store for local storage on device
@@ -31,10 +35,7 @@ utils.factory('$localStorage', ['$window', function($window, constants) {
 }]);
 
 
-// utitity methods for calling basic ajax
-/*<<<<<<< HEAD
-utils.factory('req', 'constants',  ['$window', function($window) {
-=======*/
+// utitity methods for making http requests/posts
 utils.factory('req', ['$window', '$http', function($window, $http) {
     return {
         get: function(url, success, err) {
@@ -66,4 +67,19 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
             return url;
         }
     }
+}]);
+
+// various convenience methods that are used in various parts of the app
+utils.factory('convenience' , [ function () {
+    return {
+        contains: function(value, array) {
+            for (val in array) {
+                if (array[val] === value) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+    };
 }]);
