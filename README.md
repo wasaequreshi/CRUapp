@@ -7,13 +7,13 @@
 1. Install node.js 4.3.0 or just use a Digital Ocean droplet that already includes node
 
 2. Install cordova
-`npm install -g cordova`
+`sudo npm install -g cordova`
 
 3. Install ionic
-`npm install -g ionic`
+`sudo npm install -g ionic`
 
 4. Install gulp
-`npm install -g gulp`
+`sudo npm install -g gulp`
 
 5. Install dependencies
 ```bash
