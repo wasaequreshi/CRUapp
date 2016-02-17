@@ -1,0 +1,17 @@
+<div class="modal">
+<ion-header-bar>
+  <h1 class="title">Filter Rides</h1>
+  <div class="button button-clear" ng-click="closeModal()"><span class="icon ion-close"></span></div>
+</ion-header-bar>
+<ion-content>
+  <div class="list">
+    <label class="item item-input">     
+        <input type="datetime-local" ng-model="filter.timeleaving"></input>
+    </label>
+    
+  </div>
+
+  <button class="button button-full button-energized" ng-click="filterRides(filter.timeleaving);closeModal()">Filter</button>
+  <button class="button button-full button-energized" ng-click="clearFilters();closeModal()">Clear Filters</button>
+</ion-content>
+</div>

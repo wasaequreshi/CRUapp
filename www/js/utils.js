@@ -10,7 +10,8 @@ utils.constant('constants', {
     'RIDER_SIGNUP_BACK_TO_START': -2,
     'RIDER_VIEW_DRIVER_BACK_TO_START': -1,
     'DRIVER_SIGNUP_BACK_TO_START': -1,
-    'DRIVER_VIEW_RIDERS_BACK_TO_START': -1
+    'DRIVER_VIEW_RIDERS_BACK_TO_START': -1,
+    'FILTER_DATE_RANGE': 6
 });
 
 // sets up easy access key value store for local storage on device

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
 
 
 .run(function($ionicPlatform) {
@@ -22,7 +22,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    
     
   });
 })
@@ -140,7 +139,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
   
   // form for the rider
   .state('app.getRide', {
-    url: '/rides/:rideId',
+    url: '/rides/:rideId/get/:driverId',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/get.html',
@@ -173,7 +172,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
   
   // signed up to drive, list of riders
   .state('app.giveList', {
-    url: '/drive/:rideId/riders',
+    url: '/drive/:rideId/riders/:driverId',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/ridersList.html',
@@ -201,8 +200,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
         }
       }
     })
-  
-  
+
 
   .state('app.error', {
       url: '/error',
@@ -225,7 +223,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
       url: '/articles',
       views: {
           'resources-articles': {
-              templateUrl: 'templates/articles.html',
+              templateUrl: 'templates/resources/articles/articles.html',
               controller: 'articles_controller'
               
           }

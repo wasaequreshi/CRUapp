@@ -25,22 +25,23 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 
   // Form data for the login modal
   $scope.loginData = {};
-
+    
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
+      scope: $scope
   }).then(function(modal) {
-    $scope.modal = modal;
+      $scope.modal = modal;
   });
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
-    $scope.modal.hide();
+      $scope.modal.hide();
+      $scope.modal.remove();
   };
 
   // Open the login modal
   $scope.login = function() {
-    $scope.modal.show();
+      $scope.modal.show();
   };
 
   //When a button is clicked, this method is invoked
@@ -180,8 +181,8 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         };
         
         console.log("MINISITRIES" + JSON.stringify(mins));
-        
-        if (mins === "" || mins === []) {
+
+        if (mins === "" || mins === [] || typeof mins === 'undefined') {
             url = constants.BASE_SERVER_URL + 'event/list';
             req.get(url , success, err);
             console.log("getting the event list\n");

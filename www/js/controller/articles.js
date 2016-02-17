@@ -16,7 +16,41 @@ var articles = angular.module('articles', ['starter.controllers.utils']);
 //req used for making request 
 //constants are used for the defines in the util.js file
 //$location is used for rerouting to a different page 
-articles.controller('articles_controller',function($scope, req, constants, $location) {
+articles.controller('articles_controller',function($scope, $ionicModal, req, constants, $location) {
+    // set up searching modal for articles
+    // data structure for holding search parameters
+    $scope.articleSearchData = {};
+    
+    // creating the modal using ionicModal
+    $ionicModal.fromTemplateUrl('templates/resources/articles/articleSearch.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.articleModal = modal;
+    });
+
+    // Triggered in the modal to close it
+    $scope.closeSearch = function() {
+        $scope.articleModal.hide();
+    };
+
+    // Open the modal
+    $scope.openSearch = function() {
+        $scope.articleModal.show();
+    };
+    
+    // submit the search results
+    $scope.search = function() {
+        url = constants.BASE_SERVER_URL + 'resource/find';
+
+        // regex (?i: makes it case insensitive)
+        var queryParams = {
+            'title': { '$regex':  '(?i:' + $scope.articleSearchData.title + ')' }
+        };
+
+        req.post(url, queryParams, success_getting_articles, failure_getting_articles);
+        
+        $scope.articleModal.hide();
+    };
     
     //This will contain list of articles where the view can grab from
     list_of_articles = [];
@@ -62,8 +96,8 @@ articles.controller('articles_controller',function($scope, req, constants, $loca
         //Just a simple print statement so I don't go insane 
         console.log("Getting from " + url);
 
-        //Makes a request to db for list of articles
-        req.get(url, success_getting_articles, failure_getting_articles);
+        // make request to db
+        req.get(url, success_getting_articles, failure_getting_articles);                        
     });
 
     //When clicking a specific article, it will reroute to another page
@@ -74,6 +108,9 @@ articles.controller('articles_controller',function($scope, req, constants, $loca
         //Don't really need a separate page since all we are just displaying the url 
         //page for the article
         cordova.InAppBrowser.open(article['url'], '_blank', 'location=no');
-    };
-      
-})
+    }; 
+});
+
+function setupSearchModal(ionicModal, scope) {    
+    
+}
