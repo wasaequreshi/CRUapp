@@ -206,12 +206,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
       url: '/articles',
       views: {
           'menuContent': {
-              templateUrl: 'templates/articles.html',
+              templateUrl: 'templates/resources/articles/articles.html',
               controller: 'articles_controller'
-              
           }
-      
-  }
+      }
   })
 
   .state('app.error', {

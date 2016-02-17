@@ -1,4 +1,4 @@
-var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles','ngCordova', 'ionic','PushModule']);
+var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles','ngCordova', 'ionic', 'PushModule']);
 
 // allows for access of variable across controllers
 module.service('allEvents', function () {
@@ -28,19 +28,20 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
+      scope: $scope
   }).then(function(modal) {
-    $scope.modal = modal;
+      $scope.modal = modal;
   });
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
-    $scope.modal.hide();
+      $scope.modal.hide();
+      $scope.modal.remove();
   };
 
   // Open the login modal
   $scope.login = function() {
-    $scope.modal.show();
+      $scope.modal.show();
   };
 
   //When a button is clicked, this method is invoked
