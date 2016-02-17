@@ -1,16 +1,21 @@
 var ride = angular.module('starter.controllers.rides', ['starter.controllers.utils']);
 
+//returns false if not in the array and true otherwise
+var checkArr = function(item, arr) {
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i].rideId === item) {
+            return i;
+        }
+    }
+    
+    return -1;
+};
 
 ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPopup, req, $localStorage, allEvents, constants) {
     //TO DO CHANGE URL
    /* url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins", 
                                       mins);
     */
-    
-    //returns -1 if not in the array and the index otherwise
-    var checkArr = function(item, arr) {
-        return $.inArray(item, arr);
-    };
     
     //reload page everytime
     $scope.$on("$ionicView.enter", function () {
@@ -69,13 +74,12 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         if (!isDriving) {
             /* TODO: get from the server if this person is already a driver */
             var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
-            var isRider = checkArr(tempID, riding);
-            /* TODO: get driver ID */
-            var driverID = "1";
+            var isRider = checkArr(tempID, riding);            
 
             $localStorage.setObject(constants.SELECTED_RIDE, tempID);
 
             if (isRider != -1) {
+                var driverID = riding[isRider].driverId;
                 $location.path('/app/rides/' + tempID + '/driver/' + driverID);
             }
             else {
@@ -102,7 +106,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 
             //if a driver for this event
             if (isDriver != -1) {
-                $location.path('/app/drive/' + tempID + '/riders');
+                $location.path('/app/drive/' + tempID + '/riders' + '/' + driving[isDriver].driverId);
             }
             else {
                 $location.path('/app/drive/' + tempID);
@@ -123,16 +127,23 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 //form for signing up to be a rider
 .controller('GetRideCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     var tempID = $stateParams.rideId;
+    var driveId = $stateParams.driverId;
     
     $scope.getRide = function() {
         var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
 
         if (typeof riding.length === "undefined" || riding.length === 0) {
             riding = [];
-            riding.push(tempID);
+            riding.push({
+                rideId: tempID,
+                driverId: driveId
+            });
         }
-        else if ($.inArray(tempID, riding) === -1) {
-            riding.push(tempID);
+        else if (checkArr(tempID, riding) === -1) {
+            riding.push({
+                rideId: tempID,
+                driverId: driveId
+            });
         }
         
         $localStorage.setObject(constants.MY_RIDES_RIDER, riding);
@@ -189,7 +200,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         };
         
         /*TODO: filter rides*/
-        url = constants.BASE_SERVER_URL + "rides";
+        url = constants.BASE_SERVER_URL + "ride/list";
         //req.get(url, success, err);
         
         console.log(date);
@@ -217,7 +228,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                     + eventDate.getDate() + ', ' + eventDate.getFullYear();
                 
                 mydrivers.push({
-                    //dangerous to do because the rides will always be changing
                     id: ride._id,
                     event_id: ride.event, 
                     name: ride.driverName,
@@ -240,8 +250,9 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     req.get(url, success, err);
     
     
-    $scope.chooseDriver = function() {
-        $location.path('/app/rides/' + rideID);
+    $scope.chooseDriver = function(driveId) {
+        console.log(driveId);
+        $location.path('/app/rides/' + rideID + '/get/' + driveId);
     };
 })
 //http://54.86.175.74:8080/passengers/add/?direction=to&gcm_id=test&phone=504&name=test&__v=0
@@ -251,16 +262,33 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     var tempID = $stateParams.rideId;
     //checkRider(input.name, input.phonenumber, input.location, input.numberseats, input.timeleaving, input.triptype)
     $scope.checkRider = function(name, phonenumber, location, seats, leaving, triptype) {      
-        console.log(name);
-        console.log(phonenumber);
-        console.log(location);
-        console.log(seats);
-        console.log(leaving);
-        console.log(triptype);
-        url = constants.BASE_SERVER_URL + "passengers/add/" + "?direction=" + triptype + "&gcm_id=dummy_id&phone=" + phonenumber 
-        + "&name=" + name + "&__v=0";  
-        req.post(url, null, null);
-
+        
+        //change the triptype to fit the server
+        if (triptype === "One Way (from Event)") {
+            triptype = "from";
+        }
+        else if (triptype === "One Way (to Event)") {
+            triptype = "to";
+        }
+        else {
+            triptype = "both";
+        }
+        
+        //create the post call to create the driver in the DB
+        var url = constants.BASE_SERVER_URL + "ride/create";
+        var data = {
+            gcm_id: "dummy_id",
+            driverName: name,
+            driverNumber: 11, 
+            /* TODO fill in the location */
+            //location: location,
+            event: tempID,
+            direction: triptype,
+            seats: seats,
+            time: leaving
+        };
+              
+        
         //check if rider is valid by name in DB
         /* TODO: change this valid statement */
         var valid = true;
@@ -283,24 +311,40 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                  myPopup.close(); //close the popup after 3 seconds for some reason
               }, 3000);
         }
-        else {
-            var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
+        else {  
+            var success = function(data) {
+                var driveID = data.data.post._id;
+                console.log("Drive ID: " + driveID);
+                
+                var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
             
-            if (typeof driving.length === "undefined" || driving.length === 0) {
-                console.log("Not driving yet");
-                driving = [];
-                driving.push(tempID);
+                if (typeof driving.length === "undefined" || driving.length === 0) {
+                    console.log("Not driving yet");
+                    driving = [];
+                    driving.push({
+                        rideId: tempID,
+                        driverId: driveID
+                    });
+                }
+                else if (checkArr(tempID, driving) === -1) {
+                    driving.push({
+                        rideId: tempID,
+                        driverId: driveID
+                    });
+                }
+
+                $localStorage.setObject(constants.MY_RIDES_DRIVER, driving);
+                
+                $location.path('/app/drive');
             }
-            else if ($.inArray(tempID, driving) === -1) {
-                driving.push(tempID);
-            }
+
+            var fail = function(data) {
+                //if there is an error (ie 404, 500, etc) redirect to the error page
+                $location.path('/app/error');
+            }        
             
-            console.log("Driving these events: " + driving);
-            $localStorage.setObject(constants.MY_RIDES_DRIVER, driving);
+            req.post(url, data, success, fail);
             
-            /* TODO: Add driver to database */
-            
-            $location.path('/app/drive');
             $ionicHistory.nextViewOptions({
                 disableAnimate: false,
                 disableBack: true
@@ -313,22 +357,45 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 .controller('DriverViewCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     //id from the url
     var rideID = $stateParams.rideId;
+    var driverID = $stateParams.driverId;
     
-    /* TODO: Fill in with real data */
-    var mydriver = {
-        id: "1",
-        name: "Cody",
-        phone: "707-494-3342",
-        time: "6:00 pm",
-        date: "February 23, 2016",
-        pickup: "PAC"
+    var success = function(data) {
+        var driverInfo = data.data;
+        
+        var eventDate = new Date(driverInfo.time);
+                
+        // check whether the date is am or pm
+        var ampm = eventDate.getHours() >= 12 ? ' pm' : ' am';
+        // format the time to be 12 hours. The || means if the time is 0 bc 24hr format, make it 12
+        var time = (eventDate.getHours() % 12 || 12) + ":" + eventDate.getMinutes() + ampm;
+        var date = eventDate.toLocaleDateString(locale, { month: 'long' }) + ' '
+            + eventDate.getDate() + ', ' + eventDate.getFullYear();
+        
+        var mydriver = {
+            id: driverID,
+            name: driverInfo.driverName,
+            phone: "N/A",
+            time: time + " " + ampm,
+            date: date,
+            pickup: driverInfo.location
+        };
+
+        $scope.driver = mydriver;
+    }
+    
+    var err = function(xhr, text, err) {
+        //if there is an error (ie 404, 500, etc) redirect to the error page
+        $location.path('/app/error');
     };
 
-    $scope.driver = mydriver;
+    console.log("Driver: " + driverID);
+    var url = constants.BASE_SERVER_URL + "ride/" + driverID;
+    req.get(url, success, err);
+    
     
     $scope.cancelRide = function() {
         var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
-        var idx = riding.indexOf(rideID);
+        var idx = checkArr(rideID, riding);
         if (idx != -1) {
             riding.splice(idx, 1);
             $localStorage.setObject(constants.MY_RIDES_RIDER, riding);
@@ -349,10 +416,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 .controller('RideListCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
     //id from the url
     var rideID = $stateParams.rideId;
+    var driverID = $stateParams.driverId;
     
-    var myriders = [];
     
-    /* TODO: Fill in with real data */
+    /* TODO: Fill in with real data 
     myriders.push({
         id: "1",
         name: "Cody",
@@ -367,13 +434,46 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
          id: "3",
          name: "Connor Hi",
          phone: "911...?"
-     });
+     });*/
     
-    $scope.riders = myriders;
+    
+    
+    var success = function(data) {
+        var myriders = [];
+        var passengers = data.data.passengers;
+        console.log(passengers);
+        var passUrl = constants.BASE_SERVER_URL + "passenger/";
+        var passSuccess = function(data) {
+            var pass = data.data;
+            
+            myriders.push({
+                name: pass.name,
+                phone: pass.phone
+            });
+        }
+        
+        var passErr = function(data) {
+            //do nothing for now
+        }
+        
+        for (var idx = 0; idx < passengers.length; idx++) {
+            req.get(passUrl + passengers[idx], passSuccess, passErr);
+        }
+        
+        $scope.riders = myriders;
+    };
+    
+    var err = function(xhr, text, err) {
+        //if there is an error (ie 404, 500, etc) redirect to the error page
+        $location.path('/app/error');
+    };
+    
+    var url = constants.BASE_SERVER_URL + "ride/" + driverID;
+    req.get(url, success, err);
     
     $scope.cancelRide = function() {
         var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
-        var idx = driving.indexOf(rideID);
+        var idx = checkArr(rideID, driving);
         if (idx != -1) {
             driving.splice(idx, 1);
             $localStorage.setObject(constants.MY_RIDES_DRIVER, driving);
