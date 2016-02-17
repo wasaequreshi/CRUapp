@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
 
 
 .run(function($ionicPlatform) {
@@ -205,12 +205,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
       url: '/articles',
       views: {
           'menuContent': {
-              templateUrl: 'templates/articles.html',
+              templateUrl: 'templates/resources/articles/articles.html',
               controller: 'articles_controller'
-              
           }
-      
-  }
+      }
   })
 
   .state('app.error', {
