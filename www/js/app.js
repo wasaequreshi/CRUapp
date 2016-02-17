@@ -23,7 +23,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
       StatusBar.styleDefault();
     }
     
-    
   });
 })
 
@@ -140,7 +139,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
   
   // form for the rider
   .state('app.getRide', {
-    url: '/rides/:rideId',
+    url: '/rides/:rideId/get/:driverId',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/get.html',
@@ -173,7 +172,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ui.bootstrap', 'ngCo
   
   // signed up to drive, list of riders
   .state('app.giveList', {
-    url: '/drive/:rideId/riders',
+    url: '/drive/:rideId/riders/:driverId',
     views: {
       'menuContent': {
         templateUrl: 'templates/rideSharing/ridersList.html',
