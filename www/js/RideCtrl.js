@@ -483,11 +483,11 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         if (idx != -1) {
             var dropSuccess = function(data) {
                 //do nothing for now
-            }
+            };
             
             var dropErr = function(xhr, text, err) {
                 console.log("error dropping the passenger");
-            }
+            };
             
             var dropUrl = constants.BASE_SERVER_URL + "ride/dropPassenger";
             var dropQuery = {
