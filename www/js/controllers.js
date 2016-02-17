@@ -180,8 +180,8 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         };
         
         console.log("MINISITRIES" + JSON.stringify(mins));
-        
-        if (mins === "" || mins === []) {
+
+        if (mins === "" || mins === [] || typeof mins === 'undefined') {
             url = constants.BASE_SERVER_URL + 'event/list';
             req.get(url , success, err);
             console.log("getting the event list\n");
