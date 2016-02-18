@@ -14,7 +14,7 @@ module.service('allEvents', function () {
     };
 });
 
-module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage) {
+module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, constants, $location, req) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -44,17 +44,27 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
       $scope.modal.show();
   };
 
-  //When a button is clicked, this method is invoked
-  //Takes in as a param the eventName, startDate, endDate, and location
-  $scope.addEventToCalendar = function(eventName, startDate, endDate, location, _id)
+  var success_get_specific_event_data = function(data)
   {
+
        //Database has startDate as 2015-10-15T19:00:00.000Z
        //So I split at the "T" to seperate the date and time
+       console.log("Calendar success");
+       data = data['data'];
+       console.log(data);
+ 
+       eventName = data['name'];
+       loc = data['location']['street1'] + " " + data['location']['suburb'] + " " + data['location']['state'] + " " + data['location']['postcode'];
+       console.log(loc);
+       startDate = data['startDate'];
+       endDate = data['endDate'];
+       _id = data['_id'];
+
        splitStartDateAndTime = startDate.split("T");
        //Splitting up the date into pieces
        splitStartDate = splitStartDateAndTime[0].split("-");
        //Splitting up the time into pieces
-       splitStartTime = splitStartDateAndTime[1].split(":")
+       splitStartTime = splitStartDateAndTime[1].split(":");
        
        //Same as before but now I am doing it for the end date
        splitEndDateAndTime = endDate.split("T");
@@ -64,18 +74,43 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
                                  splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0, 0);
        finalEndDate = new Date(splitEndDate[0], Number(splitEndDate[1] - 1), splitEndDate[2], 
                                splitEndTime[0], splitEndTime[1], 0, 0, 0);
-       console.log("Location: " + location);
+       console.log("Location: " + loc);
        
-      helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id, startDate, endDate);
+       helper_function_adding_calendar(eventName, loc, finalStartDate, finalEndDate, _id, startDate, endDate);
+  }
+  //Request to get info for specific events fail. 
+  var failing_get_specific_event_data = function(data)
+  {
+      //Just a sad message :(
+      console.log("Failure got data: " + data);
+
+      //Goes to that lovely error page we have
+      $location.path('/app/error');
+  }
+  //When a button is clicked, this method is invoked
+  //Takes in as a param the eventName, startDate, endDate, and location
+  $scope.addEventToCalendar = function(eventName, startDate, endDate, location, _id)
+  {
+        url = constants.BASE_SERVER_URL + "event/" + _id;
+
+        req.get(url, success_get_specific_event_data, failing_get_specific_event_data);
+
+        console.log(startDate);
+        console.log(endDate);
+
   };
     
   helper_function_adding_calendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
     originEndDate)
   {
+      console.log(eventName);
+      console.log(location);
+      console.log(finalStartDate);
+      console.log(finalEndDate);
       //Using ngcordova to create an event to their native calendar
       $cordovaCalendar.createEvent({
           title: eventName,
-          location: location["street"],
+          location: location,
           notes: 'This is a note',
           startDate: finalStartDate,
           endDate: finalEndDate
@@ -89,7 +124,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
           {
               list_of_added_events = {};
           }
-          list_of_added_events[_id] = {"name": eventName, "location":location['street'], "startDate": originalStartDate, 
+          list_of_added_events[_id] = {"name": eventName, "location":location, "startDate": originalStartDate, 
             "endDate":originEndDate};
           //Added event information to local phone
           $localStorage.setObject("list_of_added_events", list_of_added_events);
@@ -109,7 +144,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
           
           //This needs to be removed, used for testing since i do not have android device
           list_of_added_events = $localStorage.getObject("list_of_added_events");
-          list_of_added_events[_id] = {"name": eventName, "location":location['street'], "startDate": originalStartDate, 
+          list_of_added_events[_id] = {"name": eventName, "location":location, "startDate": originalStartDate, 
             "endDate":originEndDate};
           //Added event information to local phone
           $localStorage.setObject("list_of_added_events", list_of_added_events);
