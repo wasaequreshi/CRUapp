@@ -3,7 +3,8 @@ var videos = angular.module('videos', ['starter.controllers.utils']);
 videos.controller('videos_controller',function($scope, req, constants, $location) {
     var CHANNEL_ID = "UCe-RJ-3Q3tUqJciItiZmjdg";
     var YT_API_KEY = "AIzaSyA5LSnAk7YftObCYuPSZIQi21WE6zZA1j0";
-
+    //initially set the title
+    $scope.title = "Resources";
     var success_getting_videos = function (data)
     {
         videos = data["data"]["items"];
