@@ -6,6 +6,9 @@
         </div>
         <ion-checkbox ng-model="ministry.checked" ng-checked="ministry.checked" ng-repeat-end >
             {{ministry.name}}
+            <div class="item item-body">
+                <img class="full-image" src="{{ministry.image.url}}">
+            </div>
         </ion-checkbox>
     </ion-list>
   </ion-content>
