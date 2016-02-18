@@ -322,7 +322,6 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
             
             $scope.isDriving = checkArr(val._id, driving) >= 0 ? true : false;
             $scope.isRiding = checkArr(val._id, riding) >= 0 ? true : false;
-            console.log($scope.isRiding);
         }
     });
     
