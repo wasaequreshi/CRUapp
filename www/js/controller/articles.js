@@ -78,13 +78,13 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
 
         req.post(url, queryParams, success_getting_articles, failure_getting_articles);
         console.log("SEARCHING"+$scope.articleSearchData.title);
-        if($scope.articleSearchData.title !== ""){
+
+        //Set up the title of the page
+        if($scope.articleSearchData && $scope.articleSearchData.title !== ""){
            $scope.title = "Search: " + $scope.articleSearchData.title;
-            console.log("omg title should have changed");
            $scope.isSearching = true;
         }
         else{
-            console.log("why would the title change?");
            $scope.title = "Resources";        
         }
         $scope.articleModal.hide();
