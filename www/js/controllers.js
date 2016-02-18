@@ -279,6 +279,16 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     var url = constants.BASE_SERVER_URL + 'event/' + $stateParams.eventId;
     
     var val;
+    
+    var checkArr = function(item, arr) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].rideId === item) {
+                return i;
+            }
+        }
+
+        return -1;
+    };
 
     var success = function (value) {
         val = value.data;
@@ -294,11 +304,8 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
         
         // check to see if the user is riding or driving to the event
-        var isDriving = convenience.contains(val._id, driving);
-        var isRiding = convenience.contains(val._id, riding);
-
-        $scope.isDriving = isDriving;
-        $scope.isRiding = isRiding;
+        $scope.isDriving = checkArr(val._id, driving) >= 0 ? true : false;
+        $scope.isRiding = checkArr(val._id, riding) >= 0 ? true : false;
         $scope.myEvent = val;
     };
     
@@ -308,13 +315,13 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     
     req.get(url, success, err);
     
-    $scope.$on("$ionicView.beforeEnter", function() {
+    $scope.$on("$ionicView.enter", function() {
         if (val) {
             var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
             var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
             
-            $scope.isDriving = convenience.contains(val._id, driving);
-            $scope.isRiding = convenience.contains(val._id, riding);
+            $scope.isDriving = checkArr(val._id, driving) >= 0 ? true : false;
+            $scope.isRiding = checkArr(val._id, riding) >= 0 ? true : false;
         }
     });
     
@@ -324,9 +331,9 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     };
     
     $scope.viewDriverInfo = function(id) {
-        // Hard coded. Needs to be linked to server
-        var driverID = 1;
-        $location.path('/app/rides/' + id + '/driver/' + driverID);  
+        var rides = $localStorage.getObject(constants.MY_RIDES_RIDER);
+        var index = checkArr(id, rides);
+        $location.path('/app/rides/' + id + '/driver/' + rides[index].driverId);  
     };
     
     $scope.signUpToDrive = function(id) {
@@ -334,7 +341,9 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     };
     
     $scope.viewRidersInfo = function(id) {
-        $location.path('/app/drive/' + id + '/riders');  
+        var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
+        var index = checkArr(id, driving);
+        $location.path('/app/drive/' + id + '/riders/' + driving[index].driverId);  
     };
 })
 

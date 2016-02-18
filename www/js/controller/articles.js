@@ -64,9 +64,17 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         url = constants.BASE_SERVER_URL + 'resource/find';
 
         // regex (?i: makes it case insensitive)
-        var queryParams = {
-            'title': { '$regex':  '(?i:' + $scope.articleSearchData.title + ')' }
-        };
+        var queryParams = {};
+
+        if (typeof $scope.articleSearchData.title !== "undefined")
+        {
+            queryParams['title'] = { '$regex':  '(?i:' + $scope.articleSearchData.title + ')' };
+        }
+
+        if (typeof $scope.articleSearchData.author !== "undefined")
+        {
+            queryParams['author'] = { '$regex':  '(?i:' + $scope.articleSearchData.author + ')' };
+        }
 
         req.post(url, queryParams, success_getting_articles, failure_getting_articles);
         console.log("SEARCHING"+$scope.articleSearchData.title);
