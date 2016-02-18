@@ -216,7 +216,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
 .state('app.resources', {
       url: '/resources',
       abstract: true,
-      templateUrl: 'templates/resources.html',
+      views: {
+          'menuContent': {
+            templateUrl: 'templates/resources.html'
+          }
+      }
+      
   })
   
   .state('app.resources.articles', {
@@ -237,7 +242,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
           'resources-videos': {
               templateUrl: 'templates/videos.html',
               controller: 'videos_controller'
+          },
+          
+          'menuContent': {
+              templateUrl: 'templates/videos.html',
+              controller: 'videos_controller'
           }
+          
+          
       }
   })
 
