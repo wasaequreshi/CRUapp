@@ -1,15 +1,17 @@
 <ion-view view-title="{{title}}">
   <ion-content>
     <ion-list>
-        <div ng-repeat-start="ministry in ministries | orderBy : 'campuses[0]'" ng-show={{::setupHeader(ministry)}}>
-            {{campuses[ministry.campuses[0]].name}}
+        <div class="card" style="background-color: balanced;" ng-repeat-start="ministry in ministries | orderBy : 'campuses[0]'" ng-show={{::setupHeader(ministry)}}>
+            <b class="item item-calm text-center">{{campuses[ministry.campuses[0]].name}} Ministries</b>
         </div>
-        <ion-checkbox ng-model="ministry.checked" ng-checked="ministry.checked" ng-repeat-end >
-            {{ministry.name}}
+        <div class="card" ng-repeat-end>
+            <ion-checkbox class="item" ng-model="ministry.checked" ng-checked="ministry.checked">
+                {{ministry.name}}
+            </ion-checkbox>
             <div class="item item-body">
                 <img class="full-image" src="{{ministry.image.url}}">
             </div>
-        </ion-checkbox>
+        </div>
     </ion-list>
   </ion-content>
   <ion-footer-bar align-title="center"class="bar bar-dark"ng-click="goToNext()">
