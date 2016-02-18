@@ -263,7 +263,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                     phone: ride.driverNumber,
                     time: eventDate.time,
                     date: eventDate.date,
-                    pickup: ride.location
+                    pickup: ride.location.country
                 });
             }
             
@@ -323,7 +323,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                 phone: ride.driverNumber,
                 time: eventDate.time,
                 date: eventDate.date,
-                pickup: ride.location
+                pickup: ride.location.country
             });
             
         }
@@ -369,7 +369,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var data = {
             gcm_id: "dummy_id",
             driverName: name,
-            driverNumber: 11, 
+            driverNumber: phonenumber, 
             /* TODO fill in the location */
             //location: location,
             event: tempID,
@@ -453,10 +453,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var mydriver = {
             id: driverID,
             name: driverInfo.driverName,
-            phone: "N/A",
+            phone: driverInfo.driverNumber,
             time: eventDate.time,
             date: eventDate.date,
-            pickup: driverInfo.location
+            pickup: driverInfo.location.country
         };
 
         $scope.driver = mydriver;
