@@ -200,16 +200,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
         }
       }
     })
-  
-  .state('app.articles', {
-      url: '/articles',
-      views: {
-          'menuContent': {
-              templateUrl: 'templates/resources/articles/articles.html',
-              controller: 'articles_controller'
-          }
-      }
-  })
+
 
   .state('app.error', {
       url: '/error',
@@ -220,15 +211,47 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
       }
   })
   
-  .state('app.videos', {
+
+    
+.state('app.resources', {
+      url: '/resources',
+      abstract: true,
+      views: {
+          'menuContent': {
+            templateUrl: 'templates/resources.html'
+          }
+      }
+      
+  })
+  
+  .state('app.resources.articles', {
+      url: '/articles',
+      views: {
+          'resources-articles': {
+              templateUrl: 'templates/resources/articles/articles.html',
+              controller: 'articles_controller'
+              
+          }
+      
+  }
+  })
+  
+.state('app.resources.videos', {
       url: '/videos',
       views: {
+          'resources-videos': {
+              templateUrl: 'templates/videos.html',
+              controller: 'videos_controller'
+          },
+          
           'menuContent': {
               templateUrl: 'templates/videos.html',
               controller: 'videos_controller'
           }
+          
+          
       }
-  });
+  })
 
 // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/events');
