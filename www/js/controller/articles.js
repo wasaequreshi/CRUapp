@@ -36,10 +36,12 @@ var sortArticles = function(unsorted) {
 //constants are used for the defines in the util.js file
 //$location is used for rerouting to a different page 
 articles.controller('articles_controller',function($scope, $ionicModal, req, constants, $location) {
+
     // set up searching modal for articles
     // data structure for holding search parameters
     $scope.articleSearchData = {};
-    
+    $scope.title = "Resources"; 
+    $scope.isSearching = false;   
     // creating the modal using ionicModal
     $ionicModal.fromTemplateUrl('templates/resources/articles/articleSearch.html', {
         scope: $scope
@@ -75,9 +77,28 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         }
 
         req.post(url, queryParams, success_getting_articles, failure_getting_articles);
-        
+        console.log("SEARCHING"+$scope.articleSearchData.title);
+
+        //Set up the title of the page
+        if($scope.articleSearchData && $scope.articleSearchData.title !== ""){
+           $scope.title = "Search: " + $scope.articleSearchData.title;
+           $scope.isSearching = true;
+        }
+        else{
+           $scope.title = "Resources";        
+        }
         $scope.articleModal.hide();
     };
+
+    $scope.clearSearch = function() { 
+        var url = constants.BASE_SERVER_URL + 'resource/list';
+
+        // make request to db
+        req.get(url, success_getting_articles, failure_getting_articles); 
+        $scope.isSearching = false;
+        $scope.title = "Resources";        
+
+    }
     
     //This will contain list of articles where the view can grab from
     list_of_articles = [];
