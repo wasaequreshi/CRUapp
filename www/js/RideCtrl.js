@@ -98,8 +98,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
             var isRider = checkArr(tempID, riding);            
 
-            $localStorage.setObject(constants.SELECTED_RIDE, tempID);
-
             if (isRider != -1) {
                 var driverID = riding[isRider].driverId;
                 $location.path('/app/rides/' + tempID + '/driver/' + driverID);
@@ -265,7 +263,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                     phone: ride.driverNumber,
                     time: eventDate.time,
                     date: eventDate.date,
-                    pickup: ride.location
+                    pickup: ride.location.country
                 });
             }
             
@@ -294,15 +292,13 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             endTime = 24;
         }
         endDate.setHours(endTime);
-        
-        var selectRide = $localStorage.getObject(constants.SELECTED_RIDE);
-        
+                
         var filterQuery = {
             time: {
                 $gt:startDate,
                 $lt:endDate
             },
-            event: selectRide
+            event: rideID
             
         };
         var filterUrl = constants.BASE_SERVER_URL + "ride/find";
@@ -327,7 +323,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                 phone: ride.driverNumber,
                 time: eventDate.time,
                 date: eventDate.date,
-                pickup: ride.location
+                pickup: ride.location.country
             });
             
         }
@@ -341,9 +337,8 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     };
 
     //query for only the selected event
-    var selectedEvent = $localStorage.getObject(constants.SELECTED_RIDE);
     var fullQuery = {
-        event: selectedEvent
+        event: rideID
     };
     
     var url = constants.BASE_SERVER_URL + "ride/find";
@@ -374,7 +369,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var data = {
             gcm_id: "dummy_id",
             driverName: name,
-            driverNumber: 11, 
+            driverNumber: phonenumber, 
             /* TODO fill in the location */
             //location: location,
             event: tempID,
@@ -458,10 +453,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var mydriver = {
             id: driverID,
             name: driverInfo.driverName,
-            phone: "N/A",
+            phone: driverInfo.driverNumber,
             time: eventDate.time,
             date: eventDate.date,
-            pickup: driverInfo.location
+            pickup: driverInfo.location.country
         };
 
         $scope.driver = mydriver;

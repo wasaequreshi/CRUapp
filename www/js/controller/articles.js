@@ -10,6 +10,25 @@
 //Requires some of the functionality from 'starter.controllers.utils'
 var articles = angular.module('articles', ['starter.controllers.utils']);
 
+//This is a helper function to sort the articles by date
+var sortArticles = function(unsorted) {
+    return unsorted.sort(function(a, b) {
+        var aDate = a.date;
+        var bDate = b.date;
+        
+        if (aDate > bDate) {
+            return -1;
+        }
+        else if (bDate > aDate) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    });
+};
+
+
 //This will display and handle the list of articles that are available
 //Params for function:
 //$scope used to pass data from controller to view
@@ -43,9 +62,17 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         url = constants.BASE_SERVER_URL + 'resource/find';
 
         // regex (?i: makes it case insensitive)
-        var queryParams = {
-            'title': { '$regex':  '(?i:' + $scope.articleSearchData.title + ')' }
-        };
+        var queryParams = {};
+
+        if (typeof $scope.articleSearchData.title !== "undefined")
+        {
+            queryParams['title'] = { '$regex':  '(?i:' + $scope.articleSearchData.title + ')' };
+        }
+
+        if (typeof $scope.articleSearchData.author !== "undefined")
+        {
+            queryParams['author'] = { '$regex':  '(?i:' + $scope.articleSearchData.author + ')' };
+        }
 
         req.post(url, queryParams, success_getting_articles, failure_getting_articles);
         
@@ -64,6 +91,9 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
 
         //Getting list of articles from request
         articles = data["data"];
+        
+        //sort the articles by date
+        articles = sortArticles(articles);
         
         //Setting scope so view can have access to them
         $scope.articles = articles;

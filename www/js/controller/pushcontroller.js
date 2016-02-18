@@ -34,13 +34,14 @@ angular.module('PushModule', []).controller('PushController', function($rootScop
                    "badge": true, 
                    "sound": true}
         };
-       
+if(typeof PushNotification !== "undefined" && PushNotification !== null){       
         $cordovaPushV5.initialize(config).then(function (result) {
             console.log("Init success " + JSON.stringify(result));
 
         }, function (err) {
             console.log("Init error " + JSON.stringify(err));
         });
+}
     }
     
     // Register
