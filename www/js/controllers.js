@@ -14,7 +14,7 @@ module.service('allEvents', function () {
     };
 });
 
-module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage) {
+module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, $cordovaInAppBrowser) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -136,7 +136,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 
   //facebook setup
   $scope.showEventFacebook = function(url) {
-      cordova.InAppBrowser.open(url, '_system', 'location=no');
+      $cordovaInAppBrowser.open(url, '_system', 'location=no');
   };
 })
 
