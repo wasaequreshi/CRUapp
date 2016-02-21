@@ -1,6 +1,6 @@
 var videos = angular.module('videos', ['starter.controllers.utils']);
 
-videos.controller('videos_controller',function($scope, req, constants, $location) {
+videos.controller('videos_controller',function($cordovaInAppBrowser, $scope, req, constants, $location) {
     var CHANNEL_ID = "UCe-RJ-3Q3tUqJciItiZmjdg";
     var YT_API_KEY = "AIzaSyA5LSnAk7YftObCYuPSZIQi21WE6zZA1j0";
     //initially set the title
@@ -33,7 +33,18 @@ videos.controller('videos_controller',function($scope, req, constants, $location
     $scope.view_selected_video = function(video) 
     {
         var video_url = "https://www.youtube.com/embed/" + video["id"]["videoId"];
-        cordova.InAppBrowser.open(video_url, '_blank', 'location=no');
+        var options = {
+            location: 'no',
+            clearcache: 'yes',
+            toolbar: 'no'
+        };
+        $cordovaInAppBrowser.open(video_url, '_blank', options)
+            .then(function(event) {
+                console.log("SUCCESS: Launching Browser"+JSON.stringify(event));
+            })
+            .catch(function(event) {
+                console.log("ERROR: Launching Browser"+JSON.stringify(event));
+            });
     };
       
 });
