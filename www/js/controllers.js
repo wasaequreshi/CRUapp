@@ -1,4 +1,4 @@
-var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles', 'videos', 'ngCordova', 'ionic','PushModule']);
+var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles', 'videos', 'ngCordova', 'ionic', 'PushModule']);
 
 // allows for access of variable across controllers
 module.service('allEvents', function () {
@@ -14,7 +14,7 @@ module.service('allEvents', function () {
     };
 });
 
-module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, $cordovaInAppBrowser) {
+module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicModal, $ionicPlatform, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, $cordovaInAppBrowser) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -138,10 +138,95 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
   $scope.showEventFacebook = function(url) {
       $cordovaInAppBrowser.open(url, '_system', 'location=no');
   };
+
+
+  // Notification Received
+  $rootScope.$on('$cordovaPushV5:notificationReceived', pushService.onRecieved);
+  //error happened
+  $rootScope.$on('$cordovaPushV5:errorOccurred', pushService.onError);
+
+  //set up when the application is ready 
+  $ionicPlatform.ready(function(){
+    // call to register automatically upon device ready
+    promise = pushService.push_init();
+    if (promise){
+      promise.then(function (result) {
+          console.log("Init success " + JSON.stringify(result));
+          pushService.registration_setup();
+          pushService.push_setup();
+      }, function (err) {
+          console.log("Init error " + JSON.stringify(err));
+      });
+    };
+  })
+
 })
 
 .controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory, allEvents, $cordovaCalendar) {
     
+    helper_function_updating_calendar = function(val)
+    {
+        console.log("In helper_function_updating_calendar!")
+        //check if event changed
+        list_of_added_events = $localStorage.getObject("list_of_added_events");
+        info_for_event = list_of_added_events[val._id];
+        if (!(info_for_event == null))
+        {
+          console.log("I am in the infor_for_event check!")
+            if (!(info_for_event['name'] == val.name && info_for_event['location'] ==
+               val.location['street'] && info_for_event['startDate'] == val.startDate
+                && info_for_event['endDate'] == val.endDate))
+            {
+                //The event was changed bro
+                console.log("hi");
+                update_event(info_for_event, val);
+            }
+        }
+    };
+    
+    update_event = function(info_for_event, val)
+    {
+        $cordovaCalendar.deleteEvent({
+        newTitle: info_for_event['name'],
+        location: info_for_event['location'],
+        notes: 'This is a note',
+        startDate: info_for_event['startDate'],
+        endDate: info_for_event['endDate']
+        }).then(function (result) {
+          // success
+        }, function (err) {
+          // error
+        });
+        helper_function_update_calendar(val);
+    };
+
+    helper_function_update_calendar = function(val)
+    {
+        //Using ngcordova to create an event to their native calendar
+        $cordovaCalendar.createEvent({
+            title: val.name,
+            location:  val.location['street'],
+            notes: 'This is a note',
+            startDate: val.startDate,
+            endDate: val.endDate
+        }).then(function (result) {
+
+            console.log("Event created successfully");
+
+            //Get the data from the local storage of list of all added events
+            list_of_added_events = $localStorage.getObject("list_of_added_events");
+
+            list_of_added_events[val._id] = {"name": val.name, "location":val.location['street'], "startDate":val.startDate, 
+            "endDate":val.endDate};
+
+            //Added event information to local phone
+            $localStorage.setObject("list_of_added_events", list_of_added_events);
+
+        }, function (err) {
+            console.error("There was an error: " + err);
+
+        });
+    };
     //reloads page everytime
     $scope.$on("$ionicView.enter", function () {
 
@@ -208,70 +293,6 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
             $location.path('/app/events/' + id);  
         };
     });
-    
-    helper_function_updating_calendar = function(val)
-    {
-        console.log("In helper_function_updating_calendar!")
-        //check if event changed
-        list_of_added_events = $localStorage.getObject("list_of_added_events");
-        info_for_event = list_of_added_events[val._id];
-        if (!(info_for_event == null))
-        {
-          console.log("I am in the infor_for_event check!")
-            if (!(info_for_event['name'] == val.name && info_for_event['location'] ==
-               val.location['street'] && info_for_event['startDate'] == val.startDate
-                && info_for_event['endDate'] == val.endDate))
-            {
-                //The event was changed bro
-                console.log("hi");
-                update_event(info_for_event, val);
-            }
-        }
-    };
-    
-    update_event = function(info_for_event, val)
-    {
-        $cordovaCalendar.deleteEvent({
-        newTitle: info_for_event['name'],
-        location: info_for_event['location'],
-        notes: 'This is a note',
-        startDate: info_for_event['startDate'],
-        endDate: info_for_event['endDate']
-        }).then(function (result) {
-          // success
-        }, function (err) {
-          // error
-        });
-        helper_function_update_calendar(val);
-    };
-
-  helper_function_update_calendar = function(val)
-  {
-      //Using ngcordova to create an event to their native calendar
-      $cordovaCalendar.createEvent({
-          title: val.name,
-          location:  val.location['street'],
-          notes: 'This is a note',
-          startDate: val.startDate,
-          endDate: val.endDate
-      }).then(function (result) {
-
-          console.log("Event created successfully");
-
-          //Get the data from the local storage of list of all added events
-          list_of_added_events = $localStorage.getObject("list_of_added_events");
-
-          list_of_added_events[val._id] = {"name": val.name, "location":val.location['street'], "startDate":val.startDate, 
-          "endDate":val.endDate};
-
-          //Added event information to local phone
-          $localStorage.setObject("list_of_added_events", list_of_added_events);
-
-      }, function (err) {
-          console.error("There was an error: " + err);
-
-      });
-  };
     
 })
 

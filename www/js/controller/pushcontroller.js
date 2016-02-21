@@ -3,68 +3,12 @@ var serverURL = "http://54.86.175.74:8080/";
 var tempUserID = "564ee19f6c2f1876527be562";
 var senderId = "276638088511";
 
-angular.module('PushModule', []).controller('PushController', function($rootScope, $scope, $cordovaPushV5, $cordovaDialogs, $cordovaMedia, $ionicPlatform, $http) {
-    $scope.notifications = [];
-    console.log("Module setup");
+angular.module('PushModule', [])
+
+.service('pushService', function( $cordovaPushV5, $cordovaDialogs, $localStorage, constants,  $cordovaMedia, $ionicPlatform, $http) {
+    var notifications = [];
+    var registerDisabled = false;
     // Put The notification recievers in
-    // Notification Received
-    $rootScope.$on('$cordovaPushV5:notificationReceived', function (event, notification) {
-        console.log(JSON.stringify([notification]));
-        if (ionic.Platform.isAndroid()) {
-            handleAndroid(notification);
-        }
-        else if (ionic.Platform.isIOS()) {
-            handleIOS(notification);
-            $scope.$apply(function () {
-                $scope.notifications.push(JSON.stringify(notification.alert));
-            })
-        }
-    });
-    //error happened
-    $rootScope.$on('$cordovaPushV5:errorOccurred', function (event, error) {
-        console.log('$cordovaPushV5:errorOccurred ' + error);
-    });
-    
-    $scope.push_init = function(){
-        console.log("push init attempt start");
-        var config = {
-           "android": { "senderID": senderId},
-           "ios": { "senderID": senderId,
-                   "alert": true, 
-                   "badge": true, 
-                   "sound": true}
-        };
-if(typeof PushNotification !== "undefined" && PushNotification !== null){       
-        $cordovaPushV5.initialize(config).then(function (result) {
-            console.log("Init success " + JSON.stringify(result));
-
-        }, function (err) {
-            console.log("Init error " + JSON.stringify(err));
-        });
-}
-    }
-    
-    // Register
-    $scope.registration_setup = function () {
-        console.log("registration handler set");
-
-        $cordovaPushV5.register().then(function (result) {
-            console.log("Register success " + result);
-
-            $scope.registerDisabled = true;
-            
-            storeDeviceToken(result);
-        }, function (err) {
-            console.log("Register error " + err)
-        });
-        
-    }
-
-    $scope.push_setup = function () { 
-        $cordovaPushV5.onNotification();
-        $cordovaPushV5.onError();
-    }
-    
     // Android Notification Received Handler
     function handleAndroid(notification) {
         console.log(JSON.stringify(notification));
@@ -72,9 +16,8 @@ if(typeof PushNotification !== "undefined" && PushNotification !== null){
         //             via the console fields as shown.
         console.log("In foreground " + notification.additionalData.foreground  + " Coldstart " + notification.coldstart);
         $cordovaDialogs.alert(notification.message, "Push Notification Received");
-        $scope.$apply(function () {
-            $scope.notifications.push(JSON.stringify(notification.message));
-        });
+        
+        notifications.push(JSON.stringify(notification.message));
     }
 
     // TODO test this IOS Notification Received Handler
@@ -141,7 +84,8 @@ if(typeof PushNotification !== "undefined" && PushNotification !== null){
     // time the app opens which this currently does. However in many cases you will always receive the same device token as
     // previously so multiple userids will be created with the same token unless you add code to check).
     function removeDeviceToken() {
-        var tkn = {"token": $scope.regId};
+        var regId = window.localStorage.getItem("pushID");
+        var tkn = {"token": regId};
         console.log("Storing registration ID");
         window.localStorage.removeItem("pushID");
         $http.delete(serverURL + "users/" + tempUserID+ "/push")
@@ -150,34 +94,106 @@ if(typeof PushNotification !== "undefined" && PushNotification !== null){
             })
             .error(function (data, status) {
                 console.log("Error removing device token." + data + " " + status)
-            }
-        );
+            });
+        
     }
+  
+    function init(){
+        var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
+        var topics = [];
+        if(mins){
+            for(var i = 0; i < mins.length; i++){
+               topics.push(mins[i]._id);
+            }
+            topics.push('global');
+        }
+        console.log("MINISITRYIDS push init" + JSON.stringify(topics));
+        console.log("push init attempt start");
+        var config = {
+           "android": { "senderID"  : senderId,
+                        "topics"    : topics},
+           "ios": { "senderID": senderId,
+                    "alert" : true, 
+                    "badge" : true, 
+                    "sound" : true,
+                    "topics": topics}
+        };
 
-    // Unregister - Unregister your device token from APNS or GCM
-    // Not recommended:  See http://developer.android.com/google/gcm/adv.html#unreg-why
-    //                   and https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplication_Class/index.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications
-    //
-    // ** Instead, just remove the device token from your db and stop sending notifications **
-    $scope.unregister = function () {
+        if(typeof PushNotification !== "undefined" && PushNotification !== null){       
+            var promise = $cordovaPushV5.initialize(config);
+            console.log("promises" + typeof promise);
+            return promise;
+        }
+        else{
+            console.log("push notification not defined");
+        }
+        return null;
+    };
+
+    function registration() {
+        console.log("registration handler set");
+
+        $cordovaPushV5.register().then(function (result) {
+            console.log("Register success " + result);
+
+            registerDisabled = true;
+            
+            storeDeviceToken(result);
+        }, function (err) {
+            console.log("Register error " + err)
+        });    
+    };
+
+    function setup() { 
+        $cordovaPushV5.onNotification();
+        $cordovaPushV5.onError();
+    };
+    function unreg() {
         console.log("Unregister called");
         removeDeviceToken();
-        $scope.registerDisabled=false;
+        registerDisabled = false;
         //need to define options here, not sure what that needs to be but this is not recommended anyway
         $cordovaPushV5.unregister().then(function(result) {
             console.log("Unregister success " + result);//
         }, function(err) {
             console.log("Unregister error " + err)
         });
-    }
+    };
+    function onRecieved(event, notification) {
+        console.log(JSON.stringify([notification]));
+        if (ionic.Platform.isAndroid()) {
+          handleAndroid(notification);
+        }
+        else if (ionic.Platform.isIOS()) {
+          handleIOS(notification);
+          $scope.$apply(function () {
+              $scope.notifications.push(JSON.stringify(notification.alert));
+          })
+        }
+    };
 
-    // call to register automatically upon device ready
-    $ionicPlatform.ready(function (device) {
+    function onErr(event, error){
+        console.log('$cordovaPushV5:errorOccurred ' + error);
+    };
 
-        $scope.push_init();
-        $scope.registration_setup();
-        $scope.push_setup();
+    var exports =  { 
+    
+        push_init : init,
         
-        console.log("omg latest stuff")
-    });
-})
+        // Register
+        registration_setup : registration,
+
+        push_setup : setup,
+        
+        // Unregister - Unregister your device token from APNS or GCM
+        // Not recommended:  See http://developer.android.com/google/gcm/adv.html#unreg-why
+        //                   and https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplication_Class/index.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications
+        //
+        // ** Instead, just remove the device token from your db and stop sending notifications **
+        unregister : unreg,
+        onNotificationRecieved: onRecieved,
+        onError : onErr
+    };
+    return exports;
+    
+});

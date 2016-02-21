@@ -1,6 +1,6 @@
-var min = angular.module('starter.controllers.min', []);
+var min = angular.module('starter.controllers.min', ["PushModule"]);
 
-min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$localStorage','selectedCampuses', 'constants', function($scope, $location, $ionicHistory, req, $localStorage, selectedCampuses, constants) {
+min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $localStorage, selectedCampuses, constants, pushService) {
     var url = constants.BASE_SERVER_URL + "ministry/find";
     var queryParams = {
         "campuses":{ $in: Object.keys(selectedCampuses.getCampusesObject())}
@@ -53,6 +53,7 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$loca
             disableAnimate: false,
             disableBack: true
         });
+        pushService.push_init()
     };
     
     
@@ -67,4 +68,4 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$loca
     * This value keeps track of the current header in the list.
     **/
     currentHeader = "";
-}]);
+});
