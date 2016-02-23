@@ -35,7 +35,7 @@ var sortArticles = function(unsorted) {
 //req used for making request 
 //constants are used for the defines in the util.js file
 //$location is used for rerouting to a different page 
-articles.controller('articles_controller',function($scope, $ionicModal, req, constants, $location) {
+articles.controller('articles_controller',function( $scope, $ionicModal, req, constants, $location, $cordovaInAppBrowser) {
 
     // set up searching modal for articles
     // data structure for holding search parameters
@@ -158,8 +158,20 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     {
         //Don't really need a separate page since all we are just displaying the url 
         //page for the article
-        cordova.InAppBrowser.open(article['url'], '_blank', 'location=no');
-    }; 
+        var options = {
+            location: 'no',
+            clearcache: 'yes',
+            toolbar: 'no'
+        };
+        $cordovaInAppBrowser.open(article['url'], '_blank', options)
+            .then(function(event) {
+                console.log("SUCCESS: Launching Browser"+JSON.stringify(event));
+            })
+            .catch(function(event) {
+                console.log("ERROR: Launching Browser"+JSON.stringify(event));
+            });
+    };
+ 
 });
 
 function setupSearchModal(ionicModal, scope) {    
