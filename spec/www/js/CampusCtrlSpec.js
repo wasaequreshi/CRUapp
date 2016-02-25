@@ -1,5 +1,10 @@
-describe("CampusCtrl", function() {
-    it("contains spec with an expectation", function() {
-    expect(true).toBe(true);
+var campuses = angular.module("starter.controllers.camp");
+describe('CampusCtrl', function() {
+  
+
+  describe('$scope.test', function() {
+    it('returns true', function() {
+      expect(campuses.testin()).toEqual(true);
+    });
   });
 });
