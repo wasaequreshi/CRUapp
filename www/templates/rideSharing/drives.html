@@ -1,13 +1,15 @@
 <ion-view view-title="Drive to Event">
     <ion-content>
         <div class="list card" ng-repeat="ride in rides">
-            <div ng-click="goToDriveData(ride._id, ride.riding)">
+            <div ng-class="{disabled: ride.riding}" ng-click="goToDriveData(ride._id, ride.riding)">
                 <div class="item item-icon-right">
                     <h2><b>{{ride.name}}</b></h2>
                     <p>{{ride.startDate}}</p>
                     <p>{{ride.endDate}}</p>
                     <i class="icon ion-checkmark-circled energized" ng-show="ride.driving && !ride.riding"></i>
-                    <i class="icon ion-close-circled balanced" ng-show="ride.riding"></i>
+                </div>
+                <div class="item text-center" ng-show="ride.riding">
+                    <i class="icon ion-alert-circled balanced">&nbsp; You're already riding to this event</i>
                 </div>
             </div>
         </div>

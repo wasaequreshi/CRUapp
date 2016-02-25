@@ -1,13 +1,15 @@
 <ion-view view-title="Catch a Ride">
     <ion-content>
         <div class="list card" ng-repeat="ride in rides">
-            <div ng-click="goToRideData(ride._id, ride.driving)">
+            <div ng-class="{disabled: ride.driving}" ng-click="goToRideData(ride._id, ride.driving)">
                 <div class="item item-icon-right">
                     <h2><b>{{ride.name}}</b></h2>
                     <p>{{ride.startDate}}</p>
                     <p>{{ride.endDate}}</p>
                     <i class="icon ion-checkmark-circled energized" ng-show="ride.riding && !ride.driving"></i>
-                    <i class="icon ion-close-circled balanced" ng-show="ride.driving"></i>
+                </div>
+                <div class="item text-center" ng-show="ride.driving">
+                    <i class="icon ion-alert-circled balanced">&nbsp; You're already driving to this event</i>
                 </div>
             </div>
         </div>
