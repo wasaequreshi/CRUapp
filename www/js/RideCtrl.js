@@ -355,75 +355,100 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         //change the triptype to fit the server
         triptype = changeTriptype(triptype);
 
-        //create the post call to create the driver in the DB
-        var url = constants.BASE_SERVER_URL + 'ride/create';
-        var data = {
-            gcm_id: 'dummy_id',
-            driverName: name,
-            driverNumber: phonenumber,
-            /* TODO fill in the location */
-            //location: location,
-            event: tempID,
-            direction: triptype,
-            seats: seats,
-            time: leaving
-        };
+        
 
         //check if rider is valid by name in DB
         /* TODO: change this valid statement */
-        var valid = true;
-        if (!valid) {
-            //popup for driver error
-            var myPopup = $ionicPopup.show({
-                template: '<p>Sorry, you are not a valid driver.</p>',
-                title: 'Driver Error',
-                scope: $scope,
-                buttons: [
-                  {text: 'Ok'},
-                ]
-            });
+        var valid;
+        
+        var validSuccess = function(data) {
+            var users = data.data;
+            if (users.length > 0) {
+                valid = true;
+            }
+            else {
+                valid = false;
+            }
+            
+            if (!valid) {
+                //popup for driver error
+                var myPopup = $ionicPopup.show({
+                    template: '<p>Sorry, you are not a valid driver.</p>',
+                    title: 'Driver Error',
+                    scope: $scope,
+                    buttons: [
+                      {text: 'Ok'},
+                    ]
+                });
 
-            myPopup.then(function(res) {
-                console.log('Driver Error', res);
-            });
+                myPopup.then(function(res) {
+                    console.log('Driver Error', res);
+                });
 
-            $timeout(function() {
-                myPopup.close(); //close the popup after 3 seconds for some reason
-            }, 3000);
-        } else {
-            var success = function(data) {
-                var driveID = data.data.post._id;
-                console.log('Drive ID: ' + driveID);
+                $timeout(function() {
+                    myPopup.close(); //close the popup after 3 seconds for some reason
+                }, 3000);
+            } else {
+                var success = function(data) {
+                    var driveID = data.data.post._id;
+                    console.log('Drive ID: ' + driveID);
 
-                var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
+                    var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
 
-                if (typeof driving.length === 'undefined' || driving.length === 0) {
-                    console.log('Not driving yet');
-                    driving = [];
-                    driving.push({
-                        rideId: tempID,
-                        driverId: driveID
-                    });
-                } else if (checkArr(tempID, driving) === -1) {
-                    driving.push({
-                        rideId: tempID,
-                        driverId: driveID
-                    });
-                }
+                    if (typeof driving.length === 'undefined' || driving.length === 0) {
+                        console.log('Not driving yet');
+                        driving = [];
+                        driving.push({
+                            rideId: tempID,
+                            driverId: driveID
+                        });
+                    } else if (checkArr(tempID, driving) === -1) {
+                        driving.push({
+                            rideId: tempID,
+                            driverId: driveID
+                        });
+                    }
 
-                $localStorage.setObject(constants.MY_RIDES_DRIVER, driving);
+                    $localStorage.setObject(constants.MY_RIDES_DRIVER, driving);
 
-                $ionicHistory.goBack(constants.DRIVER_SIGNUP_BACK_TO_START);
-            };
+                    $ionicHistory.goBack(constants.DRIVER_SIGNUP_BACK_TO_START);
+                };
 
-            var fail = function(data) {
-                //if there is an error (ie 404, 500, etc) redirect to the error page
-                $location.path('/app/error');
-            };
+                var fail = function(data) {
+                    //if there is an error (ie 404, 500, etc) redirect to the error page
+                    $location.path('/app/error');
+                };
 
-            //create new driver for the given event
-            req.post(url, data, success, fail);
-        }
+                //create the post call to create the driver in the DB
+                var url = constants.BASE_SERVER_URL + 'ride/create';
+                var driverData = {
+                    gcm_id: 'dummy_id',
+                    driverName: name,
+                    driverNumber: phonenumber,
+                    event: tempID,
+                    direction: triptype,
+                    seats: seats,
+                    /* TODO fill in the location */
+                    //location: location,
+                    time: leaving
+                };
+                
+                //create new driver for the given event
+                req.post(url, driverData, success, fail);
+            }
+        };
+        
+        var validErr = function(data) {
+            valid = false;
+        };
+        var validData = {
+            phone: phonenumber
+        };
+        var validUrl = constants.BASE_SERVER_URL + 'user/find';
+        //not working
+        req.post(validUrl, validData, validSuccess, validErr);
+        
+        
     };
 
 })
@@ -541,6 +566,20 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         }
 
         /* TODO: delete driver from database */
+        var success = function(data) {
+            console.log("delted successfully");
+        };
+        
+        var fail = function(data) {
+            console.log("Did not delete driver successfully");
+        };
+        var url = constants.BASE_SERVER_URL + 'ride/dropRide';
+        var toDrop = {
+            ride_id: driverID
+        };
+        
+        //drops the driver from the database
+        req.post(url, toDrop, success, fail);
         /* TODO: (push) notify riders that the driver canceled */
 
         $ionicHistory.goBack(constants.DRIVER_VIEW_RIDERS_BACK_TO_START);
