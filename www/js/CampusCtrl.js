@@ -22,12 +22,19 @@ campuses.service('selectedCampuses', function() {
     };
 });
 
+campuses.testin = function()
+    {
+        return true;
+    };
+
+
 campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampuses', 'constants', function($scope, $location, req, selectedCampuses, constants) {
     var url = constants.BASE_SERVER_URL + 'campus/list';
 
     var err = function(xhr, text, err) {
         $location.path('/app/error');
     };
+    $scope.testin = campuses.testin;
 
     var success = function(data) {
         // make object "checkable" for the view
@@ -39,9 +46,6 @@ campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampus
         $scope.choices = data.data;
     };
 
-    /*<<<<<<< HEAD
-            ServerUtil.get("/campuses", 'json', success, err);
-        =======*/
     req.get(url, success, err);
     $scope.title = 'Select Campuses';
     $scope.next = 'Select Ministries';
@@ -52,7 +56,7 @@ campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampus
         var campuses = [];
 
         // adds campuses user checked to list
-        for (var i = 0; i < $scope.choices.length; ++i) {
+        for (var i = 0; i < $scope.choices.length; ++i) {j
             if ($scope.choices[i].checked) {
                 campuses.push($scope.choices[i]);
             }
@@ -62,3 +66,4 @@ campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampus
         $location.path('/app/ministries');
     };
 }]);
+
