@@ -1,6 +1,6 @@
 var min = angular.module('starter.controllers.min', []);
 
-min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$localStorage','selectedCampuses', 'constants', function($scope, $location, $ionicHistory, req, $localStorage, selectedCampuses, constants) {
+min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', '$ionicPopup', 'req', '$localStorage','selectedCampuses', 'constants', function($scope, $location, $ionicHistory, $ionicPopup, req, $localStorage, selectedCampuses, constants) {
     var url = constants.BASE_SERVER_URL + "ministry/find";
     var queryParams = {
         "campuses":{ $in: Object.keys(selectedCampuses.getCampusesObject())}
@@ -9,6 +9,16 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$loca
         //makes the objects "checkable"
         for (var i = 0; i < data.data.length; ++i) {
             data.data[i].checked = false;
+            
+            if (!data.data[i].image) {
+                data.data[i].image = { url: 'img/cru-logo.jpg' };
+            } else if (!data.data[i].image.url) {
+                data.data[i].image.url = 'img/cru-logo.jpg';
+            }
+            
+            if (!data.data[i].description || data.data[i].description.length === 0) {
+                data.data[i].description = 'Sorry, but there is no available description for this ministry.';
+            }
         }
         $scope.ministries = data.data;
     };
@@ -52,6 +62,14 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', 'req', '$loca
         $ionicHistory.nextViewOptions({
             disableAnimate: false,
             disableBack: true
+        });
+    };
+    
+    $scope.showInfo = function(name, desc) {
+        $ionicPopup.show({
+            title: name,
+            template: desc,
+            buttons: [{ text: 'Ok', type: 'button-energized' }]
         });
     };
     
