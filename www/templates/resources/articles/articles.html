@@ -1,5 +1,7 @@
-<ion-view view-title="Resources">
-    <ion-nav-buttons side="right">
+<ion-view >
+    <ion-nav-title>{{title}}</ion-nav-title>
+    <ion-nav-buttons side="right" >
+        <button class="button button-icon button-clear ion-ios-close-empty" ng-click="clearSearch()" ng-if="isSearching"></button>
         <button class="button button-icon button-clear ion-ios-search-strong" ng-click="openSearch()"></button>
     </ion-nav-buttons>
     <ion-content>
