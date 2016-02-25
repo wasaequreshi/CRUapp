@@ -2,3 +2,18 @@
 .bold {
     font-weight: bold;
 }
+
+.disabled {
+    opacity: 0.4;
+}
+
+.button-text {
+    font-size: 40%;
+    line-height: 40%;
+}
+
+.button-text-icon {
+  display: block;
+  font-size: auto;
+  margin-bottom: 3px !important;
+}
