@@ -1,20 +1,25 @@
 <ion-view view-title="{{title}}">
   <ion-content>
     <ion-list>
-        <div class="card" style="background-color: balanced;" ng-repeat-start="ministry in ministries | orderBy : 'campuses[0]'" ng-show={{::setupHeader(ministry)}}>
-            <b class="item item-calm text-center">{{campuses[ministry.campuses[0]].name}} Ministries</b>
+        <div class="item item-divider item-calm text-center bold" ng-repeat-start="ministry in ministries | orderBy : 'campuses[0]'" ng-show={{::setupHeader(ministry)}}>
+            {{campuses[ministry.campuses[0]].name}} Ministries
         </div>
         <div class="card" ng-repeat-end>
-            <ion-checkbox class="item" ng-model="ministry.checked" ng-checked="ministry.checked">
-                {{ministry.name}}
-            </ion-checkbox>
-            <div class="item item-body">
+            <div class="row item item-button-right">
+                <ion-checkbox style="border-bottom: 0px;" ng-model="ministry.checked" ng-checked="ministry.checked">
+                    {{ministry.name}}
+                </ion-checkbox>
+                <button class="col col-10 button button-clear" ng-click="showInfo(ministry.name, ministry.description)">
+                    <i class="icon ion-ios-information energized"></i>
+                </button>
+            </div>
+            <div class="item item-body" >
                 <img class="full-image" src="{{ministry.image.url}}">
             </div>
         </div>
     </ion-list>
   </ion-content>
-  <ion-footer-bar align-title="center"class="bar bar-dark"ng-click="goToNext()">
+  <ion-footer-bar align-title="center" class="bar bar-dark" ng-click="goToNext()">
       <h1 class="title">{{next}} <b class="icon-right ion-arrow-right-c"></b></h1>
   </ion-footer-bar>
 </ion-view>
