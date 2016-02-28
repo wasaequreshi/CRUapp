@@ -1,20 +1,20 @@
 
-var serverURL = "http://54.86.175.74:8080/";
-var tempUserID = "564ee19f6c2f1876527be562";
-var senderId = "276638088511";
+var serverURL = 'http://54.86.175.74:8080/';
+var tempUserID = '564ee19f6c2f1876527be562';
+var senderId = '276638088511';
 
 angular.module('PushModule', [])
 
 .service('pushService', function( $cordovaPushV5, $cordovaDialogs, $localStorage, constants,  $cordovaMedia, $ionicPlatform, $http) {
     var notifications = [];
     var registerDisabled = false;
-    // Put The notification recievers in
+    console.log('Module setup');
+
     // Android Notification Received Handler
     function handleAndroid(notification) {
         console.log(JSON.stringify(notification));
-        // ** NOTE: ** You could add code for when app is in foreground or not, or coming from coldstart here too
-        //             via the console fields as shown.
         console.log("In foreground " + notification.additionalData.foreground  + " Coldstart " + notification.coldstart);
+
         $cordovaDialogs.alert(notification.message, "Push Notification Received");
         
         notifications.push(JSON.stringify(notification.message));
@@ -25,7 +25,7 @@ angular.module('PushModule', [])
         // The app was already open but we'll still show the alert and sound the tone received this way. If you didn't check
         // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
         // the notification when this code runs (weird).
-        if (notification.foreground == "1") {
+        if (notification.foreground == '1') {
             // Play custom audio if a sound specified.
             if (notification.sound) {
                 var mediaSrc = $cordovaMedia.newMedia(notification.sound);
@@ -34,14 +34,13 @@ angular.module('PushModule', [])
 
             if (notification.body && notification.messageFrom) {
                 $cordovaDialogs.alert(notification.body, notification.messageFrom);
-            }
-            else $cordovaDialogs.alert(notification.alert, "Push Notification Received");
+            } else $cordovaDialogs.alert(notification.alert, 'Push Notification Received');
 
             if (notification.badge) {
-                $cordovaPushV5.setBadgeNumber(notification.badge).then(function (result) {
-                    console.log("Set badge success " + result)
-                }, function (err) {
-                    console.log("Set badge error " + err)
+                $cordovaPushV5.setBadgeNumber(notification.badge).then(function(result) {
+                    console.log('Set badge success ' + result);
+                }, function(err) {
+                    console.log('Set badge error ' + err);
                 });
             }
         }
@@ -50,9 +49,8 @@ angular.module('PushModule', [])
         // the data in this situation.
         else {
             if (notification.body && notification.messageFrom) {
-                $cordovaDialogs.alert(notification.body, "(RECEIVED WHEN APP IN BACKGROUND) " + notification.messageFrom);
-            }
-            else $cordovaDialogs.alert(notification.alert, "(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received");
+                $cordovaDialogs.alert(notification.body, '(RECEIVED WHEN APP IN BACKGROUND) ' + notification.messageFrom);
+            } else $cordovaDialogs.alert(notification.alert, '(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received');
         }
     }
 
@@ -60,21 +58,20 @@ angular.module('PushModule', [])
     //
     // type:  Platform type (ios, android etc)
     function storeDeviceToken(devToken) {
-        console.log("Storing registration ID");
-        window.localStorage.setItem("pushID", devToken);
-        
+        console.log('Storing registration ID');
+        window.localStorage.setItem('pushID', devToken);
+
         var tokenObj = {
-            token: devToken,  
+            token: devToken,
             type: ionic.Platform.platform()
         };
-        
-            
-        $http.post(serverURL + "users/" + tempUserID+ "/push",JSON.stringify(tokenObj))
-            .success(function (data, status) {
-                console.log("Token stored, device is successfully subscribed to receive push notifications.");
+
+        $http.post(serverURL + 'users/' + tempUserID + '/push',JSON.stringify(tokenObj))
+            .success(function(data, status) {
+                console.log('Token stored, device is successfully subscribed to receive push notifications.');
             })
-            .error(function (data, status) {
-                console.log("Error storing device token." + data + " " + status)
+            .error(function(data, status) {
+                console.log('Error storing device token.' + data + ' ' + status);
             }
         );
     }
@@ -84,6 +81,7 @@ angular.module('PushModule', [])
     // time the app opens which this currently does. However in many cases you will always receive the same device token as
     // previously so multiple userids will be created with the same token unless you add code to check).
     function removeDeviceToken() {
+
         var regId = window.localStorage.getItem("pushID");
         var tkn = {"token": regId};
         console.log("Storing registration ID");
@@ -95,7 +93,6 @@ angular.module('PushModule', [])
             .error(function (data, status) {
                 console.log("Error removing device token." + data + " " + status)
             });
-        
     }
   
     function init(){
@@ -148,17 +145,21 @@ angular.module('PushModule', [])
         $cordovaPushV5.onNotification();
         $cordovaPushV5.onError();
     };
+    // Unregister - Unregister your device token from APNS or GCM
+    // ** Instead, just remove the device token from your db and stop sending notifications **
     function unreg() {
         console.log("Unregister called");
         removeDeviceToken();
         registerDisabled = false;
+
         //need to define options here, not sure what that needs to be but this is not recommended anyway
         $cordovaPushV5.unregister().then(function(result) {
-            console.log("Unregister success " + result);//
+            console.log('Unregister success ' + result);//
         }, function(err) {
-            console.log("Unregister error " + err)
+            console.log('Unregister error ' + err);
         });
     };
+
     function onRecieved(event, notification) {
         console.log(JSON.stringify([notification]));
         if (ionic.Platform.isAndroid()) {
@@ -179,21 +180,18 @@ angular.module('PushModule', [])
     var exports =  { 
     
         push_init : init,
-        
-        // Register
+
         registration_setup : registration,
 
         push_setup : setup,
-        
-        // Unregister - Unregister your device token from APNS or GCM
-        // Not recommended:  See http://developer.android.com/google/gcm/adv.html#unreg-why
-        //                   and https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplication_Class/index.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications
-        //
-        // ** Instead, just remove the device token from your db and stop sending notifications **
+
         unregister : unreg,
-        onNotificationRecieved: onRecieved,
+
+        onNotificationRecieved : onRecieved,
+
         onError : onErr
     };
-    return exports;
     
+    return exports;
+
 });
