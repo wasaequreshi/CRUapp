@@ -104,7 +104,7 @@ angular.module('PushModule', [])
             }
             topics.push('global');
         }
-        console.log("MINISITRYIDS push init" + JSON.stringify(topics));
+        console.log("TOPICS SUBSCRIBED TO push init" + JSON.stringify(topics));
         console.log("push init attempt start");
         var config = {
            "android": { "senderID"  : senderId,
@@ -161,7 +161,7 @@ angular.module('PushModule', [])
     };
 
     function onRecieved(event, notification) {
-        console.log(JSON.stringify([notification]));
+        console.log("$cordovaPushV5:errorOccurred GOT NOTIFICATION:" + JSON.stringify(notification));
         if (ionic.Platform.isAndroid()) {
           handleAndroid(notification);
         }
@@ -191,7 +191,7 @@ angular.module('PushModule', [])
 
         onError : onErr
     };
-    
+
     return exports;
 
 });

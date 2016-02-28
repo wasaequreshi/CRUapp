@@ -1,6 +1,6 @@
 var min = angular.module('starter.controllers.min', ["PushModule"]);
 
-min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $localStorage, selectedCampuses, constants, pushService) {
+min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $localStorage, $ionicPopup, selectedCampuses, constants, pushService) {
 
     var url = constants.BASE_SERVER_URL + "ministry/find";
     var queryParams = {
