@@ -17,3 +17,7 @@
   font-size: auto;
   margin-bottom: 3px !important;
 }
+
+.no-border-bottom {
+    border-bottom: 0px !important;
+}
