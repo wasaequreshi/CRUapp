@@ -1,4 +1,4 @@
-var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles', 'videos', 'ngCordova', 'ionic','PushModule']);
+var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles', 'videos', 'ngCordova', 'ionic','PushModule', 'ComGroupCtrl']);
 
 // allows for access of variable across controllers
 module.service('allEvents', function() {
