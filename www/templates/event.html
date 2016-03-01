@@ -12,7 +12,7 @@
         </div>
       </div>
       
-      <button class="icon-left ion-android-calendar button button-block button-positive" ng-click="addEventToCalendar(myEvent.name, myEvent.startDate, myEvent.endDate, myEvent.location, myEvent._id)">Add to Calendar</button>
+      <button class="icon-left ion-android-calendar button button-block button-positive" ng-click="addEventToCalendar(myEvent.name, myEvent.location, myEvent._id, myEvent.secretStartDate, myEvent.secretEndDate)">Add to Calendar</button>
       
       <!-- Riding buttons -->
       <button class="icon-left ion-android-car button button-block button-balanced" ng-click="goToGetRide(myEvent._id)" ng-show="!isRiding && !isDriving">Get a ride</button>
