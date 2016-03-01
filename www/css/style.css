@@ -21,3 +21,10 @@
 .no-border-bottom {
     border: 0px !important;
 }
+
+.menu-header-image {
+  margin:auto;
+  padding: auto;
+  height: 75%;
+  max-height: auto;
+}
