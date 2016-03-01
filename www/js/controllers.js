@@ -57,18 +57,18 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 
     //When a button is clicked, this method is invoked
     //Takes in as a param the eventName, startDate, endDate, and location
-    $scope.addEventToCalendar = function(eventName, location, _id, secret1, secret2) {
+    $scope.addEventToCalendar = function(eventName, location, _id, originalStartDate, originalEndDate) {
         //Database has startDate as 2015-10-15T19:00:00.000Z
         //So I split at the "T" to seperate the date and time
     		
-        splitStartDateAndTime = secret1.split('T');
+        splitStartDateAndTime = originalStartDate.split('T');
         //Splitting up the date into pieces
         splitStartDate = splitStartDateAndTime[0].split('-');
         //Splitting up the time into pieces
         splitStartTime = splitStartDateAndTime[1].split(':');
 
         //Same as before but now I am doing it for the end date
-        splitEndDateAndTime = secret2.split('T');
+        splitEndDateAndTime = originalEndDate.split('T');
         splitEndDate = splitEndDateAndTime[0].split('-');
         splitEndTime = splitEndDateAndTime[1].split(':');
 
@@ -78,11 +78,11 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         finalEndDate = new Date(splitEndDate[0], Number(splitEndDate[1] - 1), splitEndDate[2],
                                splitEndTime[0], splitEndTime[1], 0, 0, 0);
 
-        helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id, secret1, secret2);
+        helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate, originalEndDate);
     };
 
     helper_function_adding_calendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
-        originEndDate) {
+        originalEndDate) {
         //Using ngcordova to create an event to their native calendar
         $cordovaCalendar.createEvent({
           title: eventName,
@@ -100,7 +100,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
               list_of_added_events = {};
           }
           list_of_added_events[_id] = {'name': eventName, 'location': location['street'], 'secretStartDate': originalStartDate,
-            'secretEndDate': originEndDate};
+            'secretEndDate': originalEndDate};
           //Added event information to local phone
           $localStorage.setObject('list_of_added_events', list_of_added_events);
 
@@ -108,21 +108,12 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
           var alertPopup = $ionicPopup.alert(
           {
               title: 'Event Added',
-              template: eventName + ' has been added to your calendar :)'
+              template: eventName + ' has been added to your calendar!'
           });
 
       }, function(err) {
           console.error('There was an error: ' + err);
           //If unsuccessful added, then an alert with a error should pop up
-          //Not sure if we want to put the 'err' in the message
-          //Get the data from the local storage of list of all added events
-
-          //This needs to be removed, used for testing since i do not have android device
-          // list_of_added_events = $localStorage.getObject('list_of_added_events');
-          // list_of_added_events[_id] = {'name': eventName, 'location': location['street'], 'startDate': originalStartDate,
-          //   'endDate': originEndDate};
-          // //Added event information to local phone
-          // $localStorage.setObject('list_of_added_events', list_of_added_events);
 
           var alertPopup = $ionicPopup.alert(
           {
@@ -240,16 +231,16 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     };
 
     update_event = function(info_for_event, val) {
-        var secret1 = info_for_event['secretStartDate'];
-        var secret2 = info_for_event['secretEndDate'];
-        splitStartDateAndTime = secret1.split('T');
+        var originalStartDate = info_for_event['secretStartDate'];
+        var originalEndDate = info_for_event['secretEndDate'];
+        splitStartDateAndTime = originalStartDate.split('T');
         //Splitting up the date into pieces
         splitStartDate = splitStartDateAndTime[0].split('-');
         //Splitting up the time into pieces
         splitStartTime = splitStartDateAndTime[1].split(':');
 
         //Same as before but now I am doing it for the end date
-        splitEndDateAndTime = secret2.split('T');
+        splitEndDateAndTime = originalEndDate.split('T');
         splitEndDate = splitEndDateAndTime[0].split('-');
         splitEndTime = splitEndDateAndTime[1].split(':');
 
@@ -275,17 +266,17 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     };
 
     helper_function_update_calendar = function(val) {
-      var secret1 = val.secretStartDate;
-      var secret2 = val.secretEndDate;
+      var originalStartDate = val.secretStartDate;
+      var originalEndDate = val.secretEndDate;
 
-      splitStartDateAndTime = secret1.split('T');
+      splitStartDateAndTime = originalStartDate.split('T');
       //Splitting up the date into pieces
       splitStartDate = splitStartDateAndTime[0].split('-');
       //Splitting up the time into pieces
       splitStartTime = splitStartDateAndTime[1].split(':');
 
       //Same as before but now I am doing it for the end date
-      splitEndDateAndTime = secret2.split('T');
+      splitEndDateAndTime = originalEndDate.split('T');
       splitEndDate = splitEndDateAndTime[0].split('-');
       splitEndTime = splitEndDateAndTime[1].split(':');
 
