@@ -19,5 +19,12 @@
 }
 
 .no-border-bottom {
-    border-bottom: 0px !important;
+    border: 0px !important;
+}
+
+.menu-header-image {
+  margin:auto;
+  padding: auto;
+  height: 75%;
+  max-height: auto;
 }
