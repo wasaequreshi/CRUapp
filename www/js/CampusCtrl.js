@@ -56,7 +56,7 @@ campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampus
         var campuses = [];
 
         // adds campuses user checked to list
-        for (var i = 0; i < $scope.choices.length; ++i) {j
+        for (var i = 0; i < $scope.choices.length; ++i) {
             if ($scope.choices[i].checked) {
                 campuses.push($scope.choices[i]);
             }
