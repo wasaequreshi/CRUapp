@@ -27,6 +27,7 @@ var leaderSuccess = function(com, date, comGroups, scope) {
         });
         
         scope.group = comGroups[0];
+        scope.leaderPhone = leader.phone;
     };
 };
 
@@ -128,7 +129,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     };
 })
 
-.controller('GroupDetailCtrl', function($scope, $stateParams, $ionicModal, $location, constants, req) {
+.controller('GroupDetailCtrl', function($scope, $stateParams, $ionicModal, $location, constants, req, $cordovaSms) {
     var id = $stateParams.id; 
     
     /*$scope.group = {
@@ -172,7 +173,34 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         $scope.groupSignupModal.show();
     };
     
-    $scope.signupForGroup = function() {
-        // do stuff here  
+    $scope.signupForGroup = function(groupSignupData) {
+        console.log("Got here");
+        var name = groupSignupData.name;
+        var email = groupSignupData.email;
+        var phone = groupSignupData.phone;
+        
+        //CONFIGURATION
+        var options = {
+            replaceLineBreaks: false, // true to replace \n by a new line, false by default
+            android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+                //intent: '' // send SMS without open any other app
+            }
+        };
+        var message = "I would love to be added to your community group. My name is " + name + 
+            ". Please contact me by email: " + email + " or phone: " + phone; 
+        
+        
+
+        $cordovaSms
+          //TODO change hardcoded phone to this: $scope.leaderPhone
+          .send("7074943342", message, options)
+          .then(function() {
+            // Success! SMS was sent
+          }, function(error) {
+            // An error occurred
+          });
+        console.log("Got here");
+        $scope.closeSignupModal();
     };
 });
