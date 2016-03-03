@@ -11,7 +11,7 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', '$ionicPopup'
         for (var i = 0; i < data.data.length; ++i) {
             data.data[i].checked = false;
             
-            if (alt) {
+            if (data.data[i].name !== "Slo Cru") {
                 if (!data.data[i].image) {
                     data.data[i].image = { url: 'img/cru-logo.jpg' };
                 } else if (!data.data[i].image.url) {
@@ -19,12 +19,6 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', '$ionicPopup'
                 }
             } else {
                 data.data[i].image = { url: 'img/cru-logo.jpg' };
-            }
-            
-            if (alt) {
-                alt = false;
-            } else {
-                alt = true;
             }
             
             if (!data.data[i].description || data.data[i].description.length === 0) {

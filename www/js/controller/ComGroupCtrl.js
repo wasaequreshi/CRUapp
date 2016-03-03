@@ -66,7 +66,6 @@ var parseDate = function(eventDate) {
 
 groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constants, req) {
     /* populating with dummy data to be changed when the db actually contains these groups
->>>>>>> Stashed changes
     $scope.groups = [
         { _id: 1, leader: "Donald Trumpcard", time: "1pm - 4pm", days: "Mon, Wed, Fri" },
         { _id: 1, leader: "Cody Beers", time: "5pm - 8pm", days: "Mon, Wed, Fri" },
@@ -78,7 +77,27 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         { _id: 1, leader: "Katy Perry (dream gurl)", time: "10pm - 12am", days: "Mon, Tues, Wed, Thurs, Fri" },
     ];*/
     $scope.days = dayArr;
+    var date = new Date();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
     
+    if (hours < 10) {
+        hours = '0' + hours;
+    }
+    
+    if (minutes < 10) {
+        minutes = '0' + minutes;
+    }
+    
+    if (seconds < 10) {
+        seconds = '0' + seconds;
+    }
+    
+    console.log(hours + ':' + minutes + ':' + seconds);
+    $scope.currentTime = hours + ':' + minutes + ':' + seconds;
+    
+        
     var comSuccess = function(data) {
         var comList = data.data;
         var idx;
