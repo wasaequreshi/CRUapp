@@ -1,3 +1,4 @@
+
 var module = angular.module('starter.controllers', ['starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles', 'videos', 'ngCordova', 'ionic','PushModule', 'ComGroupCtrl']);
 
 // allows for access of variable across controllers
@@ -13,19 +14,19 @@ module.service('allEvents', function() {
         }
     };
 });
-
 module.run(function($ionicPlatform) {
-  	$ionicPlatform.ready(function() {
-    		if(window.cordova && window.cordova.plugins.Keyboard) {
-    		    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    		}
-    		if(window.StatusBar) {
-    		    StatusBar.styleDefault();
-    		}
-  	});
+    $ionicPlatform.ready(function() {
+        if(window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if(window.StatusBar) {
+            StatusBar.styleDefault();
+        }
+    });
 });
 
-module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, $cordovaInAppBrowser) {
+
+module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicModal, $ionicPlatform, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, $cordovaInAppBrowser) {
 
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -136,10 +137,34 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     };
 
     //facebook setup
-    $scope.showEventFacebook = function(url) 
-    {
-        $cordovaInAppBrowser.open(url, '_system', 'location=no');
+
+  $scope.showEventFacebook = function(url) {
+    $cordovaInAppBrowser.open(url, '_system', 'location=no');
+  };
+
+    /**
+    * Set up push notification 
+    */
+    $rootScope.$on('$cordovaPushV5:notificationReceived', pushService.onNotificationRecieved);//);
+    //error happened
+    $rootScope.$on('$cordovaPushV5:errorOccurred', pushService.onError);//);
+
+
+
+  //set up when the application is ready 
+  $ionicPlatform.ready(function(){
+    // call to register automatically upon device ready
+
+
+    promise = pushService.push_init();
+    if (promise){
+      promise.then(function (result) {
+          console.log("Init success " + JSON.stringify(result));
+      }, function (err) {
+          console.log("Init error " + JSON.stringify(err));
+      });
     };
+  })
 })
 
 .controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory, allEvents, $cordovaCalendar) {
@@ -148,7 +173,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     
     //reloads page everytime
     $scope.$on('$ionicView.enter', function() {
-
+        $scope.$emit('$cordovaPushV5:notificationReceived',{"stillthere":"?"});
         var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
         console.log(mins + 'hmmmm');
         var url;
@@ -199,7 +224,6 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
             $location.path('/app/error');
         };
 
-        console.log('MINISITRIES' + JSON.stringify(mins));
 
         if (mins === '' || mins === [] || typeof mins === 'undefined') {
             url = constants.BASE_SERVER_URL + 'event/list';
@@ -227,7 +251,9 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         };
     });
 
+
     var helper_function_updating_calendar = function(val) {
+
         //check if event changed
         list_of_added_events = $localStorage.getObject('list_of_added_events');
         info_for_event = list_of_added_events[val._id];
@@ -376,6 +402,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     req.get(url, success, err);
 
     $scope.$on('$ionicView.enter', function() {
+
         if (val) {
             var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
             var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
@@ -407,7 +434,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
     };
 })
 
-.controller('MissionsCtrl', function($scope, $location, req, constants) {
+.controller('MissionsCtrl', function($scope,$rootScope,$timeout, $location, req, constants) {
     var url = constants.BASE_SERVER_URL + 'summermission/list';
     var missions = [];
     var success = function(data) {
@@ -440,6 +467,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 })
 
 .controller('MissionCtrl', function($scope, $stateParams, req, constants) {
+
     var url = constants.BASE_SERVER_URL + 'summermission/' + $stateParams.missionId;
     var success = function(value) {
         var val = value.data;

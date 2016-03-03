@@ -3,6 +3,8 @@ var utils = angular.module('starter.controllers.utils', []);
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
     'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/',
+    'GCM_SENDER_ID': '276638088511',
+
     'CAMPUSES_CONFIG': 'campuses',
     'MY_RIDES_RIDER': 'myRidesRider',
     'MY_RIDES_DRIVER': 'myRidesDriver',

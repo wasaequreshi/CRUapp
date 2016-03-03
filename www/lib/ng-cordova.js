@@ -6096,7 +6096,7 @@ angular.module('ngCordova.plugins.push_v5', [])
         }
         return q.promise;
       },
-      unregister : function () {
+      unregister : function (topics) {
         var q = $q.defer();
         if (push === undefined) {
           q.reject(new Error('init must be called before any other operation'));
@@ -6105,7 +6105,7 @@ angular.module('ngCordova.plugins.push_v5', [])
             q.resolve(success);
           },function (error) {
             q.reject(error);
-          });
+          }, topics);
         }
         return q.promise;
       },
