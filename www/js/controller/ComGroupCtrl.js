@@ -1,6 +1,6 @@
 var groups = angular.module('ComGroupCtrl', []);
 
-groups.controller('GroupCtrl', function($scope, $location) {
+groups.controller('GroupCtrl', function($scope, $ionicModal, $location) {
     // populating with dummy data to be changed when the db actually contains these groups
     $scope.groups = [
         { _id: 1, leader: "Donald Trumpcard", time: "1pm - 4pm", days: "Mon, Wed, Fri" },
@@ -16,6 +16,26 @@ groups.controller('GroupCtrl', function($scope, $location) {
     $scope.viewDetails = function(id) {
         console.log(id);
         $location.path('/app/groups/' + id);  
+    };
+    
+    $ionicModal.fromTemplateUrl('templates/communitygroup/groupFilter.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.groupFilterModal = modal;
+    });
+
+    // Triggered in the modal to close it
+    $scope.closeGroupFilterModal = function() {
+        $scope.groupFilterModal.hide();
+    };
+
+    // Open the modal
+    $scope.openGroupFilterModal = function() {
+        $scope.groupFilterModal.show();
+    };
+    
+    $scope.filterGroups = function() {
+        // do stuff here  
     };
 })
 
