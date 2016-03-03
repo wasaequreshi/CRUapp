@@ -15,15 +15,15 @@ module.service('allEvents', function() {
 });
 
 module.run(function($ionicPlatform) {
-	$ionicPlatform.ready(function() {
-		if(window.cordova && window.cordova.plugins.Keyboard) {
-		cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-		}
-		if(window.StatusBar) {
-		StatusBar.styleDefault();
-		}
-		});
-	});
+  	$ionicPlatform.ready(function() {
+    		if(window.cordova && window.cordova.plugins.Keyboard) {
+    		    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    		}
+    		if(window.StatusBar) {
+    		    StatusBar.styleDefault();
+    		}
+  	});
+});
 
 module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, $cordovaInAppBrowser) {
 
@@ -39,21 +39,21 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 
     // Create the login modal that we will use later
     $ionicModal.fromTemplateUrl('templates/login.html', {
-      scope: $scope
-  }).then(function(modal) {
-      $scope.modal = modal;
-  });
+        scope: $scope
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
 
     // Triggered in the login modal to close it
     $scope.closeLogin = function() {
-      $scope.modal.hide();
-      $scope.modal.remove();
-  };
+        $scope.modal.hide();
+        $scope.modal.remove();
+    };
 
     // Open the login modal
     $scope.login = function() {
       $scope.modal.show();
-  };
+    };
 
     //When a button is clicked, this method is invoked
     //Takes in as a param the eventName, startDate, endDate, and location
@@ -129,19 +129,23 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
 
         // Simulate a login delay. Remove this and replace with your login
         // code if using a login system
-        $timeout(function() {
+        $timeout(function() 
+        {
             $scope.closeLogin();
         }, 1000);
     };
 
     //facebook setup
-    $scope.showEventFacebook = function(url) {
-      $cordovaInAppBrowser.open(url, '_system', 'location=no');
-  };
+    $scope.showEventFacebook = function(url) 
+    {
+        $cordovaInAppBrowser.open(url, '_system', 'location=no');
+    };
 })
 
 .controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory, allEvents, $cordovaCalendar) {
-
+    var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
     //reloads page everytime
     $scope.$on('$ionicView.enter', function() {
 
@@ -156,25 +160,36 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
                 var locale = 'en-us';
 				
                 var eventDate = new Date(val.startDate);
-						temp1 = val.startDate;
-						temp2 = val.endDate;
-            val.secretStartDate = temp1;
-            val.secretEndDate = temp2;
-    				val.startDate = eventDate.toLocaleDateString(locale, {weekday: 'long'}) + ' - ' +
-                    eventDate.toLocaleDateString(locale, {month: 'long'}) + ' ' +
-                    eventDate.getDate() + ', ' + eventDate.getFullYear();
+    						temp1 = val.startDate;
+    						temp2 = val.endDate;
+                val.secretStartDate = temp1;
+                val.secretEndDate = temp2;
+                console.log("Before:");
+        				console.log(val.startDate);
+                console.log(val.endDate);
+                console.log("LocaleString: start");
+                console.log("Day:");
+                console.log(eventDate.getDay());
+                console.log(eventDate.toLocaleDateString(locale, {weekday: 'long'}));
+                val.startDate = days[eventDate.getDay()] + ' - ' +
+                        months[eventDate.getMonth()] + ' ' +
+                        eventDate.getDate() + ', ' + eventDate.getFullYear();
 
-                // i <3 code duplication
                 eventDate = new Date(val.endDate);
-                val.endDate = eventDate.toLocaleDateString(locale, {weekday: 'long'}) + ' - ' +
-                    eventDate.toLocaleDateString(locale, {month: 'long'}) + ' ' +
+                console.log("LocaleString: end");
+                console.log(eventDate.toLocaleDateString(locale, {weekday: 'long'}));
+                val.endDate = days[eventDate.getDay()] + ' - ' +
+                    months[eventDate.getMonth()] + ' ' +
                     eventDate.getDate() + ', ' + eventDate.getFullYear();
 				
                 if (!value.image) {
                     val.image = {url: 'img/cru-logo.jpg'};
                 }
-               helper_function_updating_calendar(val);
+                console.log("After:");
+                console.log(val.startDate);
+                console.log(val.endDate);
 
+                helper_function_updating_calendar(val);
                 events.push(val);
 				
             });
@@ -212,7 +227,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         };
     });
 
-    helper_function_updating_calendar = function(val) {
+    var helper_function_updating_calendar = function(val) {
         //check if event changed
         list_of_added_events = $localStorage.getObject('list_of_added_events');
         info_for_event = list_of_added_events[val._id];
@@ -230,7 +245,7 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         }
     };
 
-    update_event = function(info_for_event, val) {
+    var update_event = function(info_for_event, val) {
         var originalStartDate = info_for_event['secretStartDate'];
         var originalEndDate = info_for_event['secretEndDate'];
         splitStartDateAndTime = originalStartDate.split('T');
@@ -256,16 +271,16 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
             startDate: finalStartDate,
             endDate: finalEndDate
         }).then(function(result) {
-          console.log("Success delete");
-          helper_function_update_calendar(val);
-          // success
+            console.log("Success delete");
+            helper_function_update_calendar(val);
+            // success
         }, function(err) {
             // error
             console.log("Failed to delete");
         });
     };
 
-    helper_function_update_calendar = function(val) {
+    var helper_function_update_calendar = function(val) {
       var originalStartDate = val.secretStartDate;
       var originalEndDate = val.secretEndDate;
 
@@ -287,33 +302,36 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
                              splitEndTime[0], splitEndTime[1], 0, 0, 0);
       //Using ngcordova to create an event to their native calendar
       $cordovaCalendar.createEvent({
-        title: val.name,
-        location:  val.location['street'],
-        notes: 'This is a note',
-        startDate: finalStartDate,
-        endDate: finalEndDate
-    }).then(function(result) {
+          title: val.name,
+          location:  val.location['street'],
+          notes: 'This is a note',
+          startDate: finalStartDate,
+          endDate: finalEndDate
+      }).then(function(result) {
 
-        console.log('Event created successfully');
+          console.log('Event created successfully');
 
-        //Get the data from the local storage of list of all added events
-        list_of_added_events = $localStorage.getObject('list_of_added_events');
+          //Get the data from the local storage of list of all added events
+          list_of_added_events = $localStorage.getObject('list_of_added_events');
 
-        list_of_added_events[val._id] = {'name': val.name, 'location': val.location['street'], 'secretStartDate': val.secretStartDate,
-        'secretEndDate': val.secretEndDate};
+          list_of_added_events[val._id] = {'name': val.name, 'location': val.location['street'], 'secretStartDate': val.secretStartDate,
+          'secretEndDate': val.secretEndDate};
 
-        //Added event information to local phone
-        $localStorage.setObject('list_of_added_events', list_of_added_events);
+          //Added event information to local phone
+          $localStorage.setObject('list_of_added_events', list_of_added_events);
 
-    }, function(err) {
-        console.error('There was an error: ' + err);
+      }, function(err) {
+          console.error('There was an error: ' + err);
 
-    });
-  };
+      });
+    };
 
 })
 
 .controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, req, convenience, constants) {
+    var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
     var url = constants.BASE_SERVER_URL + 'event/' + $stateParams.eventId;
 
     var val;
@@ -338,9 +356,9 @@ module.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaCal
         var temp2 = val.endDate;
         val.secretStartDate = temp1;
         val.secretEndDate = temp2;
-        val.startDate = eventDate.toLocaleDateString(locale, {weekday: 'long'}) + ' - ' +
-            eventDate.toLocaleDateString(locale, {month: 'long'}) + ' ' +
-            eventDate.getDate() + ', ' + eventDate.getFullYear();
+        val.startDate = days[eventDate.getDay()] + ' - ' +
+                        months[eventDate.getMonth()] + ' ' +
+                        eventDate.getDate() + ', ' + eventDate.getFullYear();
 
         var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
         var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
