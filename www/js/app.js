@@ -231,7 +231,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
       }
   })
 
-.state('app.resources.videos', {
+  .state('app.resources.videos', {
       url: '/videos',
       views: {
           'resources-videos': {
@@ -245,7 +245,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
           }
 
       }
-  });
+  })
+
+    .state('app.groups', {
+        url: '/groups',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/communitygroup/groups.html',
+                controller: 'GroupCtrl'
+            }
+        }
+    })
+    
+    .state('app.groupDetail', {
+        url: '/groups/:id',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/communitygroup/groupDetail.html',
+                controller: 'GroupDetailCtrl'
+            }
+        }
+    });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/events');

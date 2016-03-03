@@ -48,6 +48,53 @@ var parseDate = function(eventDate) {
     };
 };
 
+var go2RideData = function(tempID, isDriving, location, constants, scope, ionicPopup, localStorage) {
+    if (!isDriving) {
+        var riding = localStorage.getObject(constants.MY_RIDES_RIDER);
+        var isRider = checkArr(tempID, riding);
+
+        if (isRider != -1) {
+            var driverID = riding[isRider].driverId;
+            location.path('/app/rides/' + tempID + '/driver/' + driverID);
+        } else {
+            location.path('/app/rides/' + tempID + '/drivers');
+        }
+    } else {
+        var myPopup = ionicPopup.show({
+            template: '<p>Sorry, but you cannot get a ride to an event if you are already signed up as a driver.</p>',
+            title: '<b>You Cannot Ride and Drive</b>',
+            scope: scope,
+            buttons: [
+              {text: 'Ok', type: 'button-balanced'},
+            ]
+        });
+    }
+}; 
+
+var go2DriveData = function(tempID, isRiding, location, constants, scope, ionicPopup, localStorage) {
+    // if the user is already a rider, don't allow them to sign up to drive
+    if (!isRiding) {
+        var driving = localStorage.getObject(constants.MY_RIDES_DRIVER);
+        var isDriver = checkArr(tempID, driving);
+
+        //if a driver for this event
+        if (isDriver != -1) {
+            location.path('/app/drive/' + tempID + '/riders' + '/' + driving[isDriver].driverId);
+        } else {
+            location.path('/app/drive/' + tempID);
+        }
+    } else {
+        var myPopup = ionicPopup.show({
+            template: '<p>Sorry, but you cannot drive to an event if you are already signed up to be a rider</p>',
+            title: '<b>You Cannot Drive and Ride</b>',
+            scope: scope,
+            buttons: [
+              {text: 'Ok', type: 'button-balanced'},
+            ]
+        });
+    }
+};
+
 ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPopup, req, $localStorage, allEvents, constants) {
     //TO DO CHANGE URL
     /* url = $ajax.buildQueryUrl(constants.BASE_SERVER_URL + 'events', "mins",
@@ -89,52 +136,11 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     });
 
     $scope.goToRideData = function(tempID, isDriving) {
-
-        if (!isDriving) {
-            var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
-            var isRider = checkArr(tempID, riding);
-
-            if (isRider != -1) {
-                var driverID = riding[isRider].driverId;
-                $location.path('/app/rides/' + tempID + '/driver/' + driverID);
-            } else {
-                $location.path('/app/rides/' + tempID + '/drivers');
-            }
-        } else {
-            var myPopup = $ionicPopup.show({
-                template: '<p>Sorry, but you cannot get a ride to an event if you are already signed up as a driver.</p>',
-                title: '<b>You Cannot Ride and Drive</b>',
-                scope: $scope,
-                buttons: [
-                  {text: 'Ok', type: 'button-balanced'},
-                ]
-            });
-        }
+        go2RideData(tempID, isDriving, $location, constants, $scope, $ionicPopup, $localStorage);
     };
 
     $scope.goToDriveData = function(tempID, isRiding) {
-
-        // if the user is already a rider, don't allow them to sign up to drive
-        if (!isRiding) {
-            var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
-            var isDriver = checkArr(tempID, driving);
-
-            //if a driver for this event
-            if (isDriver != -1) {
-                $location.path('/app/drive/' + tempID + '/riders' + '/' + driving[isDriver].driverId);
-            } else {
-                $location.path('/app/drive/' + tempID);
-            }
-        } else {
-            var myPopup = $ionicPopup.show({
-                template: '<p>Sorry, but you cannot drive to an event if you are already signed up to be a rider</p>',
-                title: '<b>You Cannot Drive and Ride</b>',
-                scope: $scope,
-                buttons: [
-                  {text: 'Ok', type: 'button-balanced'},
-                ]
-            });
-        }
+        go2DriveData(tempID, isRiding, $location, constants, $scope, $ionicPopup, $localStorage);
     };
 })
 

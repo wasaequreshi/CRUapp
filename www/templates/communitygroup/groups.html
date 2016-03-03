@@ -1,0 +1,22 @@
+<ion-view view-title="Community Groups">
+    <ion-content>
+        <div class="list card" ng-repeat="group in groups">
+            <div ng-click="viewDetails(group._id)">
+                <div class="item item-icon-left">
+                    <i class="icon ion-person dark"></i>
+                    {{group.leader}} <!-- need to change to fit whatever the model is when it exists in the db -->
+                </div>
+
+                <div class="item item-icon-left">
+                    <i class="icon ion-ios-time dark"></i>
+                    {{group.time}}
+                </div>
+
+                <div class="item item-icon-left">
+                    <i class="icon ion-android-calendar dark"></i>
+                    {{group.days}}
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

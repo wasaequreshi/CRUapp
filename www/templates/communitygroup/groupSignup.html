@@ -1,0 +1,28 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Join Community Group</h1>
+        <div class="buttons">
+            <button class="button button-clear button-icon ion-close-round" ng-click="closeSignupModal()"></button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="signupForGroup()">
+            <div class="list">
+                <label class="item item-input">
+                    <input type="text" placeholder="Full Name" ng-model="groupSignupData.name">
+                </label>
+                <label class="item item-input">
+                    <input type="tel" placeholder="Phone Number" ng-model="groupSignupData.phone">
+                </label>
+                <label class="item item-input">
+                    <input type="email" placeholder="Email Address" ng-model="groupSignupData.email">
+                </label>
+                <label class="item no-border-bottom">
+                    <button class="button button-block button-energized" type="submit">
+                        Join!
+                    </button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>
