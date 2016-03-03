@@ -82,7 +82,6 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
                     }
                 }
             }
-            console.log("visible " + i + " " + $scope.articles[i].visible);
         }
         $scope.isSearching = true;
         $scope.tagsModal.hide();
@@ -164,28 +163,14 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         $location.path('/app/error');
     };
 
-    //When successfully getting the articles from the db, the following function
-    //will be executed
     var success_getting_article_tags = function(data) {
-        //Just a cool message
         console.log('Successfully got tags: ' + data);
 
-        // make object "checkable" for the view
-        for (var i = 0; i < data.data.length; ++i) {
-            data.data[i].checked = false;
-        }
-
-        //Getting list of articles from request
         tags = data['data'];
-
-        //Setting scope so view can have access to them
-        $scope.tags = tags;
-
-        //Debugging to view data
-
-        for (var i = 0; i < tags.length; i++) {
-            console.log(tags[i]);
+        for (var i = 0; i < tags.length; ++i) {
+            tags[i].checked = false;
         }
+        $scope.tags = tags;
     };
 
     var failure_getting_article_tags = function(data) {
