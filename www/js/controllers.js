@@ -136,12 +136,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
         }, 1000);
     };
 
-    //facebook setup
-
-  $scope.showEventFacebook = function(url) {
-    $cordovaInAppBrowser.open(url, '_system', 'location=no');
-  };
-
     /**
     * Set up push notification 
     */
@@ -354,7 +348,7 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
 
 })
 
-.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, req, convenience, constants) {
+.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, $cordovaInAppBrowser, req, convenience, constants) {
     var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
@@ -431,6 +425,10 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
         var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
         var index = checkArr(id, driving);
         $location.path('/app/drive/' + id + '/riders/' + driving[index].driverId);
+    };
+    
+    $scope.showEventFacebook = function(url) {
+        $cordovaInAppBrowser.open(url, '_system');
     };
 })
 
