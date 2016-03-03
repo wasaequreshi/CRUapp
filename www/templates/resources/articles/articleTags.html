@@ -1,0 +1,27 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Article Tags</h1>
+        <div class="buttons">
+            <button class="button button-clear button-icon ion-close-round" ng-click="closeTags()"></button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+
+    <ion-list>
+      <ion-checkbox ng-repeat="tag in tags" ng-model="tag.checked" ng-checked="tag.checked">
+        {{tag.title}}
+      </ion-item>
+    </ion-list>
+
+        <form ng-submit="applyTags()">
+            <div class="list">
+                <label class="item" style="border-bottom: none;">
+                    <button class="button button-block button-positive" type="submit">
+                        <i class="icon ion-ios-search-strong"></i>
+                        Filter By Tag
+                    </button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>
