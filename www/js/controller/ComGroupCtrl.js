@@ -129,7 +129,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     };
 })
 
-.controller('GroupDetailCtrl', function($scope, $stateParams, $ionicModal, $location, constants, req, $cordovaSms) {
+.controller('GroupDetailCtrl', function($scope, $stateParams, $ionicModal, $location, constants, req, $cordovaSms, $ionicPopup) {
     var id = $stateParams.id; 
     
     /*$scope.group = {
@@ -183,8 +183,8 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         var options = {
             replaceLineBreaks: false, // true to replace \n by a new line, false by default
             android: {
-                intent: 'INTENT'  // send SMS with the native android SMS messaging
-                //intent: '' // send SMS without open any other app
+                //intent: 'INTENT'  // send SMS with the native android SMS messaging
+                intent: '' // send SMS without open any other app
             }
         };
         var message = "I would love to be added to your community group. My name is " + name + 
@@ -196,7 +196,14 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
           //TODO change hardcoded phone to this: $scope.leaderPhone
           .send("7074943342", message, options)
           .then(function() {
-            // Success! SMS was sent
+                var myPopup = $ionicPopup.show({
+                        template: '<p>Your request was successfully sent. You will be notified sortly.</p>',
+                        title: 'Send Confirmation',
+                        scope: $scope,
+                        buttons: [
+                          {text: 'Ok'},
+                        ]
+                });
           }, function(error) {
             // An error occurred
           });
