@@ -464,7 +464,7 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
     };
 })
 
-.controller('MissionCtrl', function($scope, $stateParams, req, constants) {
+.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, req, constants) {
 
     var url = constants.BASE_SERVER_URL + 'summermission/' + $stateParams.missionId;
     var success = function(value) {
@@ -486,6 +486,12 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
         $location.path('/app/error');
     };
 
+    
+        
+    $scope.showOnline = function(url) {
+        $cordovaInAppBrowser.open(url, '_system');  
+    };
+    
     req.get(url, success, err);
 });
 
