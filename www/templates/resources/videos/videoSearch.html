@@ -1,0 +1,24 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Video Search</h1>
+        <div class="buttons">
+            <button class="button button-clear button-icon ion-close-round" ng-click="closeSearch()"></button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="search()">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Title</span>
+                    <input type="text" ng-model="videoSearchData.title">
+                </label>
+                <label class="item" style="border-bottom: none;">
+                    <button class="button button-block button-positive" type="submit">
+                        <i class="icon ion-ios-search-strong"></i>
+                        Search Videos
+                    </button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>

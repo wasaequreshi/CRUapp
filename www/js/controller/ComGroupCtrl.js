@@ -148,7 +148,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     };
 })
 
-.controller('GroupDetailCtrl', function($scope, $stateParams, $ionicModal, $location, constants, req, $cordovaSms) {
+.controller('GroupDetailCtrl', function($scope, $stateParams, $ionicModal, $location, constants, req, $cordovaSms, $ionicPopup) {
     var id = $stateParams.id; 
     
     /*$scope.group = {
@@ -209,13 +209,21 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         var message = "I would love to be added to your community group. My name is " + name + 
             ". Please contact me by email: " + email + " or phone: " + phone; 
         
-        
+        //TODO change hardcoded phone to this: $scope.leaderPhone
+        //currently Cody's phone #
+        var phoneToSend = "7074943342";
 
         $cordovaSms
-          //TODO change hardcoded phone to this: $scope.leaderPhone
-          .send("7074943342", message, options)
+          .send(phoneToSend, message, options)
           .then(function() {
-            // Success! SMS was sent
+                var myPopup = $ionicPopup.show({
+                        template: '<p>Your request was successfully sent. You will be notified sortly.</p>',
+                        title: 'Send Confirmation',
+                        scope: $scope,
+                        buttons: [
+                          {text: 'Ok'},
+                        ]
+                });
           }, function(error) {
             // An error occurred
           });
