@@ -1,4 +1,4 @@
-var ride = angular.module('starter.controllers.rides', ['starter.controllers.utils']);
+var ride = angular.module('starter.controllers.rides', ['starter.controllers.utils', 'PushModule']);
 
 //returns false if not in the array and true otherwise
 var checkArr = function(item, arr) {
@@ -145,7 +145,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 })
 
 //form for signing up to be a rider
-.controller('GetRideCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
+.controller('GetRideCtrl', function($scope, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams, pushService) {
     var eventID = $stateParams.rideId;
     var driveId = $stateParams.driverId;
 
@@ -204,8 +204,8 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var query = {
             name: name,
             phone: phone,
-            direction: triptype
-            /* TODO fill in the gcm_id */
+            direction: triptype,
+            gcm_id: pushService.getToken()
         };
 
         //create a new passenger
@@ -352,7 +352,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     };
 })
 
-.controller('GiveRideCtrl', function($scope, $ionicPopup, $timeout, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams) {
+.controller('GiveRideCtrl', function($scope, $ionicPopup, $timeout, $location, $ionicHistory, req, $localStorage, allEvents, constants, $stateParams, pushService) {
     //id from the url
     var tempID = $stateParams.rideId;
 
@@ -428,7 +428,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                 //create the post call to create the driver in the DB
                 var url = constants.BASE_SERVER_URL + 'ride/create';
                 var driverData = {
-                    gcm_id: 'dummy_id',
+                    gcm_id: pushService.getToken(),
                     driverName: name,
                     driverNumber: phonenumber,
                     event: tempID,
