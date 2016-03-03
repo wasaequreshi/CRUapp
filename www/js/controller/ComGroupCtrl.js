@@ -190,11 +190,12 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         var message = "I would love to be added to your community group. My name is " + name + 
             ". Please contact me by email: " + email + " or phone: " + phone; 
         
-        
+        //TODO change hardcoded phone to this: $scope.leaderPhone
+        //currently Cody's phone #
+        var phoneToSend = "7074943342";
 
         $cordovaSms
-          //TODO change hardcoded phone to this: $scope.leaderPhone
-          .send("7074943342", message, options)
+          .send(phoneToSend, message, options)
           .then(function() {
                 var myPopup = $ionicPopup.show({
                         template: '<p>Your request was successfully sent. You will be notified sortly.</p>',
