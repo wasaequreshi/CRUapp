@@ -5,7 +5,7 @@
         <button class="button button-icon button-clear ion-ios-search-strong" ng-click="openSearch()"></button>
     </ion-nav-buttons>
     <ion-content>
-        <div class="list card" ng-repeat="article in articles">
+        <div class="list card" ng-repeat="article in articles" ng-if="article.visible">
             <div ng-click="view_selected_article(article)">
                 <div class="item">
                     <h2><b>{{article.title}}</b></h2>

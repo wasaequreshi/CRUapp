@@ -45,6 +45,11 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     }).then(function(modal) {
         $scope.articleModal = modal;
     });
+    $ionicModal.fromTemplateUrl('templates/resources/articles/articleTags.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.tagsModal = modal;
+    });
 
     // Triggered in the modal to close it
     $scope.closeSearch = function() {
@@ -54,6 +59,33 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     // Open the modal
     $scope.openSearch = function() {
         $scope.articleModal.show();
+    };
+
+    $scope.openTags = function() {
+        $scope.tagsModal.show();
+        $scope.articleModal.hide();
+    };
+
+    $scope.closeTags = function() {
+        $scope.tagsModal.hide();
+    };
+
+    $scope.applyTags = function() {
+        for (var i = 0; i < $scope.articles.length; ++i) {
+            $scope.articles[i].visible = false;
+            for (var k = 0; k < $scope.tags.length; ++k) {
+                if ($scope.tags[k].checked) {
+                    for (var j = 0; j < $scope.articles[i].tags.length; ++j) {
+                        if ($scope.tags[k]._id == $scope.articles[i].tags[j]) {
+                            $scope.articles[i].visible = true;
+                        }
+                    }
+                }
+            }
+            console.log("visible " + i + " " + $scope.articles[i].visible);
+        }
+        $scope.isSearching = true;
+        $scope.tagsModal.hide();
     };
 
     // submit the search results
@@ -91,7 +123,6 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         req.get(url, success_getting_articles, failure_getting_articles);
         $scope.isSearching = false;
         $scope.title = 'Resources';
-
     };
 
     //This will contain list of articles where the view can grab from
@@ -102,6 +133,10 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     var success_getting_articles = function(data) {
         //Just a cool message
         console.log('Successfully got data: ' + data);
+
+        for (var i = 0; i < data.data.length; ++i) {
+            data.data[i].visible = true;
+        }
 
         //Getting list of articles from request
         articles = data['data'];
@@ -129,6 +164,38 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         $location.path('/app/error');
     };
 
+    //When successfully getting the articles from the db, the following function
+    //will be executed
+    var success_getting_article_tags = function(data) {
+        //Just a cool message
+        console.log('Successfully got tags: ' + data);
+
+        // make object "checkable" for the view
+        for (var i = 0; i < data.data.length; ++i) {
+            data.data[i].checked = false;
+        }
+
+        //Getting list of articles from request
+        tags = data['data'];
+
+        //Setting scope so view can have access to them
+        $scope.tags = tags;
+
+        //Debugging to view data
+
+        for (var i = 0; i < tags.length; i++) {
+            console.log(tags[i]);
+        }
+    };
+
+    var failure_getting_article_tags = function(data) {
+        //Just a sad message :(
+        console.log('Failure got data: ' + data);
+
+        //Goes to that lovely error page we have
+        $location.path('/app/error');
+    };
+
     //Every time screen loads, we will attempt to get articles from CRU's db
     angular.element(document).ready(function() {
         //URL for accessing resources
@@ -139,6 +206,8 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
 
         // make request to db
         req.get(url, success_getting_articles, failure_getting_articles);
+        url = constants.BASE_SERVER_URL + 'resource-tags/list';
+        req.get(url, success_getting_article_tags, failure_getting_article_tags);
     });
 
     //When clicking a specific article, it will reroute to another page
