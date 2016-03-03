@@ -15,39 +15,42 @@
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-dark">
-        <img style="margin:auto; padding: auto; height: 75%; max-height: auto;" src="img/cru-logo-white.png">
+        <img class="menu-header-image" src="img/cru-logo-white.png">
         <div ng-controller="PushController"></div>
     </ion-header-bar>
-    <ion-content >
+    <ion-content>
       <ion-list style="position: relative; top: 80%;">
         
         <!-- Get Involved Section of Side Menu -->
-        <ion-item class="item-divider item-dark">Get Involved</ion-item>
-        <ion-item menu-close class="item-dark" style="border: 0;" href="#/app/events">
+        <ion-item class="item-divider item-dark bold">Get Involved</ion-item>
+        <ion-item menu-close class="item-dark no-border-bottom" href="#/app/events">
             <div class="ion-calendar">&nbsp;&nbsp; Events</div>
         </ion-item>
-        <ion-item menu-close class="item-dark" style="border: 0;" href="#/app/missions">
+        <ion-item menu-close class="item-dark no-border-bottom" href="#/app/missions">
             <div class="icon-left ion-earth">&nbsp;&nbsp; Summer Missions</div>
         </ion-item>
-        <ion-item menu-close class="item-dark" style="border: 0;" href="#/app/resources/articles">
+        <ion-item menu-close class="item-dark no-border-bottom" href="#/app/groups">
+            <div class="icon-left ion-person-add">&nbsp;&nbsp; Community Groups</div>
+        </ion-item>
+        <ion-item menu-close class="item-dark no-border-bottom" href="#/app/resources/articles">
             <div class="icon-left ion-ios-paper">&nbsp;&nbsp; Resources</div>
         </ion-item>
         
         <!-- Cruber section of side menu -->
-        <ion-item class="item-divider item-dark">Cruber</ion-item>
-        <ion-item menu-close class="item-dark" style="border: 0;" href="#/app/rides">
+        <ion-item class="item-divider item-dark bold">Cruber</ion-item>
+        <ion-item menu-close class="item-dark no-border-bottom" href="#/app/rides">
             <div class="icon-left ion-thumbsup">&nbsp;&nbsp; Find a Ride</div>
         </ion-item>
-        <ion-item menu-close class="item-dark" style="border: 0;" href="#/app/drive">
+        <ion-item menu-close class="item-dark no-border-bottom" href="#/app/drive">
             <div class="icon-left ion-android-car">&nbsp;&nbsp; Offer to Drive</div>
         </ion-item>
           
         <!-- Settings section of side menu -->
-        <ion-item class="item-divider item-dark">Settings</ion-item>
-        <ion-item menu-close class="item-dark" style="border: 0;" href="#/app/splash">
+        <ion-item class="item-divider item-dark bold">Settings</ion-item>
+        <ion-item menu-close class="item-dark no-border-bottom" href="#/app/splash">
             <div class="icon-left ion-edit">&nbsp;&nbsp; Signup</div>
         </ion-item>
-        <ion-item menu-close class="item-dark" style="border: 0;" href="#/app/settings">
+        <ion-item menu-close class="item-dark no-border-bottom" href="#/app/settings">
             <div class="icon-left ion-gear-b">&nbsp;&nbsp; Settings</div>
         </ion-item>
           

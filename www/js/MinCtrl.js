@@ -7,13 +7,24 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', '$ionicPopup'
     };
     var success = function(data) {
         //makes the objects "checkable"
+        var alt = true;
         for (var i = 0; i < data.data.length; ++i) {
             data.data[i].checked = false;
             
-            if (!data.data[i].image) {
+            if (alt) {
+                if (!data.data[i].image) {
+                    data.data[i].image = { url: 'img/cru-logo.jpg' };
+                } else if (!data.data[i].image.url) {
+                    data.data[i].image.url = 'img/cru-logo.jpg';
+                }
+            } else {
                 data.data[i].image = { url: 'img/cru-logo.jpg' };
-            } else if (!data.data[i].image.url) {
-                data.data[i].image.url = 'img/cru-logo.jpg';
+            }
+            
+            if (alt) {
+                alt = false;
+            } else {
+                alt = true;
             }
             
             if (!data.data[i].description || data.data[i].description.length === 0) {
