@@ -6069,7 +6069,6 @@ angular.module('ngCordova.plugins.push_v5', [])
     return {
       initialize : function (options) {
         var q = $q.defer();
-        console.log("NG-CORDOVA: initializing:"+JSON.stringify(options));
         push = PushNotification.init(options);
         q.resolve(push);
         return q.promise;
