@@ -135,23 +135,24 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
       $cordovaInAppBrowser.open(url, '_system', 'location=no');
   };
 
+    /**
+    * Set up push notification 
+    */
+    $rootScope.$on('$cordovaPushV5:notificationReceived', pushService.onNotificationRecieved);//);
+    //error happened
+    $rootScope.$on('$cordovaPushV5:errorOccurred', pushService.onError);//);
+
 
 
   //set up when the application is ready 
   $ionicPlatform.ready(function(){
     // call to register automatically upon device ready
 
-    // Notification Received
-    $rootScope.$on('$cordovaPushV5:notificationReceived', pushService.onRecieved);
-    //error happened
-    $rootScope.$on('$cordovaPushV5:errorOccurred', pushService.onError);
 
     promise = pushService.push_init();
     if (promise){
       promise.then(function (result) {
           console.log("Init success " + JSON.stringify(result));
-          pushService.registration_setup();
-          pushService.push_setup();
       }, function (err) {
           console.log("Init error " + JSON.stringify(err));
       });
@@ -164,7 +165,7 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
 
     //reloads page everytime
     $scope.$on('$ionicView.enter', function() {
-
+        $scope.$emit('$cordovaPushV5:notificationReceived',{"stillthere":"?"});
         var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
         console.log(mins + 'hmmmm');
         var url;
@@ -330,6 +331,7 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
     req.get(url, success, err);
 
     $scope.$on('$ionicView.enter', function() {
+
         if (val) {
             var driving = $localStorage.getObject(constants.MY_RIDES_DRIVER);
             var riding = $localStorage.getObject(constants.MY_RIDES_RIDER);
@@ -361,7 +363,7 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
     };
 })
 
-.controller('MissionsCtrl', function($scope, $location, req, constants) {
+.controller('MissionsCtrl', function($scope,$rootScope,$timeout, $location, req, constants) {
     var url = constants.BASE_SERVER_URL + 'summermission/list';
     var missions = [];
     var success = function(data) {
@@ -394,6 +396,7 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
 })
 
 .controller('MissionCtrl', function($scope, $stateParams, req, constants) {
+
     var url = constants.BASE_SERVER_URL + 'summermission/' + $stateParams.missionId;
     var success = function(value) {
         var val = value.data;

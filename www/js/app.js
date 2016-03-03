@@ -40,7 +40,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
       views: {
           'menuContent': {
               templateUrl: 'templates/splash.html',
-              controller: 'AppCtrl'
           }
       }
   })

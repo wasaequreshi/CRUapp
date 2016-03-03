@@ -46,13 +46,16 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $local
     */
     $scope.goToNext = function() {
         var mins = [];
-
-        //adds ministries user checked to list
+        var topics = [];
+        //adds ministries user checked to list and update topics list
         for (var i = 0; i < $scope.ministries.length; ++i) {
             if ($scope.ministries[i].checked) {
                 mins.push($scope.ministries[i]);
+                topics.push($scope.ministries[i]._id);
             }
         }
+        //register to the Topics from above;
+        pushService.registerTopics(topics);
 
         $localStorage.setObject(constants.CAMPUSES_CONFIG, {
             campuses: selectedCampuses.getCampuses(),
@@ -64,7 +67,8 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $local
             disableAnimate: false,
             disableBack: true
         });
-        pushService.push_init()
+
+
     };
     
     $scope.showInfo = function(name, desc) {
