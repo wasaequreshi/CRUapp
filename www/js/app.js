@@ -235,12 +235,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
       url: '/videos',
       views: {
           'resources-videos': {
-              templateUrl: 'templates/videos.html',
+              templateUrl: 'templates/resources/videos/videos.html',
               controller: 'videos_controller'
           },
 
           'menuContent': {
-              templateUrl: 'templates/videos.html',
+              templateUrl: 'templates/resources/videos/videos.html',
               controller: 'videos_controller'
           }
 
