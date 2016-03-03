@@ -1,6 +1,7 @@
-var min = angular.module('starter.controllers.min', []);
+var min = angular.module('starter.controllers.min', ["PushModule"]);
 
-min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', '$ionicPopup', 'req', '$localStorage','selectedCampuses', 'constants', function($scope, $location, $ionicHistory, $ionicPopup, req, $localStorage, selectedCampuses, constants) {
+min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $localStorage, $ionicPopup, selectedCampuses, constants, pushService) {
+
     var url = constants.BASE_SERVER_URL + "ministry/find";
     var queryParams = {
         'campuses': {$in: Object.keys(selectedCampuses.getCampusesObject())}
@@ -50,13 +51,16 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', '$ionicPopup'
     */
     $scope.goToNext = function() {
         var mins = [];
-
-        //adds ministries user checked to list
+        var topics = [];
+        //adds ministries user checked to list and update topics list
         for (var i = 0; i < $scope.ministries.length; ++i) {
             if ($scope.ministries[i].checked) {
                 mins.push($scope.ministries[i]);
+                topics.push($scope.ministries[i]._id);
             }
         }
+        //register to the Topics from above;
+        pushService.registerTopics(topics);
 
         $localStorage.setObject(constants.CAMPUSES_CONFIG, {
             campuses: selectedCampuses.getCampuses(),
@@ -68,6 +72,8 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', '$ionicPopup'
             disableAnimate: false,
             disableBack: true
         });
+
+
     };
     
     $scope.showInfo = function(name, desc) {
@@ -88,4 +94,5 @@ min.controller('MinCtrl', ['$scope', '$location', '$ionicHistory', '$ionicPopup'
     * This value keeps track of the current header in the list.
     **/
     currentHeader = '';
-}]);
+});
+

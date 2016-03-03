@@ -1,79 +1,18 @@
+angular.module('PushModule', [])
 
-var serverURL = 'http://54.86.175.74:8080/';
-var tempUserID = '564ee19f6c2f1876527be562';
-var senderId = '276638088511';
-
-angular.module('PushModule', []).controller('PushController', function($rootScope, $scope, $cordovaPushV5, $cordovaDialogs, $cordovaMedia, $ionicPlatform, $http) {
-    $scope.notifications = [];
-    console.log('Module setup');
-    // Put The notification recievers in
-    // Notification Received
-    $rootScope.$on('$cordovaPushV5:notificationReceived', function(event, notification) {
-        console.log(JSON.stringify([notification]));
-        if (ionic.Platform.isAndroid()) {
-            handleAndroid(notification);
-        } else if (ionic.Platform.isIOS()) {
-            handleIOS(notification);
-            $scope.$apply(function() {
-                $scope.notifications.push(JSON.stringify(notification.alert));
-            });
-        }
-    });
-    //error happened
-    $rootScope.$on('$cordovaPushV5:errorOccurred', function(event, error) {
-        console.log('$cordovaPushV5:errorOccurred ' + error);
-    });
-
-    $scope.push_init = function() {
-        console.log('push init attempt start');
-        var config = {
-            'android': {'senderID': senderId},
-            'ios': {'senderID': senderId,
-                    'alert': true,
-                   'badge': true,
-                   'sound': true}
-        };
-        if (typeof PushNotification !== 'undefined' && PushNotification !== null) {
-            $cordovaPushV5.initialize(config).then(function(result) {
-            console.log('Init success ' + JSON.stringify(result));
-
-        }, function(err) {
-            console.log('Init error ' + JSON.stringify(err));
-        });
-        }
-    };
-
-    // Register
-    $scope.registration_setup = function() {
-        console.log('registration handler set');
-
-        $cordovaPushV5.register().then(function(result) {
-            console.log('Register success ' + result);
-
-            $scope.registerDisabled = true;
-
-            storeDeviceToken(result);
-        }, function(err) {
-            console.log('Register error ' + err);
-        });
-
-    };
-
-    $scope.push_setup = function() {
-        $cordovaPushV5.onNotification();
-        $cordovaPushV5.onError();
-    };
-
+.service('pushService', function( $q,$cordovaPushV5, $cordovaDialogs, $localStorage, constants,  $cordovaMedia, $ionicPlatform, $http, convenience) {
+    var notifications = [];
+    var currentRegisteredTopics = [];
+    var isHandlerSet = false;
+    const PUSH_TKN_STORAGE_VAL = "pushId";
     // Android Notification Received Handler
     function handleAndroid(notification) {
         console.log(JSON.stringify(notification));
-        // ** NOTE: ** You could add code for when app is in foreground or not, or coming from coldstart here too
-        //             via the console fields as shown.
-        console.log('In foreground ' + notification.additionalData.foreground  + ' Coldstart ' + notification.coldstart);
-        $cordovaDialogs.alert(notification.message, 'Push Notification Received');
-        $scope.$apply(function() {
-            $scope.notifications.push(JSON.stringify(notification.message));
-        });
+        console.log("In foreground " + notification.additionalData.foreground  + " Coldstart " + notification.coldstart);
+
+        $cordovaDialogs.alert(notification.message, "Push Notification Received");
+        
+        notifications.push(JSON.stringify(notification.message));
     }
 
     // TODO test this IOS Notification Received Handler
@@ -109,71 +48,218 @@ angular.module('PushModule', []).controller('PushController', function($rootScop
             } else $cordovaDialogs.alert(notification.alert, '(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received');
         }
     }
-
-    // Stores the device token in a db using node-pushserver (running locally in this case)
-    //
-    // type:  Platform type (ios, android etc)
-    function storeDeviceToken(devToken) {
-        console.log('Storing registration ID');
-        window.localStorage.setItem('pushID', devToken);
-
-        var tokenObj = {
-            token: devToken,
-            type: ionic.Platform.platform()
+  
+    /**
+    * Get the configuation object that will be used notification initialization
+    */
+    function getConfigObject(topics){
+        topics = !topics ? [] : topics;
+        console.log("config Object" + JSON.stringify(topics));
+        return {
+           "android": { "senderID"  : constants.GCM_SENDER_ID,
+                        "topics"    : topics},
+           "ios": { "senderID": constants.GCM_SENDER_ID,
+                    "alert" : true, 
+                    "badge" : true, 
+                    "sound" : true,
+                    "topics": topics}
         };
-
-        $http.post(serverURL + 'users/' + tempUserID + '/push',JSON.stringify(tokenObj))
-            .success(function(data, status) {
-                console.log('Token stored, device is successfully subscribed to receive push notifications.');
-            })
-            .error(function(data, status) {
-                console.log('Error storing device token.' + data + ' ' + status);
-            }
-        );
     }
 
-    // Removes the device token from the db via node-pushserver API unsubscribe (running locally in this case).
-    // If you registered the same device with different userids, *ALL* will be removed. (It's recommended to register each
-    // time the app opens which this currently does. However in many cases you will always receive the same device token as
-    // previously so multiple userids will be created with the same token unless you add code to check).
-    function removeDeviceToken() {
-        var tkn = {'token': $scope.regId};
-        console.log('Storing registration ID');
-        window.localStorage.removeItem('pushID');
-        $http.delete(serverURL + 'users/' + tempUserID + '/push')
-            .success(function(data, status) {
-                console.log('Token removed, device is successfully unsubscribed and will not receive push notifications.');
-            })
-            .error(function(data, status) {
-                console.log('Error removing device token.' + data + ' ' + status);
-            }
-        );
-    }
+    /**
+    * register the application to GCM
+    **/
+    function registerToGCM() {
+        console.log("registration handler set");
 
-    // Unregister - Unregister your device token from APNS or GCM
-    // Not recommended:  See http://developer.android.com/google/gcm/adv.html#unreg-why
-    //                   and https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplication_Class/index.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications
-    //
-    // ** Instead, just remove the device token from your db and stop sending notifications **
-    $scope.unregister = function() {
-        console.log('Unregister called');
-        removeDeviceToken();
-        $scope.registerDisabled = false;
-        //need to define options here, not sure what that needs to be but this is not recommended anyway
-        $cordovaPushV5.unregister().then(function(result) {
-            console.log('Unregister success ' + result);//
-        }, function(err) {
-            console.log('Unregister error ' + err);
+        $cordovaPushV5.register().then(function (result) {
+            console.log("Register success " + JSON.stringify(result));
+            
+            $localStorage.set(PUSH_TKN_STORAGE_VAL, result);
+        }, function (err) {
+            console.log("Register error " + err);
         });
     };
 
-    // call to register automatically upon device ready
-    $ionicPlatform.ready(function(device) {
+    /**
+    * Set up listeners for the PushNotification library
+    */
+    function setupLibListeners(){
+        $cordovaPushV5.onNotification();
+        $cordovaPushV5.onError();  
+    }
 
-        $scope.push_init();
-        $scope.registration_setup();
-        $scope.push_setup();
+    /**
+    * initialize the Push Notifications for the application
+    */
+    function init(){
+        var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
+        var topics = [];
+        topics.push('global');
+        if(mins){
+            for(var i = 0; i < mins.length; i++){
+               topics.push(mins[i]._id);
+            }
+        }
+        
+        console.log("push init attempt start");
+        console.log("TOPICS SUBSCRIBED TO push init" + JSON.stringify(topics));
+        var config = getConfigObject(topics);
 
-        console.log('omg latest stuff');
-    });
+        if(typeof PushNotification !== "undefined" && PushNotification !== null) {
+            //when we are done initializing, regisyer to GCM and set uo listeners     
+            var promise = $cordovaPushV5.initialize(config).then(function(){
+                currentRegisteredTopics = topics;
+                if(!isHandlerSet){
+                    registerToGCM();
+                    setupLibListeners();
+                    isHandlerSet = true;
+                }
+            });
+            
+            return promise;
+        }
+        else{
+            console.log("CordovaV5: push notification not available");
+        }
+        return null;
+    };
+
+
+    /*
+    * Unregister to specific GCM topics 
+    * @param topics array of topics to unregister from
+    */
+    function unregisterTopics(topics) {
+        var prom = $q.defer();
+        if (!topics || topics.length == 0){
+            prom.reject("invalid topics");
+            return prom.promise;
+        }
+        console.log("Unregistering topics" + JSON.stringify(topics));
+        
+
+        prom = $cordovaPushV5.unregister(topics).then(function(result) {
+            console.log('Unregister success ' + JSON.stringify(result));//
+            isHandlerSet = false;
+        }, function(err) {
+            console.log('Unregister error ' + JSON.stringify(err));
+        });
+
+        return prom;
+    };
+
+    /**
+    * Register to GCM topics
+    */
+    function registerTopics(topics) {
+        if(!topics) {
+            return;
+        }
+
+        topics.push('global');
+        
+
+        var unregisterList = [];
+        for (var i = 0; i < currentRegisteredTopics.length; i++){
+
+            if(!convenience.contains(currentRegisteredTopics[i], topics)){
+                unregisterList.push(currentRegisteredTopics[i]);
+            }
+        }
+
+        unregisterTopics(unregisterList);
+       // .then(function(){
+
+            var config = getConfigObject(topics);
+            //console.log("SUCCESS TOPICS SUBSCRIBING TO registerTopics" + JSON.stringify(topics));
+
+            if(typeof PushNotification !== "undefined" && PushNotification !== null){  
+                /**
+                * unfortunately th plugin is not set to allow the use of a register topics method so instead the 
+                * initialize() method must be used
+                */     
+                $cordovaPushV5.initialize(config).then(
+                    function(){
+                        console.log("REREGISTERED WITH NEW TOPICS");
+                        setupLibListeners();
+                    }, 
+                    function(){
+                        console.log("ERROR WITH NEW TOPICS");
+                    }
+                );
+                currentRegisteredTopics = topics;
+            }
+            else{
+                console.log("CordovaV5: push notification not available");
+            }
+        /*}, function(){
+
+            var config = getConfigObject(topics);
+            console.log("EROR TOPICS SUBSCRIBING TO registerTopics" + JSON.stringify(topics));
+
+            if(typeof PushNotification !== "undefined" && PushNotification !== null){  
+  
+                $cordovaPushV5.initialize(config).then(
+                    function(){
+                        console.log("INITIALIZED WITH NEW TOPICS");
+                    }, 
+                    function(){
+                        console.log("ERROR WITH NEW TOPICS");
+                    }
+                );
+                currentRegisteredTopics = topics;
+            }
+            else{
+                console.log("CordovaV5: push notification not available");
+            }
+        });*/
+    }
+
+    /**
+    *This function is invoked when a push notiification is recieved by the application
+    */
+    function onRecieved(event, notification) {
+        console.log("$cordovaPushV5: GOT NOTIFICATION:" + JSON.stringify(notification));
+        if (ionic.Platform.isAndroid()) {
+          handleAndroid(notification);
+        }
+        else if (ionic.Platform.isIOS()) {
+          handleIOS(notification);
+          $scope.$apply(function () {
+              $scope.notifications.push(JSON.stringify(notification.alert));
+          })
+        }
+    };
+
+    /**
+    * This function is invoked when there is an error getting push notification
+    */
+    function onErr(event, error){
+        console.log('$cordovaPushV5:errorOccurred ' + error);
+    };
+
+    /**
+    *This function gets the Token from the push service
+    **/
+    function getToken() {
+        return $localStorage.get(PUSH_TKN_STORAGE_VAL);
+    }
+
+    var exports =  { 
+    
+        push_init : init,
+
+        onNotificationRecieved : onRecieved,
+
+        onError : onErr,
+
+        getToken : getToken,
+
+        registerTopics : registerTopics,
+
+    };
+
+    return exports;
+
 });
