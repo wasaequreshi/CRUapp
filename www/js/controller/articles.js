@@ -202,17 +202,12 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         //Don't really need a separate page since all we are just displaying the url
         //page for the article
         var options = {
-            location: 'no',
+            location: 'yes',
             clearcache: 'yes',
-            toolbar: 'no'
+            toolbar: 'no',
+            zoom: 'no'
         };
-        $cordovaInAppBrowser.open(article['url'], '_blank', options)
-            .then(function(event) {
-                console.log('SUCCESS: Launching Browser' + JSON.stringify(event));
-            })
-            .catch(function(event) {
-                console.log('ERROR: Launching Browser' + JSON.stringify(event));
-            });
+        $cordovaInAppBrowser.open(article['url'], '_system');
     };
 
 });

@@ -65,13 +65,7 @@ videos.controller('videos_controller',function($cordovaInAppBrowser, $scope, $io
             clearcache: 'yes',
             toolbar: 'no'
         };
-        $cordovaInAppBrowser.open(video_url, '_blank', options)
-            .then(function(event) {
-                console.log('SUCCESS: Launching Browser' + JSON.stringify(event));
-            })
-            .catch(function(event) {
-                console.log('ERROR: Launching Browser' + JSON.stringify(event));
-            });
+        $cordovaInAppBrowser.open(video_url, '_system');
     };
 
 });
