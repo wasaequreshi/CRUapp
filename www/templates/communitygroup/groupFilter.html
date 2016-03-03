@@ -1,0 +1,47 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Filter By:</h1>
+        <div class="buttons">
+            <button class="button button-clear button-icon ion-close-round" ng-click="closeGroupFilterModal()"></button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="filterGroups()">
+            <div class="list">
+                <div class="item">
+                    I can meet from this time
+                    <label class="item-input"> 
+                        <input type="time" value="{{currentTime}}">
+                    </label>
+                </div>
+                <div class="item">
+                    up until this time
+                    <label class="item-input">
+                        <input type="time" value="{{currentTime}}">
+                    </label>
+                </div>
+                <div class="item">
+                    On these days
+                    <div ng-repeat="day in days">
+                        <ion-checkbox ng-model="day.checked">{{day.name}}</ion-checkbox>
+                    </div>
+                </div>
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        My gender is
+                    </div>
+                    <select>
+                        <option selected>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </label>
+                <label class="item no-border-bottom">
+                    <button class="button button-block button-positive" type="submit">
+                        Search
+                    </button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>
