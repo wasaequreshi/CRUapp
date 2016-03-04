@@ -1,18 +1,13 @@
 angular.module('PushModule', [])
 
 .service('pushService', function( $q,$cordovaPushV5, $cordovaDialogs, $localStorage, constants,  $cordovaMedia, $ionicPlatform, $http, convenience) {
-    var notifications = [];
+    
     var currentRegisteredTopics = [];
     var isHandlerSet = false;
     const PUSH_TKN_STORAGE_VAL = "pushId";
     // Android Notification Received Handler
     function handleAndroid(notification) {
-        console.log(JSON.stringify(notification));
-        console.log("In foreground " + notification.additionalData.foreground  + " Coldstart " + notification.coldstart);
-
         $cordovaDialogs.alert(notification.message, "Push Notification Received");
-        
-        notifications.push(JSON.stringify(notification.message));
     }
 
     // TODO test this IOS Notification Received Handler
@@ -102,8 +97,6 @@ angular.module('PushModule', [])
             }
         }
         
-        console.log("push init attempt start");
-        console.log("TOPICS SUBSCRIBED TO push init" + JSON.stringify(topics));
         var config = getConfigObject(topics);
 
         if(typeof PushNotification !== "undefined" && PushNotification !== null) {
@@ -119,7 +112,7 @@ angular.module('PushModule', [])
             
             return promise;
         }
-        else{
+        else{ //statement should not be reached unless under dev environment
             console.log("CordovaV5: push notification not available");
         }
         return null;
@@ -136,11 +129,9 @@ angular.module('PushModule', [])
             prom.reject("invalid topics");
             return prom.promise;
         }
-        console.log("Unregistering topics" + JSON.stringify(topics));
         
 
         prom = $cordovaPushV5.unregister(topics).then(function(result) {
-            console.log('Unregister success ' + JSON.stringify(result));//
             isHandlerSet = false;
         }, function(err) {
             console.log('Unregister error ' + JSON.stringify(err));
@@ -181,7 +172,6 @@ angular.module('PushModule', [])
                 */     
                 $cordovaPushV5.initialize(config).then(
                     function(){
-                        console.log("REREGISTERED WITH NEW TOPICS");
                         setupLibListeners();
                     }, 
                     function(){
@@ -190,30 +180,10 @@ angular.module('PushModule', [])
                 );
                 currentRegisteredTopics = topics;
             }
-            else{
+            else{// should not reach this unless in dev environment
                 console.log("CordovaV5: push notification not available");
             }
-        /*}, function(){
 
-            var config = getConfigObject(topics);
-            console.log("EROR TOPICS SUBSCRIBING TO registerTopics" + JSON.stringify(topics));
-
-            if(typeof PushNotification !== "undefined" && PushNotification !== null){  
-  
-                $cordovaPushV5.initialize(config).then(
-                    function(){
-                        console.log("INITIALIZED WITH NEW TOPICS");
-                    }, 
-                    function(){
-                        console.log("ERROR WITH NEW TOPICS");
-                    }
-                );
-                currentRegisteredTopics = topics;
-            }
-            else{
-                console.log("CordovaV5: push notification not available");
-            }
-        });*/
     }
 
     /**
@@ -226,9 +196,6 @@ angular.module('PushModule', [])
         }
         else if (ionic.Platform.isIOS()) {
           handleIOS(notification);
-          $scope.$apply(function () {
-              $scope.notifications.push(JSON.stringify(notification.alert));
-          })
         }
     };
 

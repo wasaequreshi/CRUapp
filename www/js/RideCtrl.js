@@ -181,7 +181,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                 $localStorage.setObject(constants.MY_RIDES_RIDER, riding);
             };
 
-            var addErr = function(xhr, text, err) {
+            var addErr = function(xhr) {
                 console.log('add passenger error');
             };
 
@@ -195,7 +195,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             req.post(addUrl, addQuery, addSuccess, addErr);
         };
 
-        var err = function(xhr, text, err) {
+        var err = function(xhr) {
             //if there is an error (ie 404, 500, etc) redirect to the error page
             $location.path('/app/error');
         };

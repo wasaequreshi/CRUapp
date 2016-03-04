@@ -93,7 +93,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
           endDate: finalEndDate
       }).then(function(result) {
 
-          console.log('Event created successfully');
 
           //Get the data from the local storage of list of all added events
           list_of_added_events = $localStorage.getObject('list_of_added_events');
@@ -126,7 +125,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
 
     // Perform the login action when the user submits the login form
     $scope.doLogin = function() {
-        console.log('Doing login', $scope.loginData);
 
         // Simulate a login delay. Remove this and replace with your login
         // code if using a login system
@@ -153,7 +151,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
     promise = pushService.push_init();
     if (promise){
       promise.then(function (result) {
-          console.log("Init success " + JSON.stringify(result));
       }, function (err) {
           console.log("Init error " + JSON.stringify(err));
       });
@@ -167,9 +164,8 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
     
     //reloads page everytime
     $scope.$on('$ionicView.enter', function() {
-        $scope.$emit('$cordovaPushV5:notificationReceived',{"stillthere":"?"});
+        
         var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
-        console.log(mins + 'hmmmm');
         var url;
 
         var events = [];
@@ -183,20 +179,11 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
     						temp2 = val.endDate;
                 val.secretStartDate = temp1;
                 val.secretEndDate = temp2;
-                console.log("Before:");
-        				console.log(val.startDate);
-                console.log(val.endDate);
-                console.log("LocaleString: start");
-                console.log("Day:");
-                console.log(eventDate.getDay());
-                console.log(eventDate.toLocaleDateString(locale, {weekday: 'long'}));
                 val.startDate = days[eventDate.getDay()] + ' - ' +
                         months[eventDate.getMonth()] + ' ' +
                         eventDate.getDate() + ', ' + eventDate.getFullYear();
 
                 eventDate = new Date(val.endDate);
-                console.log("LocaleString: end");
-                console.log(eventDate.toLocaleDateString(locale, {weekday: 'long'}));
                 val.endDate = days[eventDate.getDay()] + ' - ' +
                     months[eventDate.getMonth()] + ' ' +
                     eventDate.getDate() + ', ' + eventDate.getFullYear();
@@ -204,9 +191,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
                 if (!value.image) {
                     val.image = {url: 'img/cru-logo.jpg'};
                 }
-                console.log("After:");
-                console.log(val.startDate);
-                console.log(val.endDate);
 
                 helper_function_updating_calendar(val);
                 events.push(val);
@@ -222,7 +206,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
         if (mins === '' || mins === [] || typeof mins === 'undefined') {
             url = constants.BASE_SERVER_URL + 'event/list';
             req.get(url , success, err);
-            console.log('getting the event list\n');
         } else {
 
             url = constants.BASE_SERVER_URL + 'event/find?Content-Type: application/x-www-form-urlencoded';
@@ -230,7 +213,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
             for (var i = 0; i < mins.length; i++) {
                 minsIds.push(mins[i]._id);
             }
-            console.log('MINISITRYIDS' + JSON.stringify(minsIds));
 
             var queryParams = {
                 'parentMinistries': {'$in': minsIds}
@@ -238,7 +220,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
             req.post(url, queryParams, success, err);
         }
         $scope.events = events;
-        console.log('Events added: ' + events);
         allEvents.setEvents(events);
         $scope.goToEvent = function(id) {
             $location.path('/app/events/' + id);
@@ -257,7 +238,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
                JSON.stringify(val.location['street']) && info_for_event['secretStartDate'] === val.secretStartDate &&
                 info_for_event['secretEndDate'] === val.secretEndDate)) {
                 //The event was changed bro
-                console.log("Updating");
                 update_event(info_for_event, val);
 
 
@@ -291,7 +271,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
             startDate: finalStartDate,
             endDate: finalEndDate
         }).then(function(result) {
-            console.log("Success delete");
             helper_function_update_calendar(val);
             // success
         }, function(err) {
@@ -329,7 +308,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
           endDate: finalEndDate
       }).then(function(result) {
 
-          console.log('Event created successfully');
 
           //Get the data from the local storage of list of all added events
           list_of_added_events = $localStorage.getObject('list_of_added_events');
