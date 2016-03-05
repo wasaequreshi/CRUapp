@@ -1,51 +1,57 @@
 var missionCtrl = angular.module('MissionCtrl', []);
 
-missionCtrl.controller('MissionsCtrl', function($scope,$rootScope,$timeout, $location, req, constants) {
+missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constants, convenience) {
     var url = constants.BASE_SERVER_URL + 'summermission/list';
     var missions = [];
+
+    // on success add all the ministries to the ministries list
     var success = function(data) {
-        jQuery.each(data.data, function(key, value) {
+        data.data.forEach(function(value) {
             var val = value;
             var locale = 'en-us';
 
-            var eventDate = new Date(value.startDate);
-            val.startDate = eventDate.toLocaleDateString(locale, {weekday: 'long'}) + ' - ' +
-                eventDate.toLocaleDateString(locale, {month: 'long'}) + ' ' +
-                eventDate.getDate() + ', ' + eventDate.getFullYear();
+            // make the date human readeable
+            val.startDate = convenience.formatDate(new Date(value.startDate), false);
 
+            // if there is not an image, set the image to the placeholder
             if (!value.image) {
-                val.image = {url: 'img/cru-logo.jpg'};
+                val.image = {url: constants.PLACEHOLDER_IMAGE};
             }
 
             missions.push(val);
         });
     };
 
+    // when there is an error, print it out and show the error page in app
     var err = function(response) {
+        console.error('Error getting summer missions' + response);
         $location.path('/app/error');
     };
 
+    // send the request to the server
     req.get(url, success, err);
+
+    // add the missions to the scope so they can be accessed in the view
     $scope.missions = missions;
+    
+    // navigate to the specific image page when a mission is clicked
     $scope.goToMission = function(id) {
         $location.path('/app/missions/' + id);
     };
 })
 
-missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, req, constants) {
-
+missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, req, constants, convenience) {
     var url = constants.BASE_SERVER_URL + 'summermission/' + $stateParams.missionId;
     var success = function(value) {
         var val = value.data;
-        var locale = 'en-us';
 
-        // Make dates human readable
-        var eventDate = new Date(val.startDate);
-        var endDate = new Date(val.endDate);
-        val.startDate = eventDate.toLocaleDateString(locale, {month: 'long'}) + ' ' +
-            eventDate.getDate() + ', ' + eventDate.getFullYear();
-        val.endDate = endDate.toLocaleDateString(locale, {month: 'long'}) + ' ' +
-            endDate.getDate() + ', ' + endDate.getFullYear();
+        // format the dates to be human readable
+        val.startDate = convenience.formatDate(new Date(val.startDate), false);
+        val.endDate = convenience.formatDate(new Date(val.endDate), false);
+
+        if (!value.image) {
+            val.image = {url: constants.PLACEHOLDER_IMAGE};
+        }
 
         $scope.mySummerMission = val;
     };
@@ -54,8 +60,6 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
         $location.path('/app/error');
     };
 
-    
-        
     $scope.showOnline = function(url) {
         $cordovaInAppBrowser.open(url, '_system');  
     };

@@ -3,6 +3,7 @@ var utils = angular.module('starter.controllers.utils', []);
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
     'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/',
+    'PLACEHOLDER_IMAGE': 'img/cru-logo.jpg',
     'GCM_SENDER_ID': '276638088511',
 
     'CAMPUSES_CONFIG': 'campuses',
@@ -49,24 +50,6 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
         },
         post: function(url, data, success, err) {
             $http.post(url, data).then(success, err);
-        },
-        /**
-         * url - the url you want to add a query to
-         * varName - the name of the variable to be passed to the query
-         * values - the array of values to be passed in the query
-         */
-        buildQueryUrl: function(url, varName, values) {
-
-            varName += '[]=';
-
-            if (values.length > 0) {
-                url += '?' + varName + '' + values[0]._id;
-                for (var i = 1; i < values.length; ++i) {
-                    url += '&' + varName + '' + values[i]._id;
-                }
-            }
-
-            return url;
         }
     };
 }]);
@@ -82,6 +65,27 @@ utils.factory('convenience' , [function() {
             }
 
             return false;
+        },
+        containsAtIndex: function(item, arr) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].rideId === item) {
+                    return i;
+                }
+            }
+
+            return -1;
+        },
+        // takes a date object and makes the string to be seen by a user
+        formatDate: function (date, includeDay) {
+            var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var day = '';
+
+            if (includeDay) {
+                day = days[date.getDay()] + ' - ';
+            }
+
+            return day + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
         }
     };
 }]);
