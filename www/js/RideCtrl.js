@@ -427,8 +427,12 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 
                 //create the post call to create the driver in the DB
                 var url = constants.BASE_SERVER_URL + 'ride/create';
+                var gcm_id = pushService.getToken();
+                if (typeof gcm_id === 'undefined') {
+                    gcm_id = "empty";
+                }
                 var driverData = {
-                    gcm_id: pushService.getToken(),
+                    gcm_id: gcm_id,
                     driverName: name,
                     driverNumber: phonenumber,
                     event: tempID,
