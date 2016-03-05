@@ -6,7 +6,7 @@
         </div>
         <div class="card" ng-repeat-end>
             <div class="row item item-button-right">
-                <ion-checkbox style="border-bottom: 0px;" ng-model="ministry.checked" ng-checked="ministry.checked">
+                <ion-checkbox class="no-border-bottom" ng-model="ministry.checked" ng-checked="ministry.checked">
                     {{ministry.name}}
                 </ion-checkbox>
                 <button class="col col-10 button button-clear" ng-click="showInfo(ministry.name, ministry.description)">

@@ -1,4 +1,3 @@
-
 var module = angular.module('starter.controllers', ['EventCtrl', 'MissionCtrl', 'starter.controllers.camp', 'starter.controllers.min', 'starter.controllers.rides', 'articles', 'videos', 'ngCordova', 'ionic','PushModule', 'ComGroupCtrl']);
 
 // allows for access of variable across controllers
@@ -93,7 +92,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
           endDate: finalEndDate
       }).then(function(result) {
 
-          console.log('Event created successfully');
 
           //Get the data from the local storage of list of all added events
           list_of_added_events = $localStorage.getObject('list_of_added_events');
@@ -126,7 +124,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
 
     // Perform the login action when the user submits the login form
     $scope.doLogin = function() {
-        console.log('Doing login', $scope.loginData);
 
         // Simulate a login delay. Remove this and replace with your login
         // code if using a login system
@@ -153,7 +150,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
     promise = pushService.push_init();
     if (promise){
       promise.then(function (result) {
-          console.log("Init success " + JSON.stringify(result));
       }, function (err) {
           console.log("Init error " + JSON.stringify(err));
       });

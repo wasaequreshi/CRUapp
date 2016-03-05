@@ -181,7 +181,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                 $localStorage.setObject(constants.MY_RIDES_RIDER, riding);
             };
 
-            var addErr = function(xhr, text, err) {
+            var addErr = function(xhr) {
                 console.log('add passenger error');
             };
 
@@ -195,7 +195,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             req.post(addUrl, addQuery, addSuccess, addErr);
         };
 
-        var err = function(xhr, text, err) {
+        var err = function(xhr) {
             //if there is an error (ie 404, 500, etc) redirect to the error page
             $location.path('/app/error');
         };
@@ -427,8 +427,12 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 
                 //create the post call to create the driver in the DB
                 var url = constants.BASE_SERVER_URL + 'ride/create';
+                var gcm_id = pushService.getToken();
+                if (typeof gcm_id === 'undefined') {
+                    gcm_id = "empty";
+                }
                 var driverData = {
-                    gcm_id: pushService.getToken(),
+                    gcm_id: gcm_id,
                     driverName: name,
                     driverNumber: phonenumber,
                     event: tempID,
