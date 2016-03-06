@@ -8,7 +8,6 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $local
     };
     var success = function(data) {
         //makes the objects "checkable"
-        var alt = true;
         for (var i = 0; i < data.data.length; ++i) {
             data.data[i].checked = false;
             
