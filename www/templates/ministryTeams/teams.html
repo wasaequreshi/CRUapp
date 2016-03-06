@@ -1,0 +1,15 @@
+<ion-view view-title="Ministry Teams">
+    <ion-content>
+        <div class="list card" ng-repeat="team in teams">
+            <div ng-click="viewDetails(team._id)">
+                <div class="item bold">
+                    {{team.name}}
+                </div>
+
+                <div class="item">
+                    <p>{{team.description}}</p>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
