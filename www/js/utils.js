@@ -55,7 +55,7 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
 }]);
 
 // various convenience methods that are used in various parts of the app
-utils.factory('convenience' , [function() {
+utils.factory('convenience' , ['$location', function($location) {
     return {
         contains: function(value, array) {
             for (val in array) {
@@ -76,7 +76,7 @@ utils.factory('convenience' , [function() {
             return -1;
         },
         // takes a date object and makes the string to be seen by a user
-        formatDate: function (date, includeDay) {
+        formatDate: function(date, includeDay) {
             var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
             var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             var day = '';
@@ -86,6 +86,15 @@ utils.factory('convenience' , [function() {
             }
 
             return day + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+        },
+        // takes a message that can be used to help locate an error, like where is was called
+        // and returns a function that can be used by any function that requires an error callback
+        defaultErrorCallback: function(controllerName, message) {
+            return function(err) {
+                console.error(controllerName + ': ' + message);
+                console.error(err);
+                $location.path('/app/error');
+            };
         }
     };
 }]);

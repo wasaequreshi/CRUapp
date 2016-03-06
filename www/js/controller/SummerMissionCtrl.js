@@ -23,10 +23,8 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constant
     };
 
     // when there is an error, print it out and show the error page in app
-    var err = function(response) {
-        console.error('Error getting summer missions' + response);
-        $location.path('/app/error');
-    };
+    var err = convenience.defaultErrorCallback('MissionCtrl',
+        'Could not retrieve list of summer missions from the server');
 
     // send the request to the server
     req.get(url, success, err);
@@ -56,9 +54,9 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
         $scope.mySummerMission = val;
     };
 
-    var err = function(response) {
-        $location.path('/app/error');
-    };
+    var err = convenience.defaultErrorCallback('MissionCtrl', 
+        'Could not retrieve summer mission ' + $stateParams.missionId +
+        ' from the server');
 
     $scope.showOnline = function(url) {
         $cordovaInAppBrowser.open(url, '_system');  

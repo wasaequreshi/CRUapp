@@ -26,9 +26,8 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
             });
         };
 
-        var err = function(response) {
-            $location.path('/app/error');
-        };
+        var err = convenience.defaultErrorCallback('EventCtrl',
+            'Could not retrieve list of events from the server');
 
 
         if (mins === '' || mins === [] || typeof mins === 'undefined') {
@@ -169,9 +168,8 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
         $scope.myEvent = val;
     };
 
-    var err = function(response) {
-        $location.path('/app/error');
-    };
+    var err = convenience.defaultErrorCallback('EventCtrl', 
+        'Could not retrieve event ' + stateParams.eventId + ' from the server');
 
     req.get(url, success, err);
 
