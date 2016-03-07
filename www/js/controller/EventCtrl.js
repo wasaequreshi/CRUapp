@@ -168,7 +168,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
     };
 
     var err = convenience.defaultErrorCallback('EventCtrl', 
-        'Could not retrieve event ' + stateParams.eventId + ' from the server');
+        'Could not retrieve event ' + $stateParams.eventId + ' from the server');
 
     req.get(url, success, err);
 
