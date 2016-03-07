@@ -265,6 +265,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
                 controller: 'GroupDetailCtrl'
             }
         }
+    })
+
+    .state('app.teams', {
+        url: '/teams',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/ministryTeams/teams.html',
+                controller: 'TeamCtrl'
+            }
+        }
+    })
+
+    .state('app.teamDetail', {
+        url: '/teams/:id',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/ministryTeams/teamDetails.html',
+                controller: 'TeamDetailCtrl'
+            }
+        }
     });
 
     // if none of the above states are matched, use this as the fallback

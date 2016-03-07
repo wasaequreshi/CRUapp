@@ -17,7 +17,9 @@ module.exports = function(config) {
     files: [
       'test-main.js',
       {pattern: 'www/lib/ionic/js/ionic.bundle.js', included: true},
-      {pattern: 'node_modules/angular-mocks/angular-mocks.js', included: true},
+      {pattern: 'bower_components/angular/angular.js', included: true},
+      {pattern: 'spec/lib/*.js', included: true},
+      {pattern: 'spec/mocks/*.js', included: true},
       {pattern: 'www/js/*.js', included: true},
       {pattern: 'www/js/**/*.js', included: true},
       {pattern: 'spec/**/*Spec.js', included: false},

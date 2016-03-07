@@ -1,13 +1,13 @@
 angular.module('PushModule', [])
 
-.service('pushService', function( $q,$cordovaPushV5, $cordovaDialogs, $localStorage, constants,  $cordovaMedia, $ionicPlatform, $http, convenience) {
+.service('pushService', function( $q, $cordovaDialogs,$cordovaPushV5, $localStorage, constants,  $http, convenience) {
     
     var currentRegisteredTopics = [];
     var isHandlerSet = false;
     const PUSH_TKN_STORAGE_VAL = "pushId";
     // Android Notification Received Handler
     function handleAndroid(notification) {
-        $cordovaDialogs.alert(notification.message, "Push Notification Received");
+        $cordovaDialogs.alert(notification.message, notification.title);
     }
 
     // TODO test this IOS Notification Received Handler
@@ -15,33 +15,17 @@ angular.module('PushModule', [])
         // The app was already open but we'll still show the alert and sound the tone received this way. If you didn't check
         // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
         // the notification when this code runs (weird).
-        if (notification.foreground == '1') {
-            // Play custom audio if a sound specified.
-            if (notification.sound) {
-                var mediaSrc = $cordovaMedia.newMedia(notification.sound);
-                mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
-            }
 
-            if (notification.body && notification.messageFrom) {
-                $cordovaDialogs.alert(notification.body, notification.messageFrom);
-            } else $cordovaDialogs.alert(notification.alert, 'Push Notification Received');
+         $cordovaDialogs.alert(notification.message, notification.title);
 
-            if (notification.badge) {
-                $cordovaPushV5.setBadgeNumber(notification.badge).then(function(result) {
-                    console.log('Set badge success ' + result);
-                }, function(err) {
-                    console.log('Set badge error ' + err);
-                });
-            }
-        }
-        // Otherwise it was received in the background and reopened from the push notification. Badge is automatically cleared
-        // in this case. You probably wouldn't be displaying anything at this point, this is here to show that you can process
-        // the data in this situation.
-        else {
-            if (notification.body && notification.messageFrom) {
-                $cordovaDialogs.alert(notification.body, '(RECEIVED WHEN APP IN BACKGROUND) ' + notification.messageFrom);
-            } else $cordovaDialogs.alert(notification.alert, '(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received');
-        }
+         if (notification.badge) {
+            $cordovaPushV5.setBadgeNumber(notification.badge).then(function(result) {
+                console.log('Set badge success ' + result);
+            }, function(err) {
+               console.log('Set badge error ' + err);
+            });
+         }
+        
     }
   
     /**
@@ -49,7 +33,6 @@ angular.module('PushModule', [])
     */
     function getConfigObject(topics){
         topics = !topics ? [] : topics;
-        console.log("config Object" + JSON.stringify(topics));
         return {
            "android": { "senderID"  : constants.GCM_SENDER_ID,
                         "topics"    : topics},
@@ -190,7 +173,6 @@ angular.module('PushModule', [])
     *This function is invoked when a push notiification is recieved by the application
     */
     function onRecieved(event, notification) {
-        console.log("$cordovaPushV5: GOT NOTIFICATION:" + JSON.stringify(notification));
         if (ionic.Platform.isAndroid()) {
           handleAndroid(notification);
         }
