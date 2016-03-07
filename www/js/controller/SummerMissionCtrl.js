@@ -47,7 +47,7 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
         val.startDate = convenience.formatDate(new Date(val.startDate), false);
         val.endDate = convenience.formatDate(new Date(val.endDate), false);
 
-        if (!value.image) {
+        if (!value.data.image) {
             val.image = {url: constants.PLACEHOLDER_IMAGE};
         }
 
