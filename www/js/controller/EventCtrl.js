@@ -3,7 +3,6 @@ var eventCtrl = angular.module('EventCtrl', []);
 eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory, allEvents, $cordovaCalendar, convenience) {
     //reloads page everytime
     $scope.$on('$ionicView.enter', function() {
-        $scope.$emit('$cordovaPushV5:notificationReceived',{"stillthere":"?"});
         var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
         var url;
 
