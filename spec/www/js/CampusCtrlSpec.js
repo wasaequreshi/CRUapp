@@ -12,7 +12,7 @@ describe('CampusCtrl', function() {
 	    scope = $rootScope.$new();
 	    ctrl = $controller('CampusCtrl', {$scope: scope});
 	    httpBackend = $httpBackend;
-	    location = $location
+	    location = $location;
 	}));
 
 
