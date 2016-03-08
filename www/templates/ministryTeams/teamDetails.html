@@ -1,8 +1,11 @@
 <ion-view view-title="Ministry Teams">
     <ion-content padding="true">
         <div class="list card">
-            <div class="item bold">
-                {{team.name}}
+            <div class="item item-thumbnail-left">
+                <img src="{{team.url}}">
+                <h2>{{team.name}}</h2>
+                <p>{{min}}</p>
+                <!--<p>{{leader}}</p>-->
             </div>
 
             <div class="item item-body">
