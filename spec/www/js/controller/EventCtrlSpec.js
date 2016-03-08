@@ -1,4 +1,4 @@
-describe('EventCtrl', function() {
+describe('EventsCtrl', function() {
 	var BASE_SERVER_URL = 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/';
 	var rootScope, scope, controller, location, httpBackend, constants,
 		getList;
@@ -28,7 +28,7 @@ describe('EventCtrl', function() {
 
 	    location = $location;
 	    httpBackend = $httpBackend;
-	    getList = httpBackend.when('GET', BASE_SERVER_URL + 'event/list').respond([{ test: 1, test: 2, test: 3}]);
+	    getList = httpBackend.when('GET', BASE_SERVER_URL + 'event/list').respond([{test: 1, test: 2, test: 3}]);
 	}));
 
 	afterEach(function() {
@@ -47,7 +47,7 @@ describe('EventCtrl', function() {
 		expect(scope.events.length).toBeGreaterThan(0);
 	});
 
-	it('navigates to the error page when 500 receied', function() {
+	it('navigates to the error page when 500 received', function() {
 		getList.respond(500, '');
 		httpBackend.expectGET(BASE_SERVER_URL + 'event/list');
 		spyOn(location, 'path');
@@ -71,4 +71,50 @@ describe('EventCtrl', function() {
 		scope.goToEvent(id);
 		expect(location.path).toHaveBeenCalledWith('/app/events/' + id);
 	});
+});
+
+describe('EventCtrl', function() {
+	var BASE_SERVER_URL = 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/';
+	var rootScope, scope, controller, location, httpBackend, constants,
+		getEvent;
+	var id = 1;
+
+	// create a fake instance of EventCtrl to test
+	beforeEach(angular.mock.module('EventCtrl'));
+	// use some mock objects found commonly found throughout the app
+	beforeEach(angular.mock.module('CruMocks'));
+
+	beforeEach(inject(function($rootScope, $controller, $location, $httpBackend) {
+		rootScope = $rootScope;
+		scope = $rootScope.$new();
+		location = $location;
+		httpBackend = $httpBackend;
+		controller = function() {
+			return $controller('EventCtrl', {
+				$scope: scope,
+		    	$stateParams: {
+		    		eventId: id
+		    	},
+		    	$ionicHistory: {},
+		    	$cordovaInAppBrowser: {},
+		    	$cordovaCalendar: {},
+		    	location: $location
+			});
+		};
+
+		getEvent = httpBackend.when('GET', BASE_SERVER_URL + 'event/' + id).respond({test: 'test'});
+	}));
+
+	afterEach(function() {
+    	httpBackend.verifyNoOutstandingExpectation();
+    	httpBackend.verifyNoOutstandingRequest();
+   	});
+
+   	it('contains the event requested by the page', function() {
+   		httpBackend.expectGET(BASE_SERVER_URL + 'event/' + id);
+   		controller();
+   		httpBackend.flush();
+
+   		expect(scope.myEvent.test).toEqual('test');
+   	});
 });
