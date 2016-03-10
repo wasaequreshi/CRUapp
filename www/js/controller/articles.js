@@ -207,11 +207,7 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
             toolbar: 'no',
             zoom: 'no'
         };
-        $cordovaInAppBrowser.open(article['url'], '_system');
+        $cordovaInAppBrowser.open(article['url'], '_self', options);
     };
 
 });
-
-function setupSearchModal(ionicModal, scope) {
-
-}

@@ -59,7 +59,11 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
         ' from the server');
 
     $scope.showOnline = function(url) {
-        $cordovaInAppBrowser.open(url, '_system');  
+        $cordovaInAppBrowser.open(url, '_self', {
+            clearcache: 'yes',
+            zoom: 'no',
+            location: 'yes'
+        });  
     };
     
     req.get(url, success, err);
