@@ -59,11 +59,37 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
         ' from the server');
 
     $scope.showOnline = function(url) {
-        $cordovaInAppBrowser.open(url, '_self', {
-            clearcache: 'yes',
-            zoom: 'no',
-            location: 'yes'
-        });  
+        var isIOS = ionic.Platform.isIOS();
+        var isAndroid = ionic.Platform.isAndroid();
+        var options = {};
+        var browserType = '';
+        if (isIOS)
+        {
+            options = {
+                location: 'yes',
+                clearcache: 'yes',
+                toolbar: 'yes',
+                zoom: 'no'
+            };
+            browserType = '_blank';
+        }
+        else if (isAndroid)
+        {
+            options = {
+                location: 'yes',
+                clearcache: 'yes',
+                toolbar: 'no',
+                zoom: 'no'
+            };
+            browserType = '_self';
+        }
+        $cordovaInAppBrowser.open(url, browserType, options);
+
+        // $cordovaInAppBrowser.open(url, '_self', {
+        //     clearcache: 'yes',
+        //     zoom: 'no',
+        //     location: 'yes'
+        // });  
     };
     
     req.get(url, success, err);

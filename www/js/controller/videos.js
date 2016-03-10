@@ -60,12 +60,32 @@ videos.controller('videos_controller',function($cordovaInAppBrowser, $scope, $io
 
     $scope.view_selected_video = function(video) {
         var video_url = 'https://www.youtube.com/embed/' + video['id']['videoId'];
-        var options = {
-            location: 'no',
-            clearcache: 'yes',
-            toolbar: 'no'
-        };
-        $cordovaInAppBrowser.open(video_url, '_system');
+        
+        var isIOS = ionic.Platform.isIOS();
+        var isAndroid = ionic.Platform.isAndroid();
+        var options = {};
+        var browserType = '';
+        if (isIOS)
+        {
+            options = {
+                location: 'yes',
+                clearcache: 'yes',
+                toolbar: 'yes',
+                zoom: 'no'
+            };
+            browserType = '_blank';
+        }
+        else if (isAndroid)
+        {
+            options = {
+                location: 'yes',
+                clearcache: 'yes',
+                toolbar: 'no',
+                zoom: 'no'
+            };
+            browserType = '_system';
+        }
+        $cordovaInAppBrowser.open(video_url, browserType, options);
     };
 
 });
