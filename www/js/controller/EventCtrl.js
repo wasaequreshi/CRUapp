@@ -45,7 +45,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
                     val.image = {url: constants.PLACEHOLDER_IMAGE};
                 }
 
-                helper_function_updating_calendar(val);
+                helperFunctionUpdatingCalendar(val);
                 events.push(val);
             });
         };
@@ -79,24 +79,24 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
     });
 
 
-    var helper_function_updating_calendar = function(val) {
+    var helperFunctionUpdatingCalendar = function(val) {
         //check if event changed
-        list_of_added_events = $localStorage.getObject('list_of_added_events');
-        info_for_event = list_of_added_events[val._id];
+        listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
+        infoForEvent = listOfAddedEvents[val._id];
 
-        if (!(info_for_event == null)) {
-            if (!(info_for_event['name'] === val.name && JSON.stringify(info_for_event['location']) ===
-               JSON.stringify(val.location['street']) && info_for_event['secretStartDate'] === val.secretStartDate &&
-                info_for_event['secretEndDate'] === val.secretEndDate)) {
+        if (!(infoForEvent == null)) {
+            if (!(infoForEvent['name'] === val.name && JSON.stringify(infoForEvent['location']) ===
+               JSON.stringify(val.location['street']) && infoForEvent['secretStartDate'] === val.secretStartDate &&
+                infoForEvent['secretEndDate'] === val.secretEndDate)) {
                 //The event was changed bro
-                update_event(info_for_event, val);
+                updateEvent(infoForEvent, val);
             }
         }
     };
 
-    var update_event = function(info_for_event, val) {
-        var originalStartDate = info_for_event['secretStartDate'];
-        var originalEndDate = info_for_event['secretEndDate'];
+    var updateEvent = function(infoForEvent, val) {
+        var originalStartDate = infoForEvent['secretStartDate'];
+        var originalEndDate = infoForEvent['secretEndDate'];
         
         startDateAndTime = eventCtrl.getTimeAndDate(originalStartDate);
         startDate = startDateAndTime[0];
@@ -110,12 +110,12 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
         finalEndDate = eventCtrl.createDate(endDate, endTime);
         
         $cordovaCalendar.deleteEvent({
-            newTitle: info_for_event['name'],
-            location: info_for_event['location'],
+            newTitle: infoForEvent['name'],
+            location: infoForEvent['location'],
             startDate: finalStartDate,
             endDate: finalEndDate
         }).then(function(result) {
-            helper_function_update_calendar(val);
+            helperFunctionUpdateCalendar(val);
             // success
         }, function(err) {
             // error
@@ -123,7 +123,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
         });
     };
 
-    var helper_function_update_calendar = function(val) {
+    var helperFunctionUpdateCalendar = function(val) {
       var originalStartDate = val.secretStartDate;
       var originalEndDate = val.secretEndDate;
 
@@ -146,13 +146,13 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
           endDate: finalEndDate
       }).then(function(result) {
           //Get the data from the local storage of list of all added events
-          list_of_added_events = $localStorage.getObject('list_of_added_events');
+          listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
 
-          list_of_added_events[val._id] = {'name': val.name, 'location': val.location['street'], 'secretStartDate': val.secretStartDate,
+          listOfAddedEvents[val._id] = {'name': val.name, 'location': val.location['street'], 'secretStartDate': val.secretStartDate,
           'secretEndDate': val.secretEndDate};
 
           //Added event information to local phone
-          $localStorage.setObject('list_of_added_events', list_of_added_events);
+          $localStorage.setObject('listOfAddedEvents', listOfAddedEvents);
       }, function(err) {
           console.error('There was an error: ' + err);
       });
@@ -211,10 +211,10 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
         finalStartDate = eventCtrl.createDate(startDate, startTime);    
         finalEndDate = eventCtrl.createDate(endDate, endTime);
 
-        helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate, originalEndDate);
+        helperFunctionAddingCalendar(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate, originalEndDate);
     };
 
-    var helper_function_adding_calendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
+    var helperFunctionAddingCalendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
         originalEndDate) 
     {
 
@@ -227,17 +227,17 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
         }).then(function(result) {
 
             //Get the data from the local storage of list of all added events
-            list_of_added_events = $localStorage.getObject('list_of_added_events');
+            listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
             
-            if (list_of_added_events == null) {
-                list_of_added_events = {};
+            if (listOfAddedEvents == null) {
+                listOfAddedEvents = {};
             }
 
-            list_of_added_events[_id] = {'name': eventName, 'location': location['street'], 
+            listOfAddedEvents[_id] = {'name': eventName, 'location': location['street'], 
                 'secretStartDate': originalStartDate, 'secretEndDate': originalEndDate};
             
             //Added event information to local phone
-            $localStorage.setObject('list_of_added_events', list_of_added_events);
+            $localStorage.setObject('listOfAddedEvents', listOfAddedEvents);
 
             //If successfully added, then alert the user that it has been added
             var alertPopup = $ionicPopup.alert(
