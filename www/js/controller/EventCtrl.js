@@ -4,7 +4,7 @@ var eventCtrl = angular.module('EventCtrl', []);
 //returns an array with:
 //index 0: date
 //index 1: time
-var getTimeAndDate = function(timeAndDate)
+eventCtrl.getTimeAndDate = function(timeAndDate)
 {
     //Split at the "T" to separate the date and time
     splitDateAndTime = timeAndDate.split('T');
@@ -19,7 +19,7 @@ var getTimeAndDate = function(timeAndDate)
 }
 
 //Takes in date and time to return Date object
-var createDate = function(date, time)
+eventCtrl.createDate = function(date, time)
 {
     date = new Date(date[0], Number(date[1]) - 1, date[2], time[0], time[1], 0, 0, 0);
     return date;
@@ -98,16 +98,16 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
         var originalStartDate = info_for_event['secretStartDate'];
         var originalEndDate = info_for_event['secretEndDate'];
         
-        startDateAndTime = getTimeAndDate(originalStartDate);
+        startDateAndTime = eventCtrl.getTimeAndDate(originalStartDate);
         startDate = startDateAndTime[0];
         startTime = startDateAndTime[1];
 
-        endDateAndTime = getTimeAndDate(originalEndDate);
+        endDateAndTime = eventCtrl.getTimeAndDate(originalEndDate);
         endDate = endDateAndTime[0];
         endTime = endDateAndTime[1];
 
-        finalStartDate = createDate(startDate, startTime);    
-        finalEndDate = createDate(endDate, endTime);
+        finalStartDate = eventCtrl.createDate(startDate, startTime);    
+        finalEndDate = eventCtrl.createDate(endDate, endTime);
         
         $cordovaCalendar.deleteEvent({
             newTitle: info_for_event['name'],
@@ -127,16 +127,16 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
       var originalStartDate = val.secretStartDate;
       var originalEndDate = val.secretEndDate;
 
-      startDateAndTime = getTimeAndDate(originalStartDate);
+      startDateAndTime = eventCtrl.getTimeAndDate(originalStartDate);
       startDate = startDateAndTime[0];
       startTime = startDateAndTime[1];
 
-      endDateAndTime = getTimeAndDate(originalEndDate);
+      endDateAndTime = eventCtrl.getTimeAndDate(originalEndDate);
       endDate = endDateAndTime[0];
       endTime = endDateAndTime[1];
 
-      finalStartDate = createDate(startDate, startTime);    
-      finalEndDate = createDate(endDate, endTime);
+      finalStartDate = eventCtrl.createDate(startDate, startTime);    
+      finalEndDate = eventCtrl.createDate(endDate, endTime);
 
       //Using ngcordova to create an event to their native calendar
       $cordovaCalendar.createEvent({
@@ -200,16 +200,16 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
     //Takes in as a param the eventName, startDate, endDate, and location
     $scope.addEventToCalendar = function(eventName, location, _id, originalStartDate, originalEndDate) {
         
-        startDateAndTime = getTimeAndDate(originalStartDate);
+        startDateAndTime = eventCtrl.getTimeAndDate(originalStartDate);
         startDate = startDateAndTime[0];
         startTime = startDateAndTime[1];
 
-        endDateAndTime = getTimeAndDate(originalEndDate);
+        endDateAndTime = eventCtrl.getTimeAndDate(originalEndDate);
         endDate = endDateAndTime[0];
         endTime = endDateAndTime[1];
 
-        finalStartDate = createDate(startDate, startTime);    
-        finalEndDate = createDate(endDate, endTime);
+        finalStartDate = eventCtrl.createDate(startDate, startTime);    
+        finalEndDate = eventCtrl.createDate(endDate, endTime);
 
         helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate, originalEndDate);
     };
