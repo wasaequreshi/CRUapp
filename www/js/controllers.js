@@ -13,6 +13,7 @@ module.service('allEvents', function() {
         }
     };
 });
+
 module.run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -23,7 +24,6 @@ module.run(function($ionicPlatform) {
         }
     });
 });
-
 
 module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicModal, $ionicPlatform, $timeout, $cordovaCalendar, $ionicPopup, $localStorage, $cordovaInAppBrowser) {
 
@@ -53,73 +53,6 @@ module.controller('AppCtrl', function(pushService, $rootScope, $scope, $ionicMod
     // Open the login modal
     $scope.login = function() {
       $scope.modal.show();
-    };
-
-    //When a button is clicked, this method is invoked
-    //Takes in as a param the eventName, startDate, endDate, and location
-    $scope.addEventToCalendar = function(eventName, location, _id, originalStartDate, originalEndDate) {
-        //Database has startDate as 2015-10-15T19:00:00.000Z
-        //So I split at the "T" to seperate the date and time
-    		
-        splitStartDateAndTime = originalStartDate.split('T');
-        //Splitting up the date into pieces
-        splitStartDate = splitStartDateAndTime[0].split('-');
-        //Splitting up the time into pieces
-        splitStartTime = splitStartDateAndTime[1].split(':');
-
-        //Same as before but now I am doing it for the end date
-        splitEndDateAndTime = originalEndDate.split('T');
-        splitEndDate = splitEndDateAndTime[0].split('-');
-        splitEndTime = splitEndDateAndTime[1].split(':');
-
-        //This will create the final format for the date, which the plugin uses
-        finalStartDate = new Date(splitStartDate[0], Number(splitStartDate[1]) - 1,
-                                 splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0, 0);
-        finalEndDate = new Date(splitEndDate[0], Number(splitEndDate[1] - 1), splitEndDate[2],
-                               splitEndTime[0], splitEndTime[1], 0, 0, 0);
-
-        helper_function_adding_calendar(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate, originalEndDate);
-    };
-
-    helper_function_adding_calendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
-        originalEndDate) {
-        //Using ngcordova to create an event to their native calendar
-        $cordovaCalendar.createEvent({
-          title: eventName,
-          location: location['street'],
-          notes: 'This is a note',
-          startDate: finalStartDate,
-          endDate: finalEndDate
-      }).then(function(result) {
-
-
-          //Get the data from the local storage of list of all added events
-          list_of_added_events = $localStorage.getObject('list_of_added_events');
-          if (list_of_added_events == null) {
-              list_of_added_events = {};
-          }
-          list_of_added_events[_id] = {'name': eventName, 'location': location['street'], 'secretStartDate': originalStartDate,
-            'secretEndDate': originalEndDate};
-          //Added event information to local phone
-          $localStorage.setObject('list_of_added_events', list_of_added_events);
-
-          //If successfully added, then alert the user that it has been added
-          var alertPopup = $ionicPopup.alert(
-          {
-              title: 'Event Added',
-              template: eventName + ' has been added to your calendar!'
-          });
-
-      }, function(err) {
-          console.error('There was an error: ' + err);
-          //If unsuccessful added, then an alert with a error should pop up
-
-          var alertPopup = $ionicPopup.alert(
-          {
-              title: 'Error',
-              template: 'Could not add event to calendar: ' + err
-          });
-      });
     };
 
     // Perform the login action when the user submits the login form

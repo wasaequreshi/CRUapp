@@ -8,7 +8,7 @@
 
 //'starter.controllers.articles' is just name of the module
 //Requires some of the functionality from 'starter.controllers.utils'
-var articles = angular.module('articles', ['starter.controllers.utils']);
+var articles = angular.module('articles', ['starter.controllers.utils', 'ionic']);
 
 //This is a helper function to sort the articles by date
 var sortArticles = function(unsorted) {
@@ -201,13 +201,32 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     $scope.view_selected_article = function(article) {
         //Don't really need a separate page since all we are just displaying the url
         //page for the article
-        var options = {
-            location: 'yes',
-            clearcache: 'yes',
-            toolbar: 'no',
-            zoom: 'no'
-        };
-        $cordovaInAppBrowser.open(article['url'], '_self', options);
+		var isIOS = ionic.Platform.isIOS();
+		var isAndroid = ionic.Platform.isAndroid();
+		var options = {};
+		var browserType = '';
+		if (isIOS)
+		{
+			options = {
+				location: 'yes',
+				clearcache: 'yes',
+				toolbar: 'yes',
+				zoom: 'no'
+			};
+			browserType = '_blank';
+		}
+		else if (isAndroid)
+		{
+			options = {
+				location: 'yes',
+				clearcache: 'yes',
+				toolbar: 'no',
+				zoom: 'no'
+			};
+			browserType = '_self';
+		}
+		$cordovaInAppBrowser.open(article['url'], browserType, options);
+
     };
 
 });
