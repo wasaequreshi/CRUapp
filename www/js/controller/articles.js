@@ -131,7 +131,7 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     //will be executed
     var success_getting_articles = function(data) {
         //Just a cool message
-        console.log('Successfully got data: ' + data);
+        console.log('success_getting_articles: %O', data);
 
         for (var i = 0; i < data.data.length; ++i) {
             data.data[i].visible = true;
@@ -157,14 +157,14 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     //will be executed
     var failure_getting_articles = function(data) {
         //Just a sad message :(
-        console.log('Failure got data: ' + data);
+        console.log('failure_getting_articles: %O', data);
 
         //Goes to that lovely error page we have
         $location.path('/app/error');
     };
 
     var success_getting_article_tags = function(data) {
-        console.log('Successfully got tags: ' + data);
+        console.log('success_getting_article_tags: %O', data);
 
         tags = data['data'];
         for (var i = 0; i < tags.length; ++i) {
@@ -175,7 +175,7 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
 
     var failure_getting_article_tags = function(data) {
         //Just a sad message :(
-        console.log('Failure got data: ' + data);
+        console.log('failure_getting_article_tags: %O', data);
 
         //Goes to that lovely error page we have
         $location.path('/app/error');
