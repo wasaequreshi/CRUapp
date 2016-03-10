@@ -111,6 +111,7 @@ describe('EventCtrl', function() {
 		    		eventId: id
 		    	},
 		    	$ionicHistory: {},
+          $ionicPopup: {},
 		    	$cordovaInAppBrowser: {},
 		    	$cordovaCalendar: {}
 			});
