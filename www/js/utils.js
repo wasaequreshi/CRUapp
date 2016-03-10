@@ -4,6 +4,7 @@ var utils = angular.module('starter.controllers.utils', []);
 utils.constant('constants', {
     'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/',
     'PLACEHOLDER_IMAGE': 'img/cru-logo.jpg',
+    'PERSON_IMAGE': 'img/person.png',
     'GCM_SENDER_ID': '276638088511',
 
     'CAMPUSES_CONFIG': 'campuses',
