@@ -33,9 +33,37 @@ describe('articles controller', function() {
 		expect(sortArticles([{date: 1}, {date: 2}, {date: 3}])).toEqual([{date: 3}, {date: 2}, {date: 1}]);
 	});
 
-
 	it('has title set correctly', function(){
-		expect(scope.title).toEqual('Resource');
+		expect(scope.title).toEqual('Resources');
+	});
+
+	it('can apply tags', function(){
+		scope.articles = [{visible: false}];
+		scope.tags = [];
+		scope.tagsModal = {hide: function() {}};
+
+		scope.applyTags();
+		expect(scope.articles.length).toEqual(1);
+		for (var i = 0; i < scope.articles.length; ++i) {
+			expect(scope.articles[i].visible).toEqual(false);
+		}
+
+		scope.articles = [{visible: false, tags: ["1"]}];
+		scope.tags = [{_id: "1", checked: true}];
+
+		scope.applyTags();
+		expect(scope.articles.length).toEqual(1);
+		for (var i = 0; i < scope.articles.length; ++i) {
+			expect(scope.articles[i].visible).toEqual(true);
+		}
+
+		scope.tags = [{_id: "1", checked: false}];
+
+		scope.applyTags();
+		expect(scope.articles.length).toEqual(1);
+		for (var i = 0; i < scope.articles.length; ++i) {
+			expect(scope.articles[i].visible).toEqual(false);
+		}
 	});
 
 });
