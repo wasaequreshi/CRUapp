@@ -102,7 +102,7 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
             queryParams['author'] = {'$regex':  '(?i:' + $scope.articleSearchData.author + ')'};
         }
 
-        req.post(url, queryParams, success_getting_articles, failure_getting_articles);
+        req.post(url, queryParams, successGettingArticles, failureGettingArticles);
         console.log('SEARCHING' + $scope.articleSearchData.title);
 
         //Set up the title of the page
@@ -119,7 +119,7 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         var url = constants.BASE_SERVER_URL + 'resource/list';
 
         // make request to db
-        req.get(url, success_getting_articles, failure_getting_articles);
+        req.get(url, successGettingArticles, failureGettingArticles);
         $scope.isSearching = false;
         $scope.title = 'Resources';
     };
@@ -129,9 +129,9 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
 
     //When successfully getting the articles from the db, the following function
     //will be executed
-    var success_getting_articles = function(data) {
+    var successGettingArticles = function(data) {
         //Just a cool message
-        console.log('success_getting_articles: %O', data);
+        console.log('successGettingArticles: %O', data);
 
         for (var i = 0; i < data.data.length; ++i) {
             data.data[i].visible = true;
@@ -155,16 +155,16 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
 
     //When failing to get the articles from the db, the following function
     //will be executed
-    var failure_getting_articles = function(data) {
+    var failureGettingArticles = function(data) {
         //Just a sad message :(
-        console.log('failure_getting_articles: %O', data);
+        console.log('failureGettingArticles: %O', data);
 
         //Goes to that lovely error page we have
         $location.path('/app/error');
     };
 
-    var success_getting_article_tags = function(data) {
-        console.log('success_getting_article_tags: %O', data);
+    var successGettingArticleTags = function(data) {
+        console.log('successGettingArticleTags: %O', data);
 
         tags = data['data'];
         for (var i = 0; i < tags.length; ++i) {
@@ -173,9 +173,9 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         $scope.tags = tags;
     };
 
-    var failure_getting_article_tags = function(data) {
+    var failureGettingArticleTags = function(data) {
         //Just a sad message :(
-        console.log('failure_getting_article_tags: %O', data);
+        console.log('failureGettingArticleTags: %O', data);
 
         //Goes to that lovely error page we have
         $location.path('/app/error');
@@ -190,15 +190,15 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         console.log('Getting from ' + url);
 
         // make request to db
-        req.get(url, success_getting_articles, failure_getting_articles);
+        req.get(url, successGettingArticles, failureGettingArticles);
         url = constants.BASE_SERVER_URL + 'resource-tags/list';
-        req.get(url, success_getting_article_tags, failure_getting_article_tags);
+        req.get(url, successGettingArticleTags, failureGettingArticleTags);
     });
 
     //When clicking a specific article, it will reroute to another page
     //consisting specific info for the article.
     //Also note, you have to add to the app.js file so that it routes properly
-    $scope.view_selected_article = function(article) {
+    $scope.viewSelectedArticle = function(article) {
         //Don't really need a separate page since all we are just displaying the url
         //page for the article
 		var isIOS = ionic.Platform.isIOS();

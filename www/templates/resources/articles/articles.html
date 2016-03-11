@@ -6,7 +6,7 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list card" ng-repeat="article in articles" ng-if="article.visible">
-            <div ng-click="view_selected_article(article)">
+            <div ng-click="viewSelectedArticle(article)">
                 <div class="item">
                     <h2><b>{{article.title}}</b></h2>
                 </div>
