@@ -193,7 +193,6 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     };
     
     $scope.signupForGroup = function(groupSignupData) {
-        console.log("Got here");
         var name = groupSignupData.name;
         var email = groupSignupData.email;
         var phone = groupSignupData.phone;
@@ -227,7 +226,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
           }, function(error) {
             // An error occurred
           });
-        console.log("Got here");
+        
         $scope.closeSignupModal();
     };
 });
