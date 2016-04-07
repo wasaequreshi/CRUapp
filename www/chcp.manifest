@@ -1,0 +1,798 @@
+[
+  {
+    "file": "chcp.jsonOrig",
+    "hash": "0b8ce2fb5a8cfe0a177de359973aeafc"
+  },
+  {
+    "file": "index.html",
+    "hash": "e295b52b9d272fd83f96e2defa55ad2b"
+  },
+  {
+    "file": "css/cruFont.css",
+    "hash": "e78059d11a7321c8b9f3404926edf42e"
+  },
+  {
+    "file": "css/ionic.app.css",
+    "hash": "caa8d40dcec6fcaa56cf46edc9bf3e62"
+  },
+  {
+    "file": "css/ionic.app.min.css",
+    "hash": "b69da0d38c45ee95ec4f858da16afd40"
+  },
+  {
+    "file": "css/style.css",
+    "hash": "7cd4d6bf7dd4d5c8d1adad2007cdb206"
+  },
+  {
+    "file": "xdk/project-info.json",
+    "hash": "2094c1f6efb7a90ccd2242f4310b7891"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProBlk.otf",
+    "hash": "f90b5510e169e569808b9ed9775d7f2a"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProBold.otf",
+    "hash": "0746259ac35e7ca6c54e695901557ade"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProBoldIt.otf",
+    "hash": "1efa6ed936031e5e84d1eb3df4928aec"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProBook.otf",
+    "hash": "88b29edc46196cdea59688c72a0786db"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProBookIt.otf",
+    "hash": "f5b374a7a0785a7331f38b4bee75b4a5"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProBlkIt.otf",
+    "hash": "b0e840d202b6afd583fbd9b5e6966a0d"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProLig.otf",
+    "hash": "21e0379f759f8fc1c653c32581f4ee0c"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProLigIt.otf",
+    "hash": "0474e9b201d0040e01f1515d1f30ae8e"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProMed.otf",
+    "hash": "1bb7f32f8d1785fc6daaa7475890946e"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProMedIt.otf",
+    "hash": "d03c5ebd0e46a1dbc2b8191627fcdd78"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProSem.otf",
+    "hash": "7c908534c2fe6a47f8a27d64badafec5"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/FreigSanProSemIt.otf",
+    "hash": "0a0689e0655a1edad35554c89f1e7ff9"
+  },
+  {
+    "file": "font/Freight Sans Pro Pack OT/GF End User License.rtf",
+    "hash": "7ad5a5f435308b7650dc78b27c72b5b4"
+  },
+  {
+    "file": "font/Leitura Roman 3/Leitura-Roman 3.otf",
+    "hash": "e7aa8884c23ea499ae6da19d83fbf857"
+  },
+  {
+    "file": "img/cru-logo-white.png",
+    "hash": "76a323d0c1ac71e2580cb7159c7c5577"
+  },
+  {
+    "file": "img/cru-logo.jpg",
+    "hash": "4f584fa60f3c60dfa07e37eb0d78cf78"
+  },
+  {
+    "file": "img/ionic.png",
+    "hash": "251ebf03b1c7889cf36cbcbcce8f689e"
+  },
+  {
+    "file": "img/jesus-banana-slip.gif",
+    "hash": "51ad5c8578294ae3c748e2d19b1981f8"
+  },
+  {
+    "file": "img/person.png",
+    "hash": "0de3c088feb9585d8265d3a2d34dd9d0"
+  },
+  {
+    "file": "img/wheel.svg",
+    "hash": "197236c054b579837245034b218c0928"
+  },
+  {
+    "file": "img/cru-slides/1.png",
+    "hash": "fb8cd8a218397e61e69c5a6a4c66cd87"
+  },
+  {
+    "file": "img/cru-slides/3.jpg",
+    "hash": "454d03f246ff3e76a3fdb9a85c5d9af0"
+  },
+  {
+    "file": "img/cru-slides/2.png",
+    "hash": "30edf9cc0747ecab1f6c7fbd9a264187"
+  },
+  {
+    "file": "js/CampusCtrl.js",
+    "hash": "c8b941169bc03fc4fa1f895f3287ee66"
+  },
+  {
+    "file": "js/app.js",
+    "hash": "6c18414937b7a23f321bbae5a5bdb826"
+  },
+  {
+    "file": "js/controllers.js",
+    "hash": "b5e27a9f8a54fab12386d08bcfa9c003"
+  },
+  {
+    "file": "js/MinCtrl.js",
+    "hash": "0feb8428d28fa665a8ba93b564d47a9b"
+  },
+  {
+    "file": "js/RideCtrl.js",
+    "hash": "1a1cc208a80a5d533f965876aed9ca1b"
+  },
+  {
+    "file": "js/utils.js",
+    "hash": "91588245cb233b1769a0c1cd97167ff1"
+  },
+  {
+    "file": "js/controller/articles.js",
+    "hash": "8a4f37576a1105e1967a2653f1c7ddf0"
+  },
+  {
+    "file": "js/controller/ComGroupCtrl.js",
+    "hash": "ac36355d6665c189214fe428d8c12a1b"
+  },
+  {
+    "file": "js/controller/EventCtrl.js",
+    "hash": "48b10e829670580f8e24b42d2842a0e4"
+  },
+  {
+    "file": "js/controller/pushcontroller.js",
+    "hash": "2e4f46e79fe9d78953ecb5f7f33359fc"
+  },
+  {
+    "file": "js/controller/SummerMissionCtrl.js",
+    "hash": "d42e974fa5c329bd971f97977eb03c04"
+  },
+  {
+    "file": "js/controller/TeamCtrl.js",
+    "hash": "1ecb363a56be0e0de4e6869d9ba381f9"
+  },
+  {
+    "file": "js/controller/testController.js",
+    "hash": "eff842b30a1159b3abfb90695eb424e3"
+  },
+  {
+    "file": "js/controller/videos.js",
+    "hash": "ac846465a00b142a4aa9b6ec46a41d28"
+  },
+  {
+    "file": "js/template/jquery.min.js",
+    "hash": "13c0a5055cca7b2463b2f73701960b9e"
+  },
+  {
+    "file": "js/template/jquery.scrolly.min.js",
+    "hash": "c586b89860c31f401eb6d6227804480b"
+  },
+  {
+    "file": "js/template/jquery.scrollzer.min.js",
+    "hash": "11e825a24dc76f5b1441604763ec7bb3"
+  },
+  {
+    "file": "js/template/main.js",
+    "hash": "38db23f5b833992e8d64efa3a6cbb869"
+  },
+  {
+    "file": "js/template/skel.min.js",
+    "hash": "68a66bc7a5309c59a3e75420358033ac"
+  },
+  {
+    "file": "js/template/util.js",
+    "hash": "fd2716a7b68ce7748c9676787b61db43"
+  },
+  {
+    "file": "js/template/ie/html5shiv.js",
+    "hash": "71eaf8e6ded9a0349eca80940fad8bda"
+  },
+  {
+    "file": "js/template/ie/respond.min.js",
+    "hash": "4019c5f3493663439e6dfb064e5d8c36"
+  },
+  {
+    "file": "js/template/ie/PIE.htc",
+    "hash": "b952304559fdac861e34ef671aa7e3b4"
+  },
+  {
+    "file": "templates/error.html",
+    "hash": "a7b4d981ed0fcf3b15e1c2006ecdcf45"
+  },
+  {
+    "file": "templates/event.html",
+    "hash": "d645dc3922fa4d1227ce22d5965ac656"
+  },
+  {
+    "file": "templates/events.html",
+    "hash": "d32b38bd85d238ed5084bca3f7165fe5"
+  },
+  {
+    "file": "templates/login.html",
+    "hash": "eea4424d371f142f176a24a286268de9"
+  },
+  {
+    "file": "templates/ministries.html",
+    "hash": "823e3d0b12a67e8a2e40968cfb650cb1"
+  },
+  {
+    "file": "templates/menu.html",
+    "hash": "3ada1eadf40184bed17b659ffcec5595"
+  },
+  {
+    "file": "templates/mission.html",
+    "hash": "0913f79cd36463d539eee3dffcc8181e"
+  },
+  {
+    "file": "templates/missions.html",
+    "hash": "3b9554cfaafc68be0b4fb918a9b8ccda"
+  },
+  {
+    "file": "templates/resources.html",
+    "hash": "cd44a3f5730e745cb0a3921b2e2967e5"
+  },
+  {
+    "file": "templates/search.html",
+    "hash": "58252629407899934866b334d2a345f3"
+  },
+  {
+    "file": "templates/settings.html",
+    "hash": "c47bf251c94fca72ad13cee15a5f856e"
+  },
+  {
+    "file": "templates/signup.html",
+    "hash": "3d64215a0cac5e671cac95efd684a6ee"
+  },
+  {
+    "file": "templates/splash.html",
+    "hash": "926d025d075cc7f1899db2f2fcae9540"
+  },
+  {
+    "file": "templates/communitygroup/groupDetail.html",
+    "hash": "83dda6119097ea7cdf867d595dc491c4"
+  },
+  {
+    "file": "templates/communitygroup/groupFilter.html",
+    "hash": "e37953ef855488b4bab79defe81a02f3"
+  },
+  {
+    "file": "templates/communitygroup/groups.html",
+    "hash": "9651f909b1cdc3e0a90b9cc1375797ab"
+  },
+  {
+    "file": "templates/communitygroup/groupSignup.html",
+    "hash": "aa7af1afece6060ad1fc53aa15d605e7"
+  },
+  {
+    "file": "templates/ministryTeams/teamDetails.html",
+    "hash": "eaf2f0a3748f8c08b5ed7c4475108b91"
+  },
+  {
+    "file": "templates/ministryTeams/teams.html",
+    "hash": "644a2ac7561267de1c26e45141d2886a"
+  },
+  {
+    "file": "templates/rideSharing/driver.html",
+    "hash": "f30bca9994998defb3608a62590f6c34"
+  },
+  {
+    "file": "templates/rideSharing/driverList.html",
+    "hash": "d70a54a3789237030f4da16f487ec458"
+  },
+  {
+    "file": "templates/rideSharing/drives.html",
+    "hash": "10c2b41bb4da055789e1aaa5467eba62"
+  },
+  {
+    "file": "templates/rideSharing/filterModal.html",
+    "hash": "a0612ed41177fba9c7e79624abe1664c"
+  },
+  {
+    "file": "templates/rideSharing/get.html",
+    "hash": "2598165eeeec1c9869925880a03b347e"
+  },
+  {
+    "file": "templates/rideSharing/give.html",
+    "hash": "6dafefc7388c4caea2be1b3f73f99d4d"
+  },
+  {
+    "file": "templates/rideSharing/ridersList.html",
+    "hash": "170f763e94c3f0958dca5fb09bbff6c6"
+  },
+  {
+    "file": "templates/rideSharing/rides.html",
+    "hash": "f85f08890c16e3c737fff06c2f31809f"
+  },
+  {
+    "file": "templates/resources/articles/articles.html",
+    "hash": "950affda1d2733336f3886e6083a2fc1"
+  },
+  {
+    "file": "templates/resources/articles/articleSearch.html",
+    "hash": "61716d5f0dc7befcf93a5d1329adab41"
+  },
+  {
+    "file": "templates/resources/articles/articleTags.html",
+    "hash": "735c6e6c061dc82b38096f075acb3037"
+  },
+  {
+    "file": "templates/resources/videos/videos.html",
+    "hash": "024a4b4150e67a6e4f22ed9533567977"
+  },
+  {
+    "file": "templates/resources/videos/videoSearch.html",
+    "hash": "63fc1b47e49daff4e4fc7af8212b3747"
+  },
+  {
+    "file": "lib/ng-cordova.js",
+    "hash": "42f822ef1475add5f6c5c7862298280e"
+  },
+  {
+    "file": "lib/ionic/version.json",
+    "hash": "3eaaa98fa757adc50f694053b1c530d3"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProBlk.otf",
+    "hash": "f90b5510e169e569808b9ed9775d7f2a"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProBlkIt.otf",
+    "hash": "b0e840d202b6afd583fbd9b5e6966a0d"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProBold.otf",
+    "hash": "0746259ac35e7ca6c54e695901557ade"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProBoldIt.otf",
+    "hash": "1efa6ed936031e5e84d1eb3df4928aec"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProBook.otf",
+    "hash": "88b29edc46196cdea59688c72a0786db"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProBookIt.otf",
+    "hash": "f5b374a7a0785a7331f38b4bee75b4a5"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProLig.otf",
+    "hash": "21e0379f759f8fc1c653c32581f4ee0c"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProLigIt.otf",
+    "hash": "0474e9b201d0040e01f1515d1f30ae8e"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProMedIt.otf",
+    "hash": "d03c5ebd0e46a1dbc2b8191627fcdd78"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProMed.otf",
+    "hash": "1bb7f32f8d1785fc6daaa7475890946e"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProSem.otf",
+    "hash": "7c908534c2fe6a47f8a27d64badafec5"
+  },
+  {
+    "file": "lib/ionic/fonts/FreigSanProSemIt.otf",
+    "hash": "0a0689e0655a1edad35554c89f1e7ff9"
+  },
+  {
+    "file": "lib/ionic/fonts/GF End User License.rtf",
+    "hash": "7ad5a5f435308b7650dc78b27c72b5b4"
+  },
+  {
+    "file": "lib/ionic/fonts/ionicons.eot",
+    "hash": "2c2ae068be3b089e0a5b59abb1831550"
+  },
+  {
+    "file": "lib/ionic/fonts/ionicons.svg",
+    "hash": "c037dbbc0e6790f30e824a50010df5fb"
+  },
+  {
+    "file": "lib/ionic/fonts/ionicons.woff",
+    "hash": "05acfdb568b3df49ad31355b19495d4a"
+  },
+  {
+    "file": "lib/ionic/fonts/ionicons.ttf",
+    "hash": "24712f6c47821394fba7942fbb52c3b2"
+  },
+  {
+    "file": "lib/ionic/fonts/LICENSE.txt",
+    "hash": "06550aeecfdc47d647590191e0925c16"
+  },
+  {
+    "file": "lib/ionic/css/ionic.css",
+    "hash": "75b3e5e86986324adacd9d8bffa99687"
+  },
+  {
+    "file": "lib/ionic/css/ionic.min.css",
+    "hash": "878b0a2309d5531e38931a5b7b2f6445"
+  },
+  {
+    "file": "lib/ionic/scss/ionic.scss",
+    "hash": "dd5e3ba25adcd78cdc4c265ded21654e"
+  },
+  {
+    "file": "lib/ionic/scss/_action-sheet.scss",
+    "hash": "641a6c4d93de9f8ef97a74b8fb05460e"
+  },
+  {
+    "file": "lib/ionic/scss/_animations.scss",
+    "hash": "002489f48d018dc8940f8654655e5bf1"
+  },
+  {
+    "file": "lib/ionic/scss/_backdrop.scss",
+    "hash": "dcd98e45b01eef39c9294c9cd1afe982"
+  },
+  {
+    "file": "lib/ionic/scss/_badge.scss",
+    "hash": "0e63788ec8330522f551d446a3ed126a"
+  },
+  {
+    "file": "lib/ionic/scss/_bar.scss",
+    "hash": "56500f7af2d1c96733b66da65719d7a3"
+  },
+  {
+    "file": "lib/ionic/scss/_button-bar.scss",
+    "hash": "3c38e5583ad60f115f1093f7ef803404"
+  },
+  {
+    "file": "lib/ionic/scss/_button.scss",
+    "hash": "9a9d8504c6e5125074395496b4409c52"
+  },
+  {
+    "file": "lib/ionic/scss/_checkbox.scss",
+    "hash": "a3a749cda32b6476f1cb0156f5bc7769"
+  },
+  {
+    "file": "lib/ionic/scss/_form.scss",
+    "hash": "d822a4d00e59dce718cd3d9490286c0f"
+  },
+  {
+    "file": "lib/ionic/scss/_grid.scss",
+    "hash": "698a511eaf9e9a663f6574e47d7d0b67"
+  },
+  {
+    "file": "lib/ionic/scss/_items.scss",
+    "hash": "a55a9865e6ce4280b31c29c964dcb402"
+  },
+  {
+    "file": "lib/ionic/scss/_list.scss",
+    "hash": "9cd09308294d95cad189632b3879289a"
+  },
+  {
+    "file": "lib/ionic/scss/_loading.scss",
+    "hash": "bd8b6377e3538026ca4e9cbbae2f36f5"
+  },
+  {
+    "file": "lib/ionic/scss/_menu.scss",
+    "hash": "8fc75ac00dc7a3ee7430f85443dd161a"
+  },
+  {
+    "file": "lib/ionic/scss/_mixins.scss",
+    "hash": "ffe4ffa3f335fb84f10f85b42109ac1c"
+  },
+  {
+    "file": "lib/ionic/scss/_modal.scss",
+    "hash": "1e31caa1ce8a55ae16251815019ede28"
+  },
+  {
+    "file": "lib/ionic/scss/_platform.scss",
+    "hash": "d4db57f6f7969eac07d6fb7bcd230230"
+  },
+  {
+    "file": "lib/ionic/scss/_popover.scss",
+    "hash": "7f0fbc3b20b0c1a369a5939d180745a3"
+  },
+  {
+    "file": "lib/ionic/scss/_popup.scss",
+    "hash": "7047f9e8e877f8f99a99efa0b7d014b8"
+  },
+  {
+    "file": "lib/ionic/scss/_progress.scss",
+    "hash": "4a575dd12a15c98b04fbaed60f73078f"
+  },
+  {
+    "file": "lib/ionic/scss/_radio.scss",
+    "hash": "315e22e8ae59730c2304f0af80f06fa5"
+  },
+  {
+    "file": "lib/ionic/scss/_range.scss",
+    "hash": "f04c360b9fa6aa665c46d36c0656666b"
+  },
+  {
+    "file": "lib/ionic/scss/_refresher.scss",
+    "hash": "a3059615cf1273e3f1424b25efae143b"
+  },
+  {
+    "file": "lib/ionic/scss/_reset.scss",
+    "hash": "a3b8bc37d3c5c5a405620e17d1e384af"
+  },
+  {
+    "file": "lib/ionic/scss/_scaffolding.scss",
+    "hash": "7b47c4833aa8984f53fd16d4f8df7897"
+  },
+  {
+    "file": "lib/ionic/scss/_select.scss",
+    "hash": "15897b3f421ea68dba8c2c10a8965d3a"
+  },
+  {
+    "file": "lib/ionic/scss/_slide-box.scss",
+    "hash": "2c14e7c6c282d6f93e6b3bf23ed75a32"
+  },
+  {
+    "file": "lib/ionic/scss/_slides.scss",
+    "hash": "a87fe48ceab601af409f2d0b40bb5651"
+  },
+  {
+    "file": "lib/ionic/scss/_spinner.scss",
+    "hash": "c3c66f453d5150cc8b35c73696caa73f"
+  },
+  {
+    "file": "lib/ionic/scss/_tabs.scss",
+    "hash": "b397c3025308d118eb7c7a9e9779bf57"
+  },
+  {
+    "file": "lib/ionic/scss/_toggle.scss",
+    "hash": "313825df40b93a06526da7f5c218bedb"
+  },
+  {
+    "file": "lib/ionic/scss/_transitions.scss",
+    "hash": "1c4987f4472d206d42df89073982d84a"
+  },
+  {
+    "file": "lib/ionic/scss/_type.scss",
+    "hash": "279295ad75ca9035a13ae24a42ccff7e"
+  },
+  {
+    "file": "lib/ionic/scss/_util.scss",
+    "hash": "4f9798a66f8a62637f14554f830f6f82"
+  },
+  {
+    "file": "lib/ionic/scss/_variables.scss",
+    "hash": "b0bfa6bafb74c49589c635e62f57d658"
+  },
+  {
+    "file": "lib/ionic/scss/ionicons/ionicons.scss",
+    "hash": "84318ada280ad2eefeb1d6c729937d53"
+  },
+  {
+    "file": "lib/ionic/scss/ionicons/_ionicons-font.scss",
+    "hash": "233ff533fb31f37c977ef23099dae69a"
+  },
+  {
+    "file": "lib/ionic/scss/ionicons/_ionicons-icons.scss",
+    "hash": "4e43190a2522fbe07da8bd34957755e5"
+  },
+  {
+    "file": "lib/ionic/scss/ionicons/_ionicons-variables.scss",
+    "hash": "e470a67a4a1fa6077f26c2f3969449af"
+  },
+  {
+    "file": "lib/ionic/js/ionic-angular.js",
+    "hash": "b9386e727ccc08a9f35b0b3cbc6ac859"
+  },
+  {
+    "file": "lib/ionic/js/ionic-angular.min.js",
+    "hash": "14aafa1964f587e5566ef7149a264cdd"
+  },
+  {
+    "file": "lib/ionic/js/ionic.bundle.js",
+    "hash": "89b8b45ffdf5fea0fc8956b553625dbd"
+  },
+  {
+    "file": "lib/ionic/js/ionic.bundle.min.js",
+    "hash": "8aeb8faae181a77f93ba5a815bedee13"
+  },
+  {
+    "file": "lib/ionic/js/ionic.js",
+    "hash": "bc3fc5bdcc5e547d2dee22f3a6db19f4"
+  },
+  {
+    "file": "lib/ionic/js/ionic.min.js",
+    "hash": "73e1d379f6e5643502bbd8bad40eb35d"
+  },
+  {
+    "file": "lib/ionic/js/angular-ui/angular-ui-router.js",
+    "hash": "749a18f80f375e3049975f190a7bfc4e"
+  },
+  {
+    "file": "lib/ionic/js/angular-ui/angular-ui-router.min.js",
+    "hash": "04c594b762aba521277ee747b28745d5"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-animate.js",
+    "hash": "b68e8f144976dece7a1ce65a2846ab4e"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-animate.min.js",
+    "hash": "aaf1ba9258e668a19657f3abdfc34934"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-resource.js",
+    "hash": "2e1c07deea4af45bec443ed971b23e01"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-resource.min.js",
+    "hash": "889811820dcd1f549adcce294b09992e"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-sanitize.min.js",
+    "hash": "0839c9b8fa725970d0d02022feeb3969"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular.js",
+    "hash": "91c010035d4ef0c08e1134341af1e06c"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular.min.js",
+    "hash": "f363ad9d29fbebc0f5f4c96a23e577cd"
+  },
+  {
+    "file": "lib/ionic/js/angular/angular-sanitize.js",
+    "hash": "598cc903edadd88dcd916ce4a6828e21"
+  },
+  {
+    "file": "bower_components/ngCordova/bower.json",
+    "hash": "06c8efd4116b95b28f0b1fc850259495"
+  },
+  {
+    "file": "bower_components/ngCordova/.bower.json",
+    "hash": "7dc5326cf2d4d30b09283266457f98e3"
+  },
+  {
+    "file": "bower_components/ngCordova/CHANGELOG.md",
+    "hash": "319d415151c9ffaa470f0a2d11150949"
+  },
+  {
+    "file": "bower_components/ngCordova/LICENSE",
+    "hash": "ab7dad271bdb3c7354537ee825775294"
+  },
+  {
+    "file": "bower_components/ngCordova/README.md",
+    "hash": "75aa873ebfbd7e484b19f7746abdf386"
+  },
+  {
+    "file": "bower_components/ngCordova/dist/ng-cordova-mocks.js",
+    "hash": "e38a7fd527d5caaf77fd2d0d9a0931d5"
+  },
+  {
+    "file": "bower_components/ngCordova/dist/ng-cordova-mocks.min.js",
+    "hash": "cf11a7e681f588196821d0a86a68d57d"
+  },
+  {
+    "file": "bower_components/ngCordova/dist/ng-cordova.js",
+    "hash": "334ad064fdfd02df30639a234034ea16"
+  },
+  {
+    "file": "bower_components/ngCordova/dist/ng-cordova.min.js",
+    "hash": "12fd2ee7db2b7b5ab1c8c41a7d7c0d8d"
+  },
+  {
+    "file": "bower_components/angular/.bower.json",
+    "hash": "70f07f6d490fd05f96958a9d6935dc99"
+  },
+  {
+    "file": "bower_components/angular/angular.js",
+    "hash": "7e7dec4476bcf73da8d61633c14b97a0"
+  },
+  {
+    "file": "bower_components/angular/angular-csp.css",
+    "hash": "3c6496d2475bec5850eec95eb066944a"
+  },
+  {
+    "file": "bower_components/angular/angular.min.js.gzip",
+    "hash": "93a34cf0978184beb6aa4ca2ff9db2e2"
+  },
+  {
+    "file": "bower_components/angular/angular.min.js",
+    "hash": "7e30dc8bebb64f9628fee3d98f5fe440"
+  },
+  {
+    "file": "bower_components/angular/bower.json",
+    "hash": "8554b224bfb750e4e0572ad4440ec051"
+  },
+  {
+    "file": "bower_components/angular/angular.min.js.map",
+    "hash": "811143bfe053a3a3646d1c936aa00763"
+  },
+  {
+    "file": "bower_components/angular/index.js",
+    "hash": "4a6b945464e73d96c4eddaff73a45417"
+  },
+  {
+    "file": "bower_components/angular/README.md",
+    "hash": "1875d8cc22054116d6aadb363f501fbf"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/angular-csp.css",
+    "hash": "3c6496d2475bec5850eec95eb066944a"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/.bower.json",
+    "hash": "70f07f6d490fd05f96958a9d6935dc99"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/angular.js",
+    "hash": "7e7dec4476bcf73da8d61633c14b97a0"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/angular.min.js",
+    "hash": "7e30dc8bebb64f9628fee3d98f5fe440"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/angular.min.js.gzip",
+    "hash": "93a34cf0978184beb6aa4ca2ff9db2e2"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/angular.min.js.map",
+    "hash": "811143bfe053a3a3646d1c936aa00763"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/bower.json",
+    "hash": "7de6ddd5f586fc271ac423a269c6ccf4"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/index.js",
+    "hash": "4a6b945464e73d96c4eddaff73a45417"
+  },
+  {
+    "file": "bower_components/angular/bower_components/angular/README.md",
+    "hash": "1875d8cc22054116d6aadb363f501fbf"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/.bower.json",
+    "hash": "a973fe913bda46ae8ca2ddd5f02c7bbe"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/bower.json",
+    "hash": "6347563071d2fe0144b2c06ded5f07db"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/CHANGELOG.md",
+    "hash": "319d415151c9ffaa470f0a2d11150949"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/LICENSE",
+    "hash": "ab7dad271bdb3c7354537ee825775294"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/README.md",
+    "hash": "38bcf699c7f8f7eb1c0a86429f8573d0"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/dist/ng-cordova-mocks.js",
+    "hash": "5723f9ade15acd7a2b76dbde735b1156"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/dist/ng-cordova-mocks.min.js",
+    "hash": "d974800991dfc86d18136c7069eafd51"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/dist/ng-cordova.js",
+    "hash": "2245df863a0c724c9ff56321ad2893e9"
+  },
+  {
+    "file": "bower_components/angular/bower_components/ngCordova/dist/ng-cordova.min.js",
+    "hash": "133a528ed78cbd86c88377d106a3e645"
+  }
+]
