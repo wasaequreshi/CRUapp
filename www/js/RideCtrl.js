@@ -182,7 +182,8 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             };
 
             var addErr = function(xhr) {
-                console.log('add passenger error');
+                //if there is an error (ie 404, 500, etc) redirect to the error page
+                $location.path('/app/error');
             };
 
             var addUrl = constants.BASE_SERVER_URL + 'ride/addPassenger';
