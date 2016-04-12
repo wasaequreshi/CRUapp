@@ -11,3 +11,4 @@ www/bower_components/fastclick/*
 *.sublime-workspace
 plugins/
 npm-debug.log
+.chcplogin
