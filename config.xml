@@ -67,4 +67,7 @@
     <splash src="resources/ios/splash/Default@2x~iphone.png" height="960" width="640"/>
     <splash src="resources/ios/splash/Default~iphone.png" height="480" width="320"/>
   </platform>
+  <chcp>
+    <config-file url="http://s3-us-west-1.amazonaws.com/cruapp/chcp.json"/>
+	</chcp>
 </widget>

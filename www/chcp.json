@@ -1,0 +1,10 @@
+{
+  "name": "cruapp",
+  "s3bucket": "cruapp",
+  "s3region": "us-west-1",
+  "ios_identifier": "CHANGEME",
+  "android_identifier": "CHANGEME",
+  "update": "start",
+  "content_url": "https://s3-us-west-1.amazonaws.com/cruapp",
+  "release": "2016.04.06-23.21.24"
+}
