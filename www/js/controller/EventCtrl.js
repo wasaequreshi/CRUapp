@@ -55,7 +55,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
 
 
         if (mins === '' || mins === [] || typeof mins === 'undefined') {
-            url = constants.BASE_SERVER_URL + 'events/';
+            url = constants.BASE_SERVER_URL + 'events';
             req.get(url , success, err);
         } else {
             url = constants.BASE_SERVER_URL + 'events/search';
