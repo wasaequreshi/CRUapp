@@ -37,7 +37,8 @@
     "cordova-sms-plugin"
   ],
   "cordovaPlatforms": [
-    "android"
+    "android",
+    "ios"
   ],
   "scripts": {
     "test": "karma start karma.config.js"
