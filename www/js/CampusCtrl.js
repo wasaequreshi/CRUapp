@@ -22,12 +22,6 @@ campuses.service('selectedCampuses', function() {
     };
 });
 
-campuses.testin = function()
-    {
-        return true;
-    };
-
-
 campuses.controller('CampusCtrl', ['$scope', '$location', 'req', 'selectedCampuses', 'constants', function($scope, $location, req, selectedCampuses, constants) {
     var url = constants.BASE_SERVER_URL + 'campuses';
 
