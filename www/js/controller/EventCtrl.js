@@ -26,7 +26,7 @@ eventCtrl.createDate = function(date, time)
 }
 
 eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory,
- allEvents, $cordovaCalendar, convenience, $ionicLoading) {
+ allEvents, $cordovaCalendar, convenience) {
     convenience.showLoadingScreen('Loading Events');
 
     var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;

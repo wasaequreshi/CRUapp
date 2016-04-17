@@ -97,7 +97,7 @@ describe('EventCtrl', function() {
 	// use some mock objects found commonly found throughout the app
 	beforeEach(angular.mock.module('CruMocks'));
 
-	beforeEach(inject(function($rootScope, $controller, $location, $httpBackend, $localStorage) {
+	beforeEach(inject(function($rootScope, $controller, $location, $httpBackend, $localStorage, convenience) {
 		rootScope = $rootScope;
 		scope = $rootScope.$new();
 		location = $location;
@@ -113,7 +113,8 @@ describe('EventCtrl', function() {
 		    	$ionicHistory: {},
           $ionicPopup: {},
 		    	$cordovaInAppBrowser: {},
-		    	$cordovaCalendar: {}
+		    	$cordovaCalendar: {},
+          convenience: convenience
 			});
 		};
 

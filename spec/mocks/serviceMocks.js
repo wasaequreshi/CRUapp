@@ -138,6 +138,13 @@ cruMocks.factory('convenience' , ['$location', function($location) {
                 console.error(err);
                 $location.path('/app/error');
             };
+        },
+        showLoadingScreen: function(message) {
+            // normally a loading icon would show, but there is no gui
+            // so the code has been remove, but the method mocked
+        },
+        hideLoadingScreen: function() {
+            // hides the aforementioned loading icon
         }
     };
 }]);
