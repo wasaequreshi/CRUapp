@@ -69,7 +69,7 @@ var go2RideData = function(tempID, isDriving, location, constants, scope, ionicP
             ]
         });
     }
-}; 
+};
 
 var go2DriveData = function(tempID, isRiding, location, constants, scope, ionicPopup, localStorage) {
     // if the user is already a rider, don't allow them to sign up to drive
@@ -361,12 +361,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         //change the triptype to fit the server
         triptype = changeTriptype(triptype);
 
-        
-
         //check if rider is valid by name in DB
         /* TODO: change this valid statement */
         var valid;
-        
+
         var validSuccess = function(data) {
             var users = data.data;
             if (users.length > 0) {
@@ -375,7 +373,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             else {
                 valid = false;
             }
-            
+
             if (!valid) {
                 //popup for driver error
                 var myPopup = $ionicPopup.show({
@@ -442,12 +440,12 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                     //location: location,
                     time: leaving
                 };
-                
+
                 //create new driver for the given event
                 req.post(url, driverData, success, fail);
             }
         };
-        
+
         var validErr = function(data) {
             valid = false;
         };
@@ -457,8 +455,8 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var validUrl = constants.BASE_SERVER_URL + 'user/find';
         //not working
         req.post(validUrl, validData, validSuccess, validErr);
-        
-        
+
+
     };
 
 })
@@ -579,7 +577,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var success = function(data) {
             console.log("delted successfully");
         };
-        
+
         var fail = function(data) {
             console.log("Did not delete driver successfully");
         };
@@ -587,7 +585,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var toDrop = {
             ride_id: driverID
         };
-        
+
         //drops the driver from the database
         req.post(url, toDrop, success, fail);
         /* TODO: (push) notify riders that the driver canceled */
