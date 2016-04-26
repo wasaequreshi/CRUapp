@@ -4,12 +4,16 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $local
  selectedCampuses, constants, convenience, pushService) {
     convenience.showLoadingScreen('Loading Ministries');
 
-    var url = constants.BASE_SERVER_URL + "ministry/find";
-    var queryParams = {
-        'campuses': {$in: Object.keys(selectedCampuses.getCampusesObject())}
-    };
+    var url = constants.BASE_SERVER_URL + "ministries/search";
+    
+    var or = [];
+    selectedCampuses.getCampuses().forEach(function(c) {
+        or.push({'campus': c._id});
+    });
+    var queryParams = {'campus': {$or: or}};
+
     var success = function(data) {
-        //makes the objects "checkable"
+        // makes the objects "checkable"
         for (var i = 0; i < data.data.length; ++i) {
             data.data[i].checked = false;
             
