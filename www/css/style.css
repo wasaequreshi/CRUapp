@@ -29,6 +29,13 @@
   max-height: auto;
 }
 
+.title-image {
+  width: auto;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .splash-div {
   width: 100%;
   padding-bottom: 20px;
