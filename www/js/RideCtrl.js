@@ -48,6 +48,69 @@ var parseDate = function(eventDate) {
     };
 };
 
+var isValidPhoneNumber = function(phoneNumber) {
+    return false;
+    // var reg = /[^0-9]/;
+    // return reg.test(phoneNumber);
+}
+
+var validateDriverDataClientSide = function(driverData, $ionicPopup) {
+    // var driverData = {
+    //     gcm_id: gcm_id,
+    //     driverName: name,
+    //     driverNumber: phonenumber,
+    //     event: tempID,
+    //     direction: triptype,
+    //     seats: seats,
+    //     time: leaving
+    // };
+
+    var Validated = true;
+    var Problems = "";
+
+    if (!driverData.driverName || !driverData.driverName.trim()) {
+        Validated = false;
+        Problems += "<li>Name cannot be blank</li>";
+    }
+
+    if (!driverData.driverNumber) {
+        Validated = false;
+        Problems += "<li>Phone number cannot be blank</li>";
+    } else if (!isValidPhoneNumber(driverData.driverNumber)) {
+        Validated = false;
+        Problems += "<li>Phone number is invalid</li>";
+    }
+
+    // location not yet implemented
+    // if (!driverData.location || !driverData.location.trim()) {
+    //     Validated = false;
+    //     Problems += "<li>Location cannot be blank</li>";
+    // }
+
+    if (!driverData.seats) {
+        Validated = false;
+        Problems += "<li>Seats cannot be blank</li>";
+    }
+
+    if (!driverData.time || !driverData.time.trim()) {
+        Validated = false;
+        Problems += "<li>Time cannot be blank</li>";
+    }
+
+    if (!driverData.direction || !driverData.direction.trim()) {
+        Validated = false;
+        Problems += "<li>Trip cannot be blank</li>";
+    }
+
+    var alertPopup = $ionicPopup.alert(
+    {
+        title: 'Error!',
+        template: '<ul>'+ Problems + '</ul>'
+    });
+
+    return false;
+};
+
 var go2RideData = function(tempID, isDriving, location, constants, scope, ionicPopup, localStorage) {
     if (!isDriving) {
         var riding = localStorage.getObject(constants.MY_RIDES_RIDER);
@@ -441,8 +504,12 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                     time: leaving
                 };
 
-                //create new driver for the given event
-                req.post(url, driverData, success, fail);
+
+                if (validateDriverDataClientSide(driverData, $ionicPopup))
+                {
+                    //create new driver for the given event
+                    req.post(url, driverData, success, fail);
+                }
             }
         };
 
