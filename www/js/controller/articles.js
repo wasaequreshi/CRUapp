@@ -118,7 +118,7 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     };
 
     $scope.clearSearch = function() {
-        var url = constants.BASE_SERVER_URL + 'resource/list';
+        var url = constants.BASE_SERVER_URL + 'resources/';
 
         // make request to db
         req.get(url, successGettingArticles, failureGettingArticles);
@@ -155,6 +155,11 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         }
 
         convenience.hideLoadingScreen();
+        tags = data['data'].tags;
+        for (var i = 0; i < tags.length; ++i) {
+            tags[i].checked = false;
+        }
+        $scope.tags = tags;
     };
 
     //When failing to get the articles from the db, the following function
@@ -188,15 +193,13 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
     //Every time screen loads, we will attempt to get articles from CRU's db
     angular.element(document).ready(function() {
         //URL for accessing resources
-        url = constants.BASE_SERVER_URL + 'resource/list';
+        url = constants.BASE_SERVER_URL + 'resources/';
 
         //Just a simple print statement so I don't go insane
         console.log('Getting from ' + url);
 
         // make request to db
         req.get(url, successGettingArticles, failureGettingArticles);
-        url = constants.BASE_SERVER_URL + 'resource-tags/list';
-        req.get(url, successGettingArticleTags, failureGettingArticleTags);
     });
 
     //When clicking a specific article, it will reroute to another page
