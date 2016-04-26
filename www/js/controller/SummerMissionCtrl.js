@@ -1,6 +1,7 @@
 var missionCtrl = angular.module('MissionCtrl', []);
 
 missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constants, convenience) {
+    convenience.showLoadingScreen('Loading Summer Missions');
     var url = constants.BASE_SERVER_URL + 'summermissions/';
     var missions = [];
 
@@ -19,6 +20,7 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constant
             }
 
             missions.push(val);
+            convenience.hideLoadingScreen();
         });
     };
 

@@ -32,7 +32,9 @@ var sortArticles = function(unsorted) {
 //req used for making request
 //constants are used for the defines in the util.js file
 //$location is used for rerouting to a different page
-articles.controller('articles_controller',function($scope, $ionicModal, req, constants, $location, $cordovaInAppBrowser) {
+articles.controller('articles_controller',function($scope, $ionicModal, req, constants,
+ convenience, $location, $cordovaInAppBrowser) {
+    convenience.showLoadingScreen('Loading Articles');
 
     // set up searching modal for articles
     // data structure for holding search parameters
@@ -152,6 +154,7 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
             console.log(articles[i]);
         }
 
+        convenience.hideLoadingScreen();
         tags = data['data'].tags;
         for (var i = 0; i < tags.length; ++i) {
             tags[i].checked = false;

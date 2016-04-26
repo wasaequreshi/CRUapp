@@ -2,7 +2,7 @@ var utils = angular.module('starter.controllers.utils', []);
 
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
-    'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/',
+    'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3003/api/',
     'PLACEHOLDER_IMAGE': 'img/cru-logo.jpg',
     'PERSON_IMAGE': 'img/person.png',
     'GCM_SENDER_ID': '276638088511',
@@ -56,7 +56,7 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
 }]);
 
 // various convenience methods that are used in various parts of the app
-utils.factory('convenience' , ['$location', function($location) {
+utils.factory('convenience' , ['$location', '$ionicLoading', function($location, $ionicLoading) {
     return {
         contains: function(value, array) {
             for (val in array) {
@@ -96,6 +96,16 @@ utils.factory('convenience' , ['$location', function($location) {
                 console.error(err);
                 $location.path('/app/error');
             };
+        },
+        showLoadingScreen: function(message) {
+            $ionicLoading.show({
+                delay: 2000,
+                template: '<ion-spinner class="spinner-positive"></ion-spinner><br>' + message + '...',
+                noBackdrop: true
+             });
+        },
+        hideLoadingScreen: function() {
+            $ionicLoading.hide();
         }
     };
 }]);
