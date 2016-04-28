@@ -25,8 +25,8 @@ eventCtrl.createDate = function(date, time)
     return date;
 }
 
-eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory,
- allEvents, $cordovaCalendar, convenience) {
+eventCtrl.controller('EventsCtrl', function($scope, $location, $localStorage, $location, req, constants, $ionicHistory,
+ allEvents, $cordovaCalendar, convenience, api) {
     convenience.showLoadingScreen('Loading Events');
 
     var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
@@ -57,10 +57,8 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
 
     $scope.refresh = function() {
         if (mins === '' || mins === [] || typeof mins === 'undefined') {
-            url = constants.BASE_SERVER_URL + 'events';
-            req.get(url , success, err);
+            api.getAllEvents(success, err);
         } else {
-            url = constants.BASE_SERVER_URL + 'events/search';
             minsIds = [];
             for (var i = 0; i < mins.length; i++) {
                 minsIds.push(mins[i]._id);
@@ -69,7 +67,8 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
             var queryParams = {
                 'ministries': {'$in': minsIds}
             };
-            req.post(url, queryParams, success, err);
+            
+            api.getMinistryEvents(queryParams, success, err);
         }
 
         $scope.events = events;
@@ -91,7 +90,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
             if (!(infoForEvent['name'] === val.name && JSON.stringify(infoForEvent['location']) ===
                JSON.stringify(val.location['street']) && infoForEvent['secretStartDate'] === val.secretStartDate &&
                 infoForEvent['secretEndDate'] === val.secretEndDate)) {
-                //The event was changed bro
+                //The event was changed bro  <----- you tell em' broseph! <3 Connor
                 updateEvent(infoForEvent, val);
             }
         }
@@ -163,8 +162,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
 
 })
 
-.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, $cordovaCalendar, $ionicPopup, $cordovaInAppBrowser, req, convenience, constants) {
-    var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.eventId;
+.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, $cordovaCalendar, $ionicPopup, $cordovaInAppBrowser, api, convenience, constants) {
     var val;
 
     var success = function(value) {
@@ -187,7 +185,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
     var err = convenience.defaultErrorCallback('EventCtrl', 
         'Could not retrieve event ' + $stateParams.eventId + ' from the server');
 
-    req.get(url, success, err);
+    api.getEvent($stateParams.eventId, success, err);
 
     $scope.$on('$ionicView.enter', function() {
         if (val) {
