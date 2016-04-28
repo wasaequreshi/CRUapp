@@ -1,7 +1,8 @@
 var missionCtrl = angular.module('MissionCtrl', []);
 
 missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constants, convenience) {
-    var url = constants.BASE_SERVER_URL + 'summermission/list';
+    convenience.showLoadingScreen('Loading Summer Missions');
+    var url = constants.BASE_SERVER_URL + 'summermissions/';
     var missions = [];
 
     // on success add all the ministries to the ministries list
@@ -19,6 +20,7 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constant
             }
 
             missions.push(val);
+            convenience.hideLoadingScreen();
         });
     };
 
@@ -39,7 +41,7 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constant
 })
 
 missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, req, constants, convenience) {
-    var url = constants.BASE_SERVER_URL + 'summermission/' + $stateParams.missionId;
+    var url = constants.BASE_SERVER_URL + 'summermissions/' + $stateParams.missionId;
     var success = function(value) {
         var val = value.data;
 

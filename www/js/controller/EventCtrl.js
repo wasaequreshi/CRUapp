@@ -25,59 +25,62 @@ eventCtrl.createDate = function(date, time)
     return date;
 }
 
-eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory, allEvents, $cordovaCalendar, convenience) {
-    //reloads page everytime
-    $scope.$on('$ionicView.enter', function() {
-        var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
-        var url;
+eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory,
+ allEvents, $cordovaCalendar, convenience) {
+    convenience.showLoadingScreen('Loading Events');
 
-        var events = [];
-        var success = function(data) {
-            data.data.forEach(function(value) {
-                var val = value;
+    var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
+    var url;
 
-                val.secretStartDate = val.startDate;
-                val.secretEndDate = val.endDate;
-                val.startDate = convenience.formatDate(new Date(val.startDate), true);
-                val.endDate = convenience.formatDate(new Date(val.endDate), true);
-				
-                if (!value.image) {
-                    val.image = {url: constants.PLACEHOLDER_IMAGE};
-                }
+    var events = [];
+    var success = function(data) {
+        data.data.forEach(function(value) {
+            var val = value;
 
-                helperFunctionUpdatingCalendar(val);
-                events.push(val);
-            });
-        };
+            val.secretStartDate = val.startDate;
+            val.secretEndDate = val.endDate;
+            val.startDate = convenience.formatDate(new Date(val.startDate), true);
+            val.endDate = convenience.formatDate(new Date(val.endDate), true);
+			
+            if (!value.image) {
+                val.image = {url: constants.PLACEHOLDER_IMAGE};
+            }
 
-        var err = convenience.defaultErrorCallback('EventCtrl',
-            'Could not retrieve list of events from the server');
+            helperFunctionUpdatingCalendar(val);
+            events.push(val);
+            convenience.hideLoadingScreen();
+        });
+    };
 
+    var err = convenience.defaultErrorCallback('EventCtrl',
+        'Could not retrieve list of events from the server');
 
+    $scope.refresh = function() {
         if (mins === '' || mins === [] || typeof mins === 'undefined') {
-            url = constants.BASE_SERVER_URL + 'event/list';
+            url = constants.BASE_SERVER_URL + 'events';
             req.get(url , success, err);
         } else {
-            url = constants.BASE_SERVER_URL + 'event/find?Content-Type: application/x-www-form-urlencoded';
+            url = constants.BASE_SERVER_URL + 'events/search';
             minsIds = [];
             for (var i = 0; i < mins.length; i++) {
                 minsIds.push(mins[i]._id);
             }
 
             var queryParams = {
-                'parentMinistries': {'$in': minsIds}
+                'ministries': {'$in': minsIds}
             };
             req.post(url, queryParams, success, err);
         }
 
         $scope.events = events;
         allEvents.setEvents(events);
+    };
 
-        $scope.goToEvent = function(id) {
-            $location.path('/app/events/' + id);
-        };
-    });
+    $scope.refresh();
 
+    $scope.goToEvent = function(id) {
+        $location.path('/app/events/' + id);
+    };
 
     var helperFunctionUpdatingCalendar = function(val) {
         //check if event changed
@@ -161,7 +164,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
 })
 
 .controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, $cordovaCalendar, $ionicPopup, $cordovaInAppBrowser, req, convenience, constants) {
-    var url = constants.BASE_SERVER_URL + 'event/' + $stateParams.eventId;
+    var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.eventId;
     var val;
 
     var success = function(value) {
