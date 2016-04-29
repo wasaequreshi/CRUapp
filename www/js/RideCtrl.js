@@ -48,10 +48,28 @@ var parseDate = function(eventDate) {
     };
 };
 
+var isValidName = function(driverName) {
+    return driverName && driverName.trim();
+}
+
 var isValidPhoneNumber = function(phoneNumber) {
-    return false;
-    // var reg = /[^0-9]/;
-    // return reg.test(phoneNumber);
+    return phoneNumber;
+}
+
+var isValidLocation = function(location) {
+    return location;
+}
+
+var isValidSeatsNumber = function(seats) {
+    return seats;
+}
+
+var isValidTime = function(time) {
+    return true; // temporary workaround for device issues
+}
+
+var isValidTripDirection = function(tripDirection) {
+    return tripDirection && tripDirection.trim();
 }
 
 var validateDriverDataClientSide = function(driverData, $ionicPopup) {
@@ -68,36 +86,32 @@ var validateDriverDataClientSide = function(driverData, $ionicPopup) {
     var Validated = true;
     var Problems = "";
 
-    if (!driverData.driverName || !driverData.driverName.trim()) {
+    if (!isValidName(driverData.driverName)) {
         Validated = false;
         Problems += "<li>Name cannot be blank</li>";
     }
 
-    if (!driverData.driverNumber) {
-        Validated = false;
-        Problems += "<li>Phone number cannot be blank</li>";
-    } else if (!isValidPhoneNumber(driverData.driverNumber)) {
-        Validated = false;
+    if (!isValidPhoneNumber(driverData.driverNumber)) {
         Problems += "<li>Phone number is invalid</li>";
     }
 
     // location not yet implemented
-    // if (!driverData.location || !driverData.location.trim()) {
+    // if (!isValidLocation(driverData.location)) {
     //     Validated = false;
     //     Problems += "<li>Location cannot be blank</li>";
     // }
 
-    if (!driverData.seats) {
+    if (!isValidSeatsNumber(driverData.seats)) {
         Validated = false;
         Problems += "<li>Seats cannot be blank</li>";
     }
 
-    if (!driverData.time || !driverData.time.trim()) {
+    if (!isValidTime(driverData.time)) {
         Validated = false;
         Problems += "<li>Time cannot be blank</li>";
     }
 
-    if (!driverData.direction || !driverData.direction.trim()) {
+    if (!isValidTripDirection(driverData.direction)) {
         Validated = false;
         Problems += "<li>Trip cannot be blank</li>";
     }
