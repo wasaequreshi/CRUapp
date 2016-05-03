@@ -134,6 +134,7 @@ utils.factory('convenience' , ['$location', '$ionicLoading', function($location,
         // and returns a function that can be used by any function that requires an error callback
         defaultErrorCallback: function(controllerName, message) {
             return function(err) {
+                $ionicLoading.hide();
                 console.error(controllerName + ': ' + message);
                 console.error(err);
                 $location.path('/app/error');
@@ -141,7 +142,7 @@ utils.factory('convenience' , ['$location', '$ionicLoading', function($location,
         },
         showLoadingScreen: function(message) {
             $ionicLoading.show({
-                delay: 2000,
+                delay: 1000,
                 template: '<ion-spinner class="spinner-positive"></ion-spinner><br>' + message + '...',
                 noBackdrop: true
              });
