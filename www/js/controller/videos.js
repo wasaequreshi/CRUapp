@@ -1,6 +1,9 @@
 var videos = angular.module('videos', ['starter.controllers.utils']);
 
-videos.controller('videos_controller',function($cordovaInAppBrowser, $scope, $ionicModal, req, constants, $location) {
+videos.controller('videos_controller',function($cordovaInAppBrowser, $scope, $ionicModal,
+ req, convenience, constants, $location) {
+    convenience.showLoadingScreen('Loading YouTube Videos');
+
     var CHANNEL_ID = 'UCe-RJ-3Q3tUqJciItiZmjdg';
     var YT_API_KEY = 'AIzaSyA5LSnAk7YftObCYuPSZIQi21WE6zZA1j0';
     //initially set the title
@@ -41,6 +44,7 @@ videos.controller('videos_controller',function($cordovaInAppBrowser, $scope, $io
 
         //Setting scope so view can have access to them
         $scope.videos = videos;
+        convenience.hideLoadingScreen();
     };
 
     var failure_getting_videos = function(data) {
