@@ -52,3 +52,9 @@
   position: relative;
   top: 80%;
 }
+
+.ellipses {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
