@@ -25,7 +25,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, constants) {
     $stateProvider
 
     .state('app', {
@@ -287,6 +287,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
         }
     });
 
-    // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/events');
+    if (window.localStorage[constants.CAMPUSES_CONFIG]) {
+      $urlRouterProvider.otherwise('/app/events');
+    } else {
+      $urlRouterProvider.otherwise('/app/splash');
+    }
 });

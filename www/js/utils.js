@@ -2,7 +2,7 @@ var utils = angular.module('starter.controllers.utils', []);
 
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
-    'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/',
+    'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3002/api/',
     'PLACEHOLDER_IMAGE': 'img/cru-logo.jpg',
     'PERSON_IMAGE': 'img/person.png',
     'GCM_SENDER_ID': '276638088511',
@@ -55,8 +55,50 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
     };
 }]);
 
+utils.factory('api', ['req', 'constants', function(req, constants) {
+    return {
+        getAllEvents: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'events'; 
+            req.get(url, success, err);
+        },
+        getMinistryEvents: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'events/search';
+            req.post(url, params, success, err);
+        },
+        getEvent: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'events/' + id;
+            req.get(url, success, err);
+        },
+        getAllMissions: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'summermissions/';
+            req.get(url, success, err);
+        },
+        getMission: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'summermissions/' + id;
+            req.get(url, success, err);
+        },
+        getAllTeams: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/';
+            req.get(url, success, err);
+        },
+        // sorry for the confusing name, but gets teams with ministry specific search params
+        getMinistryTeams: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/find';
+            req.post(url, params, success, err);
+        },
+        getTeam: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/' + id;
+            req.get(url, success, err);
+        },
+        getMinistry: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministries/' + id;
+            req.get(url, success, err);
+        }
+    };
+}]);
+
 // various convenience methods that are used in various parts of the app
-utils.factory('convenience' , ['$location', function($location) {
+utils.factory('convenience' , ['$location', '$ionicLoading', function($location, $ionicLoading) {
     return {
         contains: function(value, array) {
             for (val in array) {
@@ -92,10 +134,21 @@ utils.factory('convenience' , ['$location', function($location) {
         // and returns a function that can be used by any function that requires an error callback
         defaultErrorCallback: function(controllerName, message) {
             return function(err) {
+                $ionicLoading.hide();
                 console.error(controllerName + ': ' + message);
                 console.error(err);
                 $location.path('/app/error');
             };
+        },
+        showLoadingScreen: function(message) {
+            $ionicLoading.show({
+                delay: 1000,
+                template: '<ion-spinner class="spinner-positive"></ion-spinner><br>' + message + '...',
+                noBackdrop: true
+             });
+        },
+        hideLoadingScreen: function() {
+            $ionicLoading.hide();
         }
     };
 }]);
