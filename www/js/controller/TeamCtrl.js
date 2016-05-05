@@ -1,7 +1,6 @@
 var teams = angular.module('TeamCtrl', []);
 
-teams.controller('TeamCtrl', function($scope, $location, req, constants, convenience, $localStorage) {
-	var url = constants.BASE_SERVER_URL + 'ministryteam/list';
+teams.controller('TeamCtrl', function($scope, $location, api, constants, convenience, $localStorage) {
 	var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
     
 	var success = function(data) {
@@ -12,10 +11,9 @@ teams.controller('TeamCtrl', function($scope, $location, req, constants, conveni
 		'Could not retrieve list of minstry teams from server');
 
     if (mins === '' || mins === [] || typeof mins === 'undefined') {
-        req.get(url, success, err);
+        api.getAllTeams(success, err);
     }
     else {
-        url = constants.BASE_SERVER_URL + 'ministryteam/find';
         var minsIds = [];
         for (var i = 0; i < mins.length; i++) {
             minsIds.push(mins[i]._id);
@@ -26,7 +24,7 @@ teams.controller('TeamCtrl', function($scope, $location, req, constants, conveni
         };
         
         //query for teams only in the ministry the user is subscribed to
-        req.post(url, queryParam, success, err);
+        api.getMinistryTeams(queryParam, success, err);
     }
 
 	$scope.viewDetails = function(id) {
@@ -34,19 +32,18 @@ teams.controller('TeamCtrl', function($scope, $location, req, constants, conveni
 	};
 })
 
-.controller('TeamDetailCtrl', function($scope, $stateParams, constants, req, convenience) {
+.controller('TeamDetailCtrl', function($scope, $stateParams, constants, api, convenience) {
     var teamId = $stateParams.id;
     
     var err = convenience.defaultErrorCallback('TeamDetailCtrl',
 		'Could not retrieve the selected minstry team from the server');
     
-    var minUrl = constants.BASE_SERVER_URL + 'ministry/';
     var minSuccess = function(data) {
         var min = data.data;
         $scope.min = min.name;
     };
     
-    var leaderUrl = constants.BASE_SERVER_URL + 'user/';
+    var leaderUrl = constants.BASE_SERVER_URL + 'users/';
     var leaderSuccess = function(data) {
         var leader = data.data;
         $scope.leader = leader.name;
@@ -75,14 +72,11 @@ teams.controller('TeamCtrl', function($scope, $location, req, constants, conveni
             description: team.description,
             url: image
         };
-        
-        minUrl += team.parentMinistry;
-        req.get(minUrl, minSuccess, err);
+ 
+        api.getMinistry(team.parentMinistry, minSuccess, err);
     };
     
-    var url = constants.BASE_SERVER_URL + 'ministryteam/' + teamId;
-    
-    req.get(url, success, err);
+    api.getTeam(teamId, success, err);
     
 	$scope.openInFacebook = function() {
 		// the SRS says that if a user wants to join a team they do it by
