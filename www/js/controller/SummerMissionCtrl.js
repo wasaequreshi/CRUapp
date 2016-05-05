@@ -1,8 +1,7 @@
 var missionCtrl = angular.module('MissionCtrl', []);
 
-missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constants, convenience) {
+missionCtrl.controller('MissionsCtrl', function($scope, $location, api, constants, convenience) {
     convenience.showLoadingScreen('Loading Summer Missions');
-    var url = constants.BASE_SERVER_URL + 'summermissions/';
     var missions = [];
 
     // on success add all the ministries to the ministries list
@@ -29,7 +28,7 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constant
         'Could not retrieve list of summer missions from the server');
 
     // send the request to the server
-    req.get(url, success, err);
+    api.getAllMissions(success, err);
 
     // add the missions to the scope so they can be accessed in the view
     $scope.missions = missions;
@@ -40,8 +39,7 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, req, constant
     };
 })
 
-missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, req, constants, convenience) {
-    var url = constants.BASE_SERVER_URL + 'summermissions/' + $stateParams.missionId;
+missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, api, constants, convenience) { 
     var success = function(value) {
         var val = value.data;
 
@@ -94,5 +92,5 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
         // });  
     };
     
-    req.get(url, success, err);
+    api.getMission($stateParams.missionId, success, err);
 });
