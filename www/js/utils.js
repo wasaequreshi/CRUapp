@@ -93,7 +93,19 @@ utils.factory('api', ['req', 'constants', function(req, constants) {
         getMinistry: function(id, success, err) {
             var url = constants.BASE_SERVER_URL + 'ministries/' + id;
             req.get(url, success, err);
-        }
+        },
+		getAllCommunityGroups: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'communitygroups/';
+            req.get(url, success, err);
+        },
+		getCommunityGroup: function(id, success, err) {
+			var url = constants.BASE_SERVER_URL + 'communitygroups/' + id;
+            req.get(url, success, err);
+		},
+		getUser: function(id, success, err) {
+			var url = constants.BASE_SERVER_URL + 'users/' + id;
+            req.get(url, success, err);
+		}
     };
 }]);
 
