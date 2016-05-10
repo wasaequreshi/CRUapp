@@ -302,7 +302,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             event: rideID
 
         };
-        var filterUrl = constants.BASE_SERVER_URL + 'ride/find';
+        var filterUrl = constants.BASE_SERVER_URL + 'rides/search';
 
         //filters the drivers by date driving and event
         req.post(filterUrl, filterQuery, filterSuccess, filterErr);
@@ -342,7 +342,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         event: rideID
     };
 
-    var url = constants.BASE_SERVER_URL + 'ride/find';
+    var url = constants.BASE_SERVER_URL + 'rides/search';
     req.post(url, fullQuery, success, err);
 
     $scope.chooseDriver = function(driveId) {
@@ -457,8 +457,10 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var validData = {
             phone: phonenumber
         };
+
         var validUrl = constants.BASE_SERVER_URL + 'user/find';
         //TODO: not working
+
         req.post(validUrl, validData, validSuccess, validErr);
         
         
