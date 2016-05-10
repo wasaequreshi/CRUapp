@@ -93,7 +93,19 @@ utils.factory('api', ['req', 'constants', function(req, constants) {
         getMinistry: function(id, success, err) {
             var url = constants.BASE_SERVER_URL + 'ministries/' + id;
             req.get(url, success, err);
-        }
+        },
+		getAllCommunityGroups: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'communitygroups/';
+            req.get(url, success, err);
+        },
+		getCommunityGroup: function(id, success, err) {
+			var url = constants.BASE_SERVER_URL + 'communitygroups/' + id;
+            req.get(url, success, err);
+		},
+		getUser: function(id, success, err) {
+			var url = constants.BASE_SERVER_URL + 'users/' + id;
+            req.get(url, success, err);
+		}
     };
 }]);
 
@@ -140,6 +152,85 @@ utils.factory('convenience' , ['$location', '$ionicLoading', function($location,
                 $location.path('/app/error');
             };
         },
+        
+        //Get the JSON object to send the the server from a location string
+        getLocationObject: function(locationStr) {
+            if (locationStr) {
+                var splitStr = locationStr.split(",");
+                var size = splitStr.length;
+                var street, suburb, state, postcode;
+                var country = "USA";
+                var splitState;
+                
+                //get street address
+                if (size >= 1) {
+                    street = splitStr[0];
+                }
+                
+                //get city
+                if (size >= 2) {
+                    suburb = splitStr[1];
+                }
+                
+                //state and postal code
+                if (size >= 3) {
+                    splitState = splitStr[2].split(" ");
+                    
+                    if (splitState.length > 1) {
+                        postcode = splitState[1];
+                    }
+                    
+                    state = splitState[0];
+                }
+                
+                return {
+                    postcode: postcode,
+                    suburb: suburb,
+                    street1: street,
+                    state: state,
+                    country: country
+                };
+            }
+            
+            return {
+                country: "USA"
+            };
+        },
+        
+        //Takes a location object and returns the formated address
+        formatLocation: function(location) {
+            var address = '';
+            var country = 'USA';
+            
+            if (location) {
+                //street address
+                if (location.street1) {
+                    address += location.street1;
+                }
+                
+                //city
+                if (location.suburb) {
+                    address += ", " + location.suburb;
+                }
+                
+                //state
+                if (location.state) {
+                    address += ", " + location.state;
+                    
+                    //postal code
+                    if (location.postcode) {
+                        address += " " + location.postcode;
+                    }
+                }
+                
+                address += country;
+                console.log(address);
+                return address;
+            }
+            
+            return country;
+        },
+
         showLoadingScreen: function(message) {
             $ionicLoading.show({
                 delay: 1000,
