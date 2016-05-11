@@ -23,7 +23,8 @@ var leaderSuccess = function(com, date, comGroups, scope) {
             time: date.time,
             days: date.day,
             leader: leader.name.first + " " + leader.name.last,
-            description: com.description
+            description: com.description,
+			name: com.name
         });
         
         scope.group = comGroups[0];
@@ -65,7 +66,7 @@ var parseDate = function(eventDate) {
     };
 };
 
-groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constants, req) {
+groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constants, api) {
     $scope.days = dayArr;
     var date = new Date();
     var hours = date.getHours();
@@ -101,16 +102,13 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
             com = comList[idx];
             date = parseDate(new Date(com.meetingTime));
             
-            req.get(userURL + com.leaders[0], leaderSuccess(com, date, comGroups, $scope), err($location));
+			api.getUser(com.leaders[0], leaderSuccess(com, date, comGroups, $scope), err($location));
         }
         
         $scope.groups = comGroups;
     };
     
-    var comURL = constants.BASE_SERVER_URL + 'communitygroups/';
-    
-    req.get(comURL, comSuccess, err($location));
-    
+	api.getAllCommunityGroups(comSuccess, err($location));
     
     $scope.viewDetails = function(id) {
         $location.path('/app/groups/' + id);  
@@ -137,7 +135,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     };
 })
 
-.controller('GroupDetailCtrl', function($scope, $stateParams, $ionicModal, $location, constants, req, $cordovaSms, $ionicPopup) {
+.controller('GroupDetailCtrl', function($scope, $stateParams, $ionicModal, $location, constants, api, $cordovaSms, $ionicPopup) {
     var id = $stateParams.id; 
     
     /*$scope.group = {
@@ -148,6 +146,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         description: "This is the group where Donald Trump meets to indoctronize the people with fear mongering and other bad things. I hope you enjoyed my political commentary hidden deep with the depths of the CRU app. I'll be accepting applause later, thank you for your time"
     };*/
     var comSuccess = function(data) {
+		console.log(data);
         var comGroups = [];
         var com = data.data;
         var date;
@@ -155,14 +154,10 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         var userURL = constants.BASE_SERVER_URL + 'users/';
 
         date = parseDate(new Date(com.meetingTime));
-        req.get(userURL + com.leaders[0], leaderSuccess(com, date, comGroups, $scope), err($location));
-        
-        //$scope.group = comGroups[0];
+        api.getUser(com.leaders[0], leaderSuccess(com, date, comGroups, $scope), err($location));
     };
     
-    var comURL = constants.BASE_SERVER_URL + 'communitygroups/' + id;
-    
-    req.get(comURL, comSuccess, err($location));
+	api.getCommunityGroup(id, comSuccess, err($location));
     
     
     $ionicModal.fromTemplateUrl('templates/communitygroup/groupSignup.html', {
@@ -182,7 +177,6 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     };
     
     $scope.signupForGroup = function(groupSignupData) {
-        console.log("Got here");
         var name = groupSignupData.name;
         var email = groupSignupData.email;
         var phone = groupSignupData.phone;
@@ -199,8 +193,8 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
             ". Please contact me by email: " + email + " or phone: " + phone; 
         
         //TODO change hardcoded phone to this: $scope.leaderPhone
-        //currently Cody's phone #
-        var phoneToSend = "7074943342";
+        //currently Cody's Google Voice number for testing
+        var phoneToSend = "8052257931";
 
         $cordovaSms
           .send(phoneToSend, message, options)
@@ -216,7 +210,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
           }, function(error) {
             // An error occurred
           });
-        console.log("Got here");
+        
         $scope.closeSignupModal();
     };
 });
