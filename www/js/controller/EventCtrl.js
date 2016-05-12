@@ -25,8 +25,8 @@ eventCtrl.createDate = function(date, time)
     return date;
 }
 
-eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorage, $location, req, constants, $ionicHistory,
- allEvents, $cordovaCalendar, convenience) {
+eventCtrl.controller('EventsCtrl', function($scope, $location, $localStorage, $location, req, constants, $ionicHistory,
+ allEvents, $cordovaCalendar, convenience, api) {
     convenience.showLoadingScreen('Loading Events');
 
     var mins = $localStorage.getObject(constants.CAMPUSES_CONFIG).ministries;
@@ -57,10 +57,8 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
 
     $scope.refresh = function() {
         if (mins === '' || mins === [] || typeof mins === 'undefined') {
-            url = constants.BASE_SERVER_URL + 'events';
-            req.get(url , success, err);
+            api.getAllEvents(success, err);
         } else {
-            url = constants.BASE_SERVER_URL + 'events/search';
             minsIds = [];
             for (var i = 0; i < mins.length; i++) {
                 minsIds.push(mins[i]._id);
@@ -69,7 +67,8 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
             var queryParams = {
                 'ministries': {'$in': minsIds}
             };
-            req.post(url, queryParams, success, err);
+            
+            api.getMinistryEvents(queryParams, success, err);
         }
 
         $scope.events = events;
@@ -91,7 +90,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
             if (!(infoForEvent['name'] === val.name && JSON.stringify(infoForEvent['location']) ===
                JSON.stringify(val.location['street']) && infoForEvent['secretStartDate'] === val.secretStartDate &&
                 infoForEvent['secretEndDate'] === val.secretEndDate)) {
-                //The event was changed bro
+                //The event was changed bro  <----- you tell em' broseph! <3 Connor
                 updateEvent(infoForEvent, val);
             }
         }
@@ -163,8 +162,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
 
 })
 
-.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, $cordovaCalendar, $ionicPopup, $cordovaInAppBrowser, req, convenience, constants) {
-    var url = constants.BASE_SERVER_URL + 'events/' + $stateParams.eventId;
+.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, cal, $cordovaInAppBrowser, api, convenience, constants) {
     var val;
 
     var success = function(value) {
@@ -187,7 +185,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
     var err = convenience.defaultErrorCallback('EventCtrl', 
         'Could not retrieve event ' + $stateParams.eventId + ' from the server');
 
-    req.get(url, success, err);
+    api.getEvent($stateParams.eventId, success, err);
 
     $scope.$on('$ionicView.enter', function() {
         if (val) {
@@ -200,65 +198,10 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, req, $localStorag
     });
 
     //When a button is clicked, this method is invoked
-    //Takes in as a param the eventName, startDate, endDate, and location
-    $scope.addEventToCalendar = function(eventName, location, _id, originalStartDate, originalEndDate) {
-        
-        startDateAndTime = eventCtrl.getTimeAndDate(originalStartDate);
-        startDate = startDateAndTime[0];
-        startTime = startDateAndTime[1];
-
-        endDateAndTime = eventCtrl.getTimeAndDate(originalEndDate);
-        endDate = endDateAndTime[0];
-        endTime = endDateAndTime[1];
-
-        finalStartDate = eventCtrl.createDate(startDate, startTime);    
-        finalEndDate = eventCtrl.createDate(endDate, endTime);
-
-        helperFunctionAddingCalendar(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate, originalEndDate);
-    };
-
-    var helperFunctionAddingCalendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
-        originalEndDate) 
-    {
-
-        //Using ngcordova to create an event to their native calendar
-        $cordovaCalendar.createEvent({
-            title: eventName,
-            location: location['street'],
-            startDate: finalStartDate,
-            endDate: finalEndDate
-        }).then(function(result) {
-
-            //Get the data from the local storage of list of all added events
-            listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
-            
-            if (listOfAddedEvents == null) {
-                listOfAddedEvents = {};
-            }
-
-            listOfAddedEvents[_id] = {'name': eventName, 'location': location['street'], 
-                'secretStartDate': originalStartDate, 'secretEndDate': originalEndDate};
-            
-            //Added event information to local phone
-            $localStorage.setObject('listOfAddedEvents', listOfAddedEvents);
-
-            //If successfully added, then alert the user that it has been added
-            var alertPopup = $ionicPopup.alert(
-            {
-                title: 'Event Added',
-                template: eventName + ' has been added to your calendar!'
-            });
-
-        }, function(err) {
-            console.error('There was an error: ' + err);
-            //If unsuccessful added, then an alert with a error should pop up
-
-            var alertPopup = $ionicPopup.alert(
-            {
-                title: 'Error',
-                template: 'Could not add event to calendar: ' + err
-            });
-        });
+    //Takes in as a param the event
+    $scope.addEventToCalendar = function(event) {
+        cal.addToCalendar(event.name, event.location, event._id, 
+            event.secretStartDate, event.secretEndDate);
     };
 
     // button functions

@@ -73,7 +73,7 @@ min.controller('MinCtrl', function($scope, $location, $ionicHistory, req, $local
             ministries: mins
         });
 
-        $location.path('/app');
+        $location.path('/app/events');
         $ionicHistory.nextViewOptions({
             disableAnimate: false,
             disableBack: true

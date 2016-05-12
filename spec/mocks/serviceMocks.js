@@ -47,6 +47,38 @@ cruMocks.factory('selectedCampuses', function(){
   };
 });
 
+cruMocks.factory('cal', function() {
+    return {
+        addToCalendar: function(eventName, location, _id, originalStartDate, originalEndDate) {
+            startDateAndTime = this.getTimeAndDate(originalStartDate);
+            startDate = startDateAndTime[0];
+            startTime = startDateAndTime[1];
+
+            endDateAndTime = this.getTimeAndDate(originalEndDate);
+            endDate = endDateAndTime[0];
+            endTime = endDateAndTime[1];
+
+            finalStartDate = this.createDate(startDate, startTime);    
+            finalEndDate = this.createDate(endDate, endTime);
+        },
+        getTimeAndDate: function(timeAndDate) {
+            //Split at the "T" to separate the date and time
+            splitDateAndTime = timeAndDate.split('T');
+            
+            //Splitting up the date into pieces
+            date = splitDateAndTime[0].split('-');
+            
+            //Splitting up the time into pieces
+            time = splitDateAndTime[1].split(':');
+            return [date, time];
+        },
+        createDate: function(date, time) {
+            date = new Date(date[0], Number(date[1]) - 1, date[2], time[0], time[1], 0, 0, 0);
+            return date;
+        }
+    };
+});
+
 /**
 * This service is kept similar to its original counterpart because what
 * it wraps, $http, is already mocked with angular-mocks
@@ -81,6 +113,48 @@ cruMocks.factory('req', function($http){
         }
     };
 });
+
+cruMocks.factory('api', ['req', 'constants', function(req, constants) {
+    return {
+        getAllEvents: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'events'; 
+            req.get(url, success, err);
+        },
+        getMinistryEvents: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'events/search';
+            req.post(url, params, success, err);
+        },
+        getEvent: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'events/' + id;
+            req.get(url, success, err);
+        },
+        getAllMissions: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'summermissions/';
+            req.get(url, success, err);
+        },
+        getMission: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'summermissions/' + id;
+            req.get(url, success, err);
+        },
+        getAllTeams: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/';
+            req.get(url, success, err);
+        },
+        // sorry for the confusing name, but gets teams with ministry specific search params
+        getMinistryTeams: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/find';
+            req.post(url, params, success, err);
+        },
+        getTeam: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/' + id;
+            req.get(url, success, err);
+        },
+        getMinistry: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministries/' + id;
+            req.get(url, success, err);
+        }
+    };
+}]);
 
 cruMocks.constant('constants', {
     'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/',
@@ -139,6 +213,17 @@ cruMocks.factory('convenience' , ['$location', function($location) {
                 $location.path('/app/error');
             };
         },
+        
+        //Get the JSON object to send the the server from a location string
+        getLocationObject: function(locationStr) {
+            return {country: "USA"};
+        },
+        
+        //Takes a location object and returns the formated address
+        formatLocation: function(location) {
+            return "USA";
+        },
+
         showLoadingScreen: function(message) {
             // normally a loading icon would show, but there is no gui
             // so the code has been remove, but the method mocked
