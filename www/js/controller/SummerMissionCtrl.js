@@ -73,6 +73,43 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
         }
     };
 
+    var calendar_plugin = function(eventName, location, finalStartDate, finalEndDate, originalStartDate, originalEndDate, _id)
+    {
+        console.log("Calendar_plugin");
+        //Using ngcordova to create an event to their native calendar
+        $cordovaCalendar.createEvent({
+            title: eventName,
+            location: location['street'],
+            startDate: finalStartDate,
+            endDate: finalEndDate
+        }).then(function(result) {
+            //Get the data from the local storage of list of all added events
+            listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
+            if (listOfAddedEvents == null) {
+                listOfAddedEvents = {};
+            }
+
+            listOfAddedEvents[_id] = {'name': eventName, 'location': location['street'], 
+                'secretStartDate': originalStartDate, 'secretEndDate': originalEndDate};
+            
+            //Added event information to local phone
+            $localStorage.setObject('listOfAddedEvents', listOfAddedEvents);
+
+            //If successfully added, then alert the user that it has been added
+            var alertPopup = $ionicPopup.alert({
+                title: 'Event Added',
+                template: eventName + ' has been added to your calendar!'
+            });
+        }, function(err) {
+            //If unsuccessful added, then an alert with a error should pop up
+            console.error('There was an error: ' + err);
+            var alertPopup = $ionicPopup.alert({
+                title: 'Error',
+                template: 'Could not add event to calendar: ' + err
+            });
+        });
+    };
+
     var updateEvent = function(infoForEvent, val) {
         var originalStartDate = infoForEvent['secretStartDate'];
         var originalEndDate = infoForEvent['secretEndDate'];
@@ -143,7 +180,7 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
 
     $scope.addToCalendar = function(event) {
         cal.addToCalendar(event.name, event.location, event._id,
-            event.secretStartDate, event.secretEndDate);
+            event.secretStartDate, event.secretEndDate, calendar_plugin);
     };
 
     $scope.showOnline = function(url) {

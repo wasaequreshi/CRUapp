@@ -159,7 +159,7 @@ utils.factory('api', ['req', 'constants', function(req, constants) {
 // calendar utility for adding things to the native calendar
 utils.factory('cal', ['$localStorage', '$cordovaCalendar', '$ionicPopup', function($localStorage, $cordovaCalendar, $ionicPopup) {
     return {
-        addToCalendar: function(eventName, location, _id, originalStartDate, originalEndDate) {
+        addToCalendar: function(eventName, location, _id, originalStartDate, originalEndDate, calendar_plugin) {
             startDateAndTime = this.getTimeAndDate(originalStartDate);
             startDate = startDateAndTime[0];
             startTime = startDateAndTime[1];
@@ -170,39 +170,8 @@ utils.factory('cal', ['$localStorage', '$cordovaCalendar', '$ionicPopup', functi
 
             finalStartDate = this.createDate(startDate, startTime);    
             finalEndDate = this.createDate(endDate, endTime);
-
-            //Using ngcordova to create an event to their native calendar
-            $cordovaCalendar.createEvent({
-                title: eventName,
-                location: location['street'],
-                startDate: finalStartDate,
-                endDate: finalEndDate
-            }).then(function(result) {
-                //Get the data from the local storage of list of all added events
-                listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
-                if (listOfAddedEvents == null) {
-                    listOfAddedEvents = {};
-                }
-
-                listOfAddedEvents[_id] = {'name': eventName, 'location': location['street'], 
-                    'secretStartDate': originalStartDate, 'secretEndDate': originalEndDate};
-                
-                //Added event information to local phone
-                $localStorage.setObject('listOfAddedEvents', listOfAddedEvents);
-
-                //If successfully added, then alert the user that it has been added
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Event Added',
-                    template: eventName + ' has been added to your calendar!'
-                });
-            }, function(err) {
-                //If unsuccessful added, then an alert with a error should pop up
-                console.error('There was an error: ' + err);
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Error',
-                    template: 'Could not add event to calendar: ' + err
-                });
-            });
+            console.log("Hi");
+            calendar_plugin(eventName, location, finalStartDate, finalEndDate, originalStartDate, originalEndDate, _id);
         },
         getTimeAndDate: function(timeAndDate) {
             //Split at the "T" to separate the date and time
