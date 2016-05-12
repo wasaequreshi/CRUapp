@@ -2,7 +2,13 @@
     <ion-nav-buttons side="right">
         <button class="button button-icon button-clear ion-funnel" ng-click="openGroupFilterModal()"></button>
     </ion-nav-buttons>
-    <ion-content>
+    <ion-header-bar class="bar bar-subheader bar-calm" ng-if="isFiltered">
+        <h2 class="title">Results for: {{search}}</h2>
+        <div class="buttons">
+            <button class="button icon ion-close-circled" ng-click="removeResults()"></button>
+        </div>
+    </ion-header-bar>
+    <ion-content ng-class="{ 'has-subheader' : isFiltered }">
         <div class="list card" ng-repeat="group in groups">
             <div ng-click="viewDetails(group._id)">
                 <div class="item bold">

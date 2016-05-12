@@ -162,7 +162,7 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, $localStorage, $l
 
 })
 
-.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, $cordovaCalendar, $ionicPopup, $cordovaInAppBrowser, api, convenience, constants) {
+.controller('EventCtrl', function($scope, $stateParams, $location, $localStorage, cal, $cordovaInAppBrowser, api, convenience, constants) {
     var val;
 
     var success = function(value) {
@@ -198,65 +198,10 @@ eventCtrl.controller('EventsCtrl', function($scope, $location, $localStorage, $l
     });
 
     //When a button is clicked, this method is invoked
-    //Takes in as a param the eventName, startDate, endDate, and location
-    $scope.addEventToCalendar = function(eventName, location, _id, originalStartDate, originalEndDate) {
-        
-        startDateAndTime = eventCtrl.getTimeAndDate(originalStartDate);
-        startDate = startDateAndTime[0];
-        startTime = startDateAndTime[1];
-
-        endDateAndTime = eventCtrl.getTimeAndDate(originalEndDate);
-        endDate = endDateAndTime[0];
-        endTime = endDateAndTime[1];
-
-        finalStartDate = eventCtrl.createDate(startDate, startTime);    
-        finalEndDate = eventCtrl.createDate(endDate, endTime);
-
-        helperFunctionAddingCalendar(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate, originalEndDate);
-    };
-
-    var helperFunctionAddingCalendar = function(eventName, location, finalStartDate, finalEndDate, _id, originalStartDate,
-        originalEndDate) 
-    {
-
-        //Using ngcordova to create an event to their native calendar
-        $cordovaCalendar.createEvent({
-            title: eventName,
-            location: location['street'],
-            startDate: finalStartDate,
-            endDate: finalEndDate
-        }).then(function(result) {
-
-            //Get the data from the local storage of list of all added events
-            listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
-            
-            if (listOfAddedEvents == null) {
-                listOfAddedEvents = {};
-            }
-
-            listOfAddedEvents[_id] = {'name': eventName, 'location': location['street'], 
-                'secretStartDate': originalStartDate, 'secretEndDate': originalEndDate};
-            
-            //Added event information to local phone
-            $localStorage.setObject('listOfAddedEvents', listOfAddedEvents);
-
-            //If successfully added, then alert the user that it has been added
-            var alertPopup = $ionicPopup.alert(
-            {
-                title: 'Event Added',
-                template: eventName + ' has been added to your calendar!'
-            });
-
-        }, function(err) {
-            console.error('There was an error: ' + err);
-            //If unsuccessful added, then an alert with a error should pop up
-
-            var alertPopup = $ionicPopup.alert(
-            {
-                title: 'Error',
-                template: 'Could not add event to calendar: ' + err
-            });
-        });
+    //Takes in as a param the event
+    $scope.addEventToCalendar = function(event) {
+        cal.addToCalendar(event.name, event.location, event._id, 
+            event.secretStartDate, event.secretEndDate);
     };
 
     // button functions
