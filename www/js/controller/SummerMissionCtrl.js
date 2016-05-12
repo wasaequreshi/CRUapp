@@ -39,7 +39,8 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, api, constant
     };
 })
 
-missionCtrl.controller('MissionCtrl', function($localStorage, $cordovaCalendar, $ionicPopup, $scope, $stateParams, $cordovaInAppBrowser, cal, api, constants, convenience) { 
+missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, cal, api, constants, convenience, 
+    $localStorage, $cordovaCalendar, $ionicPopup) { 
     var success = function(value) {
         var val = value.data;
 

@@ -137,7 +137,9 @@ describe('MissionCtrl', function() {
 		    	$scope: scope,
 		    	$stateParams: {missionId: fakeId},
 		    	location: $location,
-		    	$cordovaInAppBrowser: ciab
+		    	$cordovaInAppBrowser: ciab,
+          $cordovaCalendar : {},
+          $ionicPopup : {}
 		    });
 	    };
 
