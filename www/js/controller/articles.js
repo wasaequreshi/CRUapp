@@ -124,6 +124,10 @@ articles.controller('articles_controller',function($scope, $ionicModal, req, con
         req.get(url, successGettingArticles, failureGettingArticles);
         $scope.isSearching = false;
         $scope.title = 'Resources';
+
+        if ($scope.articleSearchData && $scope.articleSearchData.title !== '') {
+            $scope.articleSearchData.title = '';
+        }
     };
 
     //This will contain list of articles where the view can grab from

@@ -51,6 +51,13 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
         },
         post: function(url, data, success, err) {
             $http.post(url, data).then(success, err);
+        },
+        delete: function(url, success, err) {
+            // Simple GET request
+            $http({
+                method: 'DELETE',
+                url: url
+            }).then(success, err);
         }
     };
 }]);
@@ -105,7 +112,113 @@ utils.factory('api', ['req', 'constants', function(req, constants) {
 		getUser: function(id, success, err) {
 			var url = constants.BASE_SERVER_URL + 'users/' + id;
             req.get(url, success, err);
-		}
+		},
+        getFilteredRides: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/find';
+            req.post(url, params, success, err);
+        },
+        getFilteredUsers: function(params, success, err) {
+            var validateUrl = constants.BASE_SERVER_URL + 'users/find';
+            req.post(validateUrl, params, success, err);
+        },
+        createRide: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides';
+            req.post(url, params, success, err);
+        },
+        createPassenger: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'passengers';
+            req.post(url, params, success, err);
+        },
+        addPassenger: function(rideID, params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + rideID + '/passengers';
+            req.post(url, params, success, err);
+        },
+        getPassengers: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.get(url, success, err);
+        },
+        getDriver: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.get(url, success, err);
+        },
+        getPassenger: function(passengerID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'passengers/' + passengerID;
+            req.get(url, success, err);
+        },
+        deleteRide: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.delete(url, success, err);
+        },
+        deletePassenger: function(driverID, passengerID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID + '/passengers/' + passengerID;
+            req.delete(url, success, err);
+        }
+    };
+}]);
+
+// calendar utility for adding things to the native calendar
+utils.factory('cal', ['$localStorage', '$cordovaCalendar', '$ionicPopup', function($localStorage, $cordovaCalendar, $ionicPopup) {
+    return {
+        addToCalendar: function(eventName, location, _id, originalStartDate, originalEndDate) {
+            startDateAndTime = this.getTimeAndDate(originalStartDate);
+            startDate = startDateAndTime[0];
+            startTime = startDateAndTime[1];
+
+            endDateAndTime = this.getTimeAndDate(originalEndDate);
+            endDate = endDateAndTime[0];
+            endTime = endDateAndTime[1];
+
+            finalStartDate = this.createDate(startDate, startTime);    
+            finalEndDate = this.createDate(endDate, endTime);
+
+            //Using ngcordova to create an event to their native calendar
+            $cordovaCalendar.createEvent({
+                title: eventName,
+                location: location['street'],
+                startDate: finalStartDate,
+                endDate: finalEndDate
+            }).then(function(result) {
+                //Get the data from the local storage of list of all added events
+                listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
+                if (listOfAddedEvents == null) {
+                    listOfAddedEvents = {};
+                }
+
+                listOfAddedEvents[_id] = {'name': eventName, 'location': location['street'], 
+                    'secretStartDate': originalStartDate, 'secretEndDate': originalEndDate};
+                
+                //Added event information to local phone
+                $localStorage.setObject('listOfAddedEvents', listOfAddedEvents);
+
+                //If successfully added, then alert the user that it has been added
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Event Added',
+                    template: eventName + ' has been added to your calendar!'
+                });
+            }, function(err) {
+                //If unsuccessful added, then an alert with a error should pop up
+                console.error('There was an error: ' + err);
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Error',
+                    template: 'Could not add event to calendar: ' + err
+                });
+            });
+        },
+        getTimeAndDate: function(timeAndDate) {
+            //Split at the "T" to separate the date and time
+            splitDateAndTime = timeAndDate.split('T');
+            
+            //Splitting up the date into pieces
+            date = splitDateAndTime[0].split('-');
+            
+            //Splitting up the time into pieces
+            time = splitDateAndTime[1].split(':');
+            return [date, time];
+        },
+        createDate: function(date, time) {
+            date = new Date(date[0], Number(date[1]) - 1, date[2], time[0], time[1], 0, 0, 0);
+            return date;
+        }
     };
 }]);
 

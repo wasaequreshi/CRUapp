@@ -21,6 +21,7 @@ var leaderSuccess = function(com, date, comGroups, scope) {
             _id:  com._id,
             ministry: com.parentMinistry,
             time: date.time,
+			machineTime: new Date(com.meetingTime),
             days: date.day,
             leader: leader.name.first + " " + leader.name.last,
             description: com.description,
@@ -35,9 +36,13 @@ var leaderSuccess = function(com, date, comGroups, scope) {
 var dayArr = [{name: "Sun", checked: false}, {name: "Mon", checked: false}, {name: "Tues", checked: false}, 
               {name: "Wed", checked: false}, {name: "Thurs", checked: false}, {name: "Fri", checked: false},
               {name: "Sat", checked: false}];
+var comGroups = [];
+var searchResults = [];
+
 
 var parseDate = function(eventDate) {
     var locale = 'en-us';
+
 
     // check whether the date is am or pm
     var ampm = eventDate.getHours() >= 12 ? ' pm' : ' am';
@@ -65,7 +70,7 @@ var parseDate = function(eventDate) {
         day: day
     };
 };
-
+var foo = {timeStart: new Date(), timeEnd: new Date()};
 groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constants, api) {
     $scope.days = dayArr;
     var date = new Date();
@@ -86,13 +91,13 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     }
     
     console.log(hours + ':' + minutes + ':' + seconds);
-    $scope.currentTime = hours + ':' + minutes + ':' + seconds;
+    $scope.currentTime = new Date();
     
         
     var comSuccess = function(data) {
         var comList = data.data;
         var idx;
-        var comGroups = [];
+        comGroups = [];
         var com;
         var date;
         
@@ -104,7 +109,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
             
 			api.getUser(com.leaders[0], leaderSuccess(com, date, comGroups, $scope), err($location));
         }
-        
+
         $scope.groups = comGroups;
     };
     
@@ -129,9 +134,64 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     $scope.openGroupFilterModal = function() {
         $scope.groupFilterModal.show();
     };
+	
+	matchesDay = function(day, dayarr) {
+		for (idx = 0; idx < dayarr.length; idx++) {
+			var dayOption = dayarr[idx];
+			if (day == dayOption.name && dayOption.checked) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	matchesTime = function(time, timePeriod) {
+		time.setFullYear(2015);
+		time.setDate(30);
+		time.setMonth(7);
+		var morningEveningThresh = new Date(2015, 7, 30, 0, 0, 0, 0).getTime();
+		var morningAfternoonThresh = new Date(2015, 7, 30, 12, 0, 0, 0).getTime();
+		var afternoonEveningThresh = new Date(2015, 7, 30, 18, 0, 0, 0).getTime();
+		var eveningMorningThresh = new Date(2015, 7, 30, 23, 59, 59, 999).getTime();
+		console.log("time is " + time);
+		if (timePeriod == "Morning") {
+			return time <= morningAfternoonThresh && time > morningEveningThresh;
+		}
+		else if (timePeriod == "Afternoon") {
+			console.log(morningAfternoonThresh);
+			console.log(afternoonEveningThresh);
+			return time <= afternoonEveningThresh && time > morningAfternoonThresh;
+		}
+		else {
+			return time <= eveningMorningThresh && time > afternoonEveningThresh;
+		}
+	};
+	
+	isMatch = function(group, options) {
+		return matchesDay(group.days, options.days) && matchesTime(group.machineTime, options.time);
+	};
     
-    $scope.filterGroups = function() {
-        // do stuff here  
+    $scope.isFiltered = false;
+    $scope.filterGroups = function(meetTime) { 
+        $scope.isFiltered = true;
+
+		searchResults = [];
+		var options = {days: $scope.days, time: meetTime};
+		for (var idx = 0; idx < comGroups.length; idx++) {
+            var group = comGroups[idx];
+			if (isMatch(group, options)) {
+				searchResults.push(group);
+			}
+        }
+		
+        $scope.search = searchResults[0].days + ' ' + options.time; 
+        $scope.groups = searchResults;
+		$scope.groupFilterModal.hide();
+    };
+
+    $scope.removeResults = function() {
+        $scope.isFiltered = false;
+        $scope.groups = comGroups;
     };
 })
 
@@ -213,4 +273,5 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         
         $scope.closeSignupModal();
     };
-});
+})
+

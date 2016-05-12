@@ -1,9 +1,9 @@
-<ion-view view-title="{{group.leader}}">
+<ion-view view-title="{{group.name}}">
     <ion-content padding="true">
         <div class="card">
             <div class="item item-icon-left">
                 <i class="icon ion-person dark"></i>
-                {{group.leader}} <!-- need to change to fit whatever the model is when it exists in the db -->
+                {{group.leader}}
             </div>
 
             <div class="item item-icon-left">
@@ -17,7 +17,7 @@
             </div>
             
             <div class="item item-body">
-                {{group.description}} <!-- this probably won't be here, but need something to distinguish the page as different -->
+                {{group.description}}
             </div>
         </div>
         <button class="button button-block button-energized" ng-click="openSignupModal()">Join this Group</button>
