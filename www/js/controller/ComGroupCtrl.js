@@ -109,7 +109,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
             
 			api.getUser(com.leaders[0], leaderSuccess(com, date, comGroups, $scope), err($location));
         }
-        
+
         $scope.groups = comGroups;
     };
     
@@ -136,7 +136,6 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     };
 	
 	matchesDay = function(day, dayarr) {
-		console.log("day called");
 		for (idx = 0; idx < dayarr.length; idx++) {
 			var dayOption = dayarr[idx];
 			if (day == dayOption.name && dayOption.checked) {
@@ -172,11 +171,11 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
 		return matchesDay(group.days, options.days) && matchesTime(group.machineTime, options.time);
 	};
     
-    $scope.filterGroups = function(meetTime) {
-		console.log(comGroups);
-		console.log(meetTime);
+    $scope.isFiltered = false;
+    $scope.filterGroups = function(meetTime) { 
+        $scope.isFiltered = true;
+
 		searchResults = [];
-		console.log()
 		var options = {days: $scope.days, time: meetTime};
 		for (var idx = 0; idx < comGroups.length; idx++) {
             var group = comGroups[idx];
@@ -184,9 +183,15 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
 				searchResults.push(group);
 			}
         }
-		console.log(searchResults);
+		
+        $scope.search = searchResults[0].days + ' ' + options.time; 
+        $scope.groups = searchResults;
 		$scope.groupFilterModal.hide();
-		//goto new thing
+    };
+
+    $scope.removeResults = function() {
+        $scope.isFiltered = false;
+        $scope.groups = comGroups;
     };
 })
 
