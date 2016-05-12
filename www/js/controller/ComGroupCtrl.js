@@ -178,7 +178,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
 		searchResults = [];
 		console.log()
 		var options = {days: $scope.days, time: meetTime};
-		for (let idx = 0; idx < comGroups.length; idx++) {
+		for (var idx = 0; idx < comGroups.length; idx++) {
             var group = comGroups[idx];
 			if (isMatch(group, options)) {
 				searchResults.push(group);
