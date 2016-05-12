@@ -2,7 +2,7 @@ var utils = angular.module('starter.controllers.utils', []);
 
 // creates a list of constants that are accessible anywhere
 utils.constant('constants', {
-    'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3001/api/',
+    'BASE_SERVER_URL': 'http://ec2-52-91-208-65.compute-1.amazonaws.com:3002/api/',
     'PLACEHOLDER_IMAGE': 'img/cru-logo.jpg',
     'PERSON_IMAGE': 'img/person.png',
     'GCM_SENDER_ID': '276638088511',
@@ -51,12 +51,113 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
         },
         post: function(url, data, success, err) {
             $http.post(url, data).then(success, err);
+        },
+        delete: function(url, success, err) {
+            // Simple GET request
+            $http({
+                method: 'DELETE',
+                url: url
+            }).then(success, err);
+        }
+    };
+}]);
+
+utils.factory('api', ['req', 'constants', function(req, constants) {
+    return {
+        getAllEvents: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'events'; 
+            req.get(url, success, err);
+        },
+        getMinistryEvents: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'events/search';
+            req.post(url, params, success, err);
+        },
+        getEvent: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'events/' + id;
+            req.get(url, success, err);
+        },
+        getAllMissions: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'summermissions/';
+            req.get(url, success, err);
+        },
+        getMission: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'summermissions/' + id;
+            req.get(url, success, err);
+        },
+        getAllTeams: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/';
+            req.get(url, success, err);
+        },
+        // sorry for the confusing name, but gets teams with ministry specific search params
+        getMinistryTeams: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/find';
+            req.post(url, params, success, err);
+        },
+        getTeam: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministryteams/' + id;
+            req.get(url, success, err);
+        },
+        getMinistry: function(id, success, err) {
+            var url = constants.BASE_SERVER_URL + 'ministries/' + id;
+            req.get(url, success, err);
+        },
+		getAllCommunityGroups: function(success, err) {
+            var url = constants.BASE_SERVER_URL + 'communitygroups/';
+            req.get(url, success, err);
+        },
+		getCommunityGroup: function(id, success, err) {
+			var url = constants.BASE_SERVER_URL + 'communitygroups/' + id;
+            req.get(url, success, err);
+		},
+		getUser: function(id, success, err) {
+			var url = constants.BASE_SERVER_URL + 'users/' + id;
+            req.get(url, success, err);
+		},
+        getFilteredRides: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/find';
+            req.post(url, params, success, err);
+        },
+        getFilteredUsers: function(params, success, err) {
+            var validateUrl = constants.BASE_SERVER_URL + 'users/find';
+            req.post(validateUrl, params, success, err);
+        },
+        createRide: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides';
+            req.post(url, params, success, err);
+        },
+        createPassenger: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'passengers';
+            req.post(url, params, success, err);
+        },
+        addPassenger: function(rideID, params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + rideID + '/passengers';
+            req.post(url, params, success, err);
+        },
+        getPassengers: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.get(url, success, err);
+        },
+        getDriver: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.get(url, success, err);
+        },
+        getPassenger: function(passengerID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'passengers/' + passengerID;
+            req.get(url, success, err);
+        },
+        deleteRide: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.delete(url, success, err);
+        },
+        deletePassenger: function(driverID, passengerID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID + '/passengers/' + passengerID;
+            req.delete(url, success, err);
         }
     };
 }]);
 
 // various convenience methods that are used in various parts of the app
-utils.factory('convenience' , ['$location', function($location) {
+utils.factory('convenience' , ['$location', '$ionicLoading', function($location, $ionicLoading) {
     return {
         contains: function(value, array) {
             for (val in array) {
@@ -92,10 +193,100 @@ utils.factory('convenience' , ['$location', function($location) {
         // and returns a function that can be used by any function that requires an error callback
         defaultErrorCallback: function(controllerName, message) {
             return function(err) {
+                $ionicLoading.hide();
                 console.error(controllerName + ': ' + message);
                 console.error(err);
                 $location.path('/app/error');
             };
+        },
+        
+        //Get the JSON object to send the the server from a location string
+        getLocationObject: function(locationStr) {
+            if (locationStr) {
+                var splitStr = locationStr.split(",");
+                var size = splitStr.length;
+                var street, suburb, state, postcode;
+                var country = "USA";
+                var splitState;
+                
+                //get street address
+                if (size >= 1) {
+                    street = splitStr[0];
+                }
+                
+                //get city
+                if (size >= 2) {
+                    suburb = splitStr[1];
+                }
+                
+                //state and postal code
+                if (size >= 3) {
+                    splitState = splitStr[2].split(" ");
+                    
+                    if (splitState.length > 1) {
+                        postcode = splitState[1];
+                    }
+                    
+                    state = splitState[0];
+                }
+                
+                return {
+                    postcode: postcode,
+                    suburb: suburb,
+                    street1: street,
+                    state: state,
+                    country: country
+                };
+            }
+            
+            return {
+                country: "USA"
+            };
+        },
+        
+        //Takes a location object and returns the formated address
+        formatLocation: function(location) {
+            var address = '';
+            var country = 'USA';
+            
+            if (location) {
+                //street address
+                if (location.street1) {
+                    address += location.street1;
+                }
+                
+                //city
+                if (location.suburb) {
+                    address += ", " + location.suburb;
+                }
+                
+                //state
+                if (location.state) {
+                    address += ", " + location.state;
+                    
+                    //postal code
+                    if (location.postcode) {
+                        address += " " + location.postcode;
+                    }
+                }
+                
+                address += country;
+                console.log(address);
+                return address;
+            }
+            
+            return country;
+        },
+
+        showLoadingScreen: function(message) {
+            $ionicLoading.show({
+                delay: 1000,
+                template: '<ion-spinner class="spinner-positive"></ion-spinner><br>' + message + '...',
+                noBackdrop: true
+             });
+        },
+        hideLoadingScreen: function() {
+            $ionicLoading.hide();
         }
     };
 }]);
