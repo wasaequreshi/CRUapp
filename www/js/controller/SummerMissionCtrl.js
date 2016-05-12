@@ -39,11 +39,14 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, api, constant
     };
 })
 
-missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, api, constants, convenience) { 
+missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, cal, api, constants, convenience) { 
     var success = function(value) {
         var val = value.data;
 
         // format the dates to be human readable
+        val.secretStartDate = val.startDate;
+        val.secretEndDate = val.endDate;
+
         val.startDate = convenience.formatDate(new Date(val.startDate), false);
         val.endDate = convenience.formatDate(new Date(val.endDate), false);
 
@@ -57,6 +60,11 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
     var err = convenience.defaultErrorCallback('MissionCtrl', 
         'Could not retrieve summer mission ' + $stateParams.missionId +
         ' from the server');
+
+    $scope.addToCalendar = function(event) {
+        cal.addToCalendar(event.name, event.location, event._id,
+            event.secretStartDate, event.secretEndDate);
+    };
 
     $scope.showOnline = function(url) {
         var isIOS = ionic.Platform.isIOS();

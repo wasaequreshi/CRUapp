@@ -47,6 +47,38 @@ cruMocks.factory('selectedCampuses', function(){
   };
 });
 
+cruMocks.factory('cal', function() {
+    return {
+        addToCalendar: function(eventName, location, _id, originalStartDate, originalEndDate) {
+            startDateAndTime = this.getTimeAndDate(originalStartDate);
+            startDate = startDateAndTime[0];
+            startTime = startDateAndTime[1];
+
+            endDateAndTime = this.getTimeAndDate(originalEndDate);
+            endDate = endDateAndTime[0];
+            endTime = endDateAndTime[1];
+
+            finalStartDate = this.createDate(startDate, startTime);    
+            finalEndDate = this.createDate(endDate, endTime);
+        },
+        getTimeAndDate: function(timeAndDate) {
+            //Split at the "T" to separate the date and time
+            splitDateAndTime = timeAndDate.split('T');
+            
+            //Splitting up the date into pieces
+            date = splitDateAndTime[0].split('-');
+            
+            //Splitting up the time into pieces
+            time = splitDateAndTime[1].split(':');
+            return [date, time];
+        },
+        createDate: function(date, time) {
+            date = new Date(date[0], Number(date[1]) - 1, date[2], time[0], time[1], 0, 0, 0);
+            return date;
+        }
+    };
+});
+
 /**
 * This service is kept similar to its original counterpart because what
 * it wraps, $http, is already mocked with angular-mocks
