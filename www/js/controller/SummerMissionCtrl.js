@@ -39,7 +39,7 @@ missionCtrl.controller('MissionsCtrl', function($scope, $location, api, constant
     };
 })
 
-missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInAppBrowser, cal, api, constants, convenience) { 
+missionCtrl.controller('MissionCtrl', function($localStorage, $cordovaCalendar, $ionicPopup, $scope, $stateParams, $cordovaInAppBrowser, cal, api, constants, convenience) { 
     var success = function(value) {
         var val = value.data;
 
@@ -53,8 +53,87 @@ missionCtrl.controller('MissionCtrl', function($scope, $stateParams, $cordovaInA
         if (!value.data.image) {
             val.image = {url: constants.PLACEHOLDER_IMAGE};
         }
-
+        helperFunctionUpdatingCalendar(val);
         $scope.mySummerMission = val;
+    };
+
+    var helperFunctionUpdatingCalendar = function(val) {
+        //check if event changed
+        listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
+        infoForEvent = listOfAddedEvents[val._id];
+
+        if (!(infoForEvent == null)) {
+            if (!(infoForEvent['name'] === val.name && JSON.stringify(infoForEvent['location']) ===
+               JSON.stringify(val.location['street']) && infoForEvent['secretStartDate'] === val.secretStartDate &&
+                infoForEvent['secretEndDate'] === val.secretEndDate)) {
+                //The event was changed bro  <----- you tell em' broseph! <3 Connor
+                updateEvent(infoForEvent, val);
+            }
+        }
+    };
+
+    var updateEvent = function(infoForEvent, val) {
+        var originalStartDate = infoForEvent['secretStartDate'];
+        var originalEndDate = infoForEvent['secretEndDate'];
+        
+        startDateAndTime = eventCtrl.getTimeAndDate(originalStartDate);
+        startDate = startDateAndTime[0];
+        startTime = startDateAndTime[1];
+
+        endDateAndTime = eventCtrl.getTimeAndDate(originalEndDate);
+        endDate = endDateAndTime[0];
+        endTime = endDateAndTime[1];
+
+        finalStartDate = eventCtrl.createDate(startDate, startTime);    
+        finalEndDate = eventCtrl.createDate(endDate, endTime);
+        
+        $cordovaCalendar.deleteEvent({
+            newTitle: infoForEvent['name'],
+            location: infoForEvent['location'],
+            startDate: finalStartDate,
+            endDate: finalEndDate
+        }).then(function(result) {
+            helperFunctionUpdateCalendar(val);
+            // success
+        }, function(err) {
+            // error
+            console.error("Failed to delete event from calender: " + err);
+        });
+    };
+
+    var helperFunctionUpdateCalendar = function(val) {
+      var originalStartDate = val.secretStartDate;
+      var originalEndDate = val.secretEndDate;
+
+      startDateAndTime = eventCtrl.getTimeAndDate(originalStartDate);
+      startDate = startDateAndTime[0];
+      startTime = startDateAndTime[1];
+
+      endDateAndTime = eventCtrl.getTimeAndDate(originalEndDate);
+      endDate = endDateAndTime[0];
+      endTime = endDateAndTime[1];
+
+      finalStartDate = eventCtrl.createDate(startDate, startTime);    
+      finalEndDate = eventCtrl.createDate(endDate, endTime);
+
+      //Using ngcordova to create an event to their native calendar
+      $cordovaCalendar.createEvent({
+          title: val.name,
+          location:  val.location['street'],
+          startDate: finalStartDate,
+          endDate: finalEndDate
+      }).then(function(result) {
+          //Get the data from the local storage of list of all added events
+          listOfAddedEvents = $localStorage.getObject('listOfAddedEvents');
+
+          listOfAddedEvents[val._id] = {'name': val.name, 'location': val.location['street'], 'secretStartDate': val.secretStartDate,
+          'secretEndDate': val.secretEndDate};
+
+          //Added event information to local phone
+          $localStorage.setObject('listOfAddedEvents', listOfAddedEvents);
+      }, function(err) {
+          console.error('There was an error: ' + err);
+      });
     };
 
     var err = convenience.defaultErrorCallback('MissionCtrl', 
