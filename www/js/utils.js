@@ -51,6 +51,13 @@ utils.factory('req', ['$window', '$http', function($window, $http) {
         },
         post: function(url, data, success, err) {
             $http.post(url, data).then(success, err);
+        },
+        delete: function(url, success, err) {
+            // Simple GET request
+            $http({
+                method: 'DELETE',
+                url: url
+            }).then(success, err);
         }
     };
 }]);
@@ -105,7 +112,47 @@ utils.factory('api', ['req', 'constants', function(req, constants) {
 		getUser: function(id, success, err) {
 			var url = constants.BASE_SERVER_URL + 'users/' + id;
             req.get(url, success, err);
-		}
+		},
+        getFilteredRides: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/find';
+            req.post(url, params, success, err);
+        },
+        getFilteredUsers: function(params, success, err) {
+            var validateUrl = constants.BASE_SERVER_URL + 'users/find';
+            req.post(validateUrl, params, success, err);
+        },
+        createRide: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides';
+            req.post(url, params, success, err);
+        },
+        createPassenger: function(params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'passengers';
+            req.post(url, params, success, err);
+        },
+        addPassenger: function(rideID, params, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + rideID + '/passengers';
+            req.post(url, params, success, err);
+        },
+        getPassengers: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.get(url, success, err);
+        },
+        getDriver: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.get(url, success, err);
+        },
+        getPassenger: function(passengerID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'passengers/' + passengerID;
+            req.get(url, success, err);
+        },
+        deleteRide: function(driverID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID;
+            req.delete(url, success, err);
+        },
+        deletePassenger: function(driverID, passengerID, success, err) {
+            var url = constants.BASE_SERVER_URL + 'rides/' + driverID + '/passengers/' + passengerID;
+            req.delete(url, success, err);
+        }
     };
 }]);
 

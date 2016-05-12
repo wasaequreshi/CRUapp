@@ -150,8 +150,8 @@ describe('GetRideCtrl', function() {
 		    });
 	    };
         
-	    createPass = httpBackend.when('POST', constants.BASE_SERVER_URL + 'passenger/create').respond({test: "test"});
-        addPass = httpBackend.when('POST', constants.BASE_SERVER_URL + 'ride/addPassenger').respond({test: "test"});
+	    createPass = httpBackend.when('POST', constants.BASE_SERVER_URL + 'passengers').respond({test: "test"});
+        addPass = httpBackend.when('POST', constants.BASE_SERVER_URL + 'rides/' + id + '/passengers').respond({test: "test"});
 	}));
 
 
@@ -162,9 +162,9 @@ describe('GetRideCtrl', function() {
 	});
 
     it('contains the ride with the passenger requested by the page', function() {
-        createPass.respond({post: {_id: 2}});
-        httpBackend.expectPOST(constants.BASE_SERVER_URL + 'passenger/create');
-        httpBackend.expectPOST(constants.BASE_SERVER_URL + 'ride/addPassenger');
+        createPass.respond({_id: 2});
+        httpBackend.expectPOST(constants.BASE_SERVER_URL + 'passengers');
+        httpBackend.expectPOST(constants.BASE_SERVER_URL + 'rides/' + id + '/passengers');
    		controller();
         scope.getRide(name, phone, triptype);
    		httpBackend.flush();
@@ -180,8 +180,8 @@ describe('GetRideCtrl', function() {
     it('navigates to the error page on error when adding passenger to ride', function() {
    		addPass.respond(404, '');
         createPass.respond({post: {_id: 2}});
-   		httpBackend.expectPOST(constants.BASE_SERVER_URL + 'passenger/create');
-        httpBackend.expectPOST(constants.BASE_SERVER_URL + 'ride/addPassenger');
+   		httpBackend.expectPOST(constants.BASE_SERVER_URL + 'passengers');
+        httpBackend.expectPOST(constants.BASE_SERVER_URL + 'rides/' + id + '/passengers');
    		
    		controller();
         scope.getRide(name, phone, triptype);
@@ -193,7 +193,7 @@ describe('GetRideCtrl', function() {
     
     it('navigates to the error page on error when creating new passenger', function() {
    		createPass.respond(404, '');
-   		httpBackend.expectPOST(constants.BASE_SERVER_URL + 'passenger/create');
+   		httpBackend.expectPOST(constants.BASE_SERVER_URL + 'passengers');
    		
    		controller();
         scope.getRide(name, phone, triptype);
@@ -268,8 +268,8 @@ describe('ChooseDriverCtrl', function() {
 		    });
 	    };
         
-	    createPass = httpBackend.when('POST', constants.BASE_SERVER_URL + 'passenger/create').respond({test: "test"});
-        addPass = httpBackend.when('POST', constants.BASE_SERVER_URL + 'ride/addPassenger').respond({test: "test"});
+	    createPass = httpBackend.when('POST', constants.BASE_SERVER_URL + 'passengers').respond({test: "test"});
+        addPass = httpBackend.when('POST', constants.BASE_SERVER_URL + 'rides/' + id + '/passengers').respond({test: "test"});
 	}));
 
 
