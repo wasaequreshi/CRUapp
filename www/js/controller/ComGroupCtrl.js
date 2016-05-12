@@ -86,7 +86,7 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
     }
     
     console.log(hours + ':' + minutes + ':' + seconds);
-    $scope.currentTime = hours + ':' + minutes + ':' + seconds;
+    $scope.currentTime = new Date();
     
         
     var comSuccess = function(data) {
@@ -214,4 +214,5 @@ groups.controller('GroupCtrl', function($scope, $location, $ionicModal, constant
         console.log("Got here");
         $scope.closeSignupModal();
     };
-});
+})
+
