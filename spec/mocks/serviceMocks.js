@@ -181,6 +181,17 @@ cruMocks.factory('convenience' , ['$location', function($location) {
                 $location.path('/app/error');
             };
         },
+        
+        //Get the JSON object to send the the server from a location string
+        getLocationObject: function(locationStr) {
+            return {country: "USA"};
+        },
+        
+        //Takes a location object and returns the formated address
+        formatLocation: function(location) {
+            return "USA";
+        },
+
         showLoadingScreen: function(message) {
             // normally a loading icon would show, but there is no gui
             // so the code has been remove, but the method mocked
