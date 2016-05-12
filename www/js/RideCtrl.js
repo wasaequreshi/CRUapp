@@ -48,6 +48,83 @@ var parseDate = function(eventDate) {
     };
 };
 
+var isValidName = function(driverName) {
+    return driverName && driverName.trim();
+}
+
+var isValidPhoneNumber = function(phoneNumber) {
+    return phoneNumber;
+}
+
+var isValidLocation = function(location) {
+    return location;
+}
+
+var isValidSeatsNumber = function(seats) {
+    return seats;
+}
+
+var isValidTime = function(time) {
+    return true; // temporary workaround for device issues
+}
+
+var isValidTripDirection = function(tripDirection) {
+    return tripDirection && tripDirection.trim();
+}
+
+var validateDriverDataClientSide = function(driverData, $ionicPopup) {
+    // var driverData = {
+    //     gcm_id: gcm_id,
+    //     driverName: name,
+    //     driverNumber: phonenumber,
+    //     event: tempID,
+    //     direction: triptype,
+    //     seats: seats,
+    //     time: leaving
+    // };
+
+    var Validated = true;
+    var Problems = "";
+
+    if (!isValidName(driverData.driverName)) {
+        Validated = false;
+        Problems += "<li>Name cannot be blank</li>";
+    }
+
+    if (!isValidPhoneNumber(driverData.driverNumber)) {
+        Problems += "<li>Phone number is invalid</li>";
+    }
+
+    // location not yet implemented
+    // if (!isValidLocation(driverData.location)) {
+    //     Validated = false;
+    //     Problems += "<li>Location cannot be blank</li>";
+    // }
+
+    if (!isValidSeatsNumber(driverData.seats)) {
+        Validated = false;
+        Problems += "<li>Seats cannot be blank</li>";
+    }
+
+    if (!isValidTime(driverData.time)) {
+        Validated = false;
+        Problems += "<li>Time cannot be blank</li>";
+    }
+
+    if (!isValidTripDirection(driverData.direction)) {
+        Validated = false;
+        Problems += "<li>Trip cannot be blank</li>";
+    }
+
+    var alertPopup = $ionicPopup.alert(
+    {
+        title: 'Error!',
+        template: '<ul>'+ Problems + '</ul>'
+    });
+
+    return false;
+};
+
 var go2RideData = function(tempID, isDriving, location, constants, scope, ionicPopup, localStorage) {
     if (!isDriving) {
         var riding = localStorage.getObject(constants.MY_RIDES_RIDER);
@@ -69,7 +146,7 @@ var go2RideData = function(tempID, isDriving, location, constants, scope, ionicP
             ]
         });
     }
-}; 
+};
 
 var go2DriveData = function(tempID, isRiding, location, constants, scope, ionicPopup, localStorage) {
     // if the user is already a rider, don't allow them to sign up to drive
@@ -312,7 +389,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 
             var eventDate = parseDate(new Date(ride.time));
             var rideLocation = convenience.formatLocation(ride.location);
-            
+
             mydrivers.push({
                 id: ride._id,
                 event_id: ride.event,
@@ -360,11 +437,9 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         //change the triptype to fit the server
         triptype = changeTriptype(triptype);
 
-        
-
         //check if rider is valid by name in DB
         var valid;
-        
+
         var validSuccess = function(data) {
             var users = data.data;
             if (users.length > 0) {
@@ -373,7 +448,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
             else {
                 valid = false;
             }
-            
+
             if (!valid) {
                 //popup for driver error
                 var myPopup = $ionicPopup.show({
@@ -440,12 +515,15 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
                     location: locationObj,
                     time: leaving
                 };
-                
-                //create new driver for the given event
-                api.createRide(driverData, success, fail);
+
+                if (validateDriverDataClientSide(driverData, $ionicPopup))
+                {
+                    //create new driver for the given event
+                    api.createRide(driverData, success, fail);
+                }
             }
         };
-        
+
         var validErr = function(data) {
             valid = false;
         };
@@ -455,7 +533,6 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
 
         //might not work because some data is on the old scheme
         api.getFilteredUsers(validData, validSuccess, validErr);
-        
     };
 
 })
@@ -464,7 +541,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     //id from the url
     var rideID = $stateParams.rideId;
     var driverID = $stateParams.driverId;
-    
+
     var success = function(data) {
         var driverInfo = data.data;
 
@@ -519,7 +596,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
     //id from the url
     var rideID = $stateParams.rideId;
     var driverID = $stateParams.driverId;
-    
+
     var success = function(data) {
         var myriders = [];
         var passengers = data.data.passengers;
@@ -564,7 +641,7 @@ ride.controller('RidesCtrl', function($scope, $location, $ionicHistory, $ionicPo
         var success = function(data) {
             console.log("deleted successfully");
         };
-        
+
         var fail = function(data) {
             console.log("Did not delete driver successfully");
         };
